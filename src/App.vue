@@ -2,7 +2,7 @@
   <div id="app">
     <app-header title="白瑞红"></app-header>
     <router-view></router-view>
-
+    <!-- <p>hx修改</p> -->
   </div>
 
 </template>
