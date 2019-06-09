@@ -28,7 +28,8 @@
 import {
     getMessageList,
     getMenuList,
-    getSelfCenterList
+    getSelfCenterList,
+    testList
 } from '../../services/selfPage.js'
 export default {
     data(){
@@ -113,7 +114,13 @@ export default {
        
     },
     created(){
+        console.log('执行了')
         let userid = '1128605053055246336'
+        testList().then((data)=>{
+            console.log(data)
+        }).catch((error)=>{
+            console.log(error)
+        })
         // getMessageList(userid).then((data)=>{
         //     console.log(data)
         // }).catch((error)=>{

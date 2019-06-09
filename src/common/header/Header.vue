@@ -1,6 +1,5 @@
 <template>
-    <header class="header" >
-
+    <div class="headerNav" >
         <!--<span class="header-btn header-btn-left">
             <slot name="left"/>
         </span>
@@ -8,7 +7,7 @@
         <span class="header-btn header-btn-right">
             <slot name="right"/>   
         </span> -->
-        <div class="headerNav">
+        <!-- <div class="headerNav">
             <div class="h-logoBox fl clearfix">
                 <div class="h-logo fl" @click="GOHome">
                 </div>
@@ -16,58 +15,50 @@
                     <span>集团财务关键任务管理平台</span>
                 </div>
             </div>
-            <div class="h-menuBox fr clearfix">
-                <ul>
-                    <li id = "mgt" @click="toggleAction" @mouseleave="palyFlaghandle">
-                        <i class="h-menuIcons el-icon-s-tools"></i><span>管理中心</span><span class="h-menu-list el-icon-caret-bottom"></span>
-                        <ul class="h-menu-lists"  v-show="playFlag">
-                            <li v-for="(item,index) in menusList" :key='index' @click="goMenuItem(item,index)">{{item.name}}</li>
-                        </ul>
-                        
-                    </li>
-                    <li v-for="(item,index) in tabsList" :key='index' @click="setHeadAction(item,index)">
-                        <i class="el-dropdown-link" :class="item.itemClass"></i><span>{{item.name}}</span><span :class="item.itemListClass"></span>
-                    </li>
-                    
-                    <!-- <li>
-                        <i class="h-menuIcons el-icon-s-tools"></i><span>管理中心</span><span class="h-menu-list el-icon-caret-bottom"></span>
-                    </li>
-                    <li>
-                        <i class="h-menuIcons el-icon-s-custom"></i><span>个人中心</span>
-                    </li>
-                    <li>
-                        <i class="h-menuIcons el-icon-bell"></i><span>通知</span>
-                    </li>
-                    <li>
-                        <i class="h-touxiang"></i><span>白瑞红</span>
-                    </li>
-                    <li>
-                        <i class="el-icon-switch-button"></i>
-                    </li> -->
-                </ul>
-            </div>
-        </div>
-    </header>
+        </div> -->
+        
+        <template v-for="navMenu in navMenus">
+                    <!-- 最后一级菜单 -->
+                <el-menu-item v-if="!navMenu.childs&&navMenu.entity"
+                                :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name" 
+                            >
+                    <i :class="navMenu.entity.icon"></i>
+                    <span slot="title">{{navMenu.entity.alias}}</span>
+                </el-menu-item>
+
+                <!-- 此菜单下还有子菜单 -->
+                <el-submenu v-if="navMenu.childs&&navMenu.entity"
+                            :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name">
+                    <template slot="title">
+                    <i :class="navMenu.entity.icon"></i>
+                    <span> {{navMenu.entity.alias}}</span>
+                    </template>
+                    <!-- 递归 -->
+                    <NavMenu :navMenus="navMenu.childs"></NavMenu>
+                </el-submenu>
+        </template>
+    </div>
     
 </template>
 
 <script>
 export default {
-    name: 'app-header',
+    name: 'NavMenu',
     props: {
         title: String,
+        navMenus:Array
     },
     data(){
         return {
-            tabsList: [
-                // { id:'mgh', name: "管理中心", itemClass: "h-menuIcons el-icon-s-tools",itemListClass:'h-menu-list el-icon-caret-bottom'},
-                { id:'self',name: "个人中心", itemClass: "h-menuIcons el-icon-s-custom",itemListClass:'' },
-                { id:'mesg',name: "通知", itemClass: "h-menuIcons el-icon-message-solid",itemListClass:'' },
-                { id:'touxiang',name:this.title, itemClass: "h-touxiang",itemListClass:'' },
-                { id:'down',name:'', itemClass: "el-icon-switch-button",itemListClass:'' }
-            ],
-            menusList:[{id:"task",name:'任务中心'},{id:"mmgt",name:'管理中心'}],
-            playFlag:false
+            // tabsList: [
+            //     // { id:'mgh', name: "管理中心", itemClass: "h-menuIcons el-icon-s-tools",itemListClass:'h-menu-list el-icon-caret-bottom'},
+            //     { id:'self',name: "个人中心", itemClass: "h-menuIcons el-icon-s-custom",itemListClass:'' },
+            //     { id:'mesg',name: "通知", itemClass: "h-menuIcons el-icon-message-solid",itemListClass:'' },
+            //     { id:'touxiang',name:this.title, itemClass: "h-touxiang",itemListClass:'' },
+            //     { id:'down',name:'', itemClass: "el-icon-switch-button",itemListClass:'' }
+            // ],
+            // menusList:[{id:"task",name:'任务中心'},{id:"mmgt",name:'管理中心'}],
+            // playFlag:false
 
         };
     },
@@ -103,38 +94,99 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+*{
+  outline:none;
+}
+/* 水平样式 */
+ .el-menu--horizontal>div>.el-submenu {
+    float: left;
+}
+
+/* 一级菜单的样式 */
+.el-menu--horizontal>div>.el-menu-item {
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin: 0;
+    /* border-bottom: 2px solid transparent ; */
+    color: #909399;
+}
+.el-menu--horizontal>div>.el-submenu .el-submenu__icon-arrow {
+    position: static;
+    /* vertical-align: middle; */
+    margin-left: 8px;
+    margin-top: -3px;
+}
+.el-menu-item * {
+    vertical-align: initial;
+}
+.el-submenu__title * {
+    vertical-align: inherit;
+}
+.el-menu.el-menu--horizontal{
+    border-bottom:none;
+}
+.el-menu--horizontal>div>.el-menu-item{
+  border:none;
+}
+.el-submenu__title{
+  height: 48px !important;
+  line-height: 48px !important;
+  /* margin:0;
+  padding:0; */
+}
+.el-menu-item{
+    padding:0 10px;
+}
 .header{
     width: 100%;
     height: 48px;
     background: #394263;
 }
-.header .headerNav{
-    width:88%;
-    height: 100%;
-    margin:0 auto;
-}
-.header .headerNav .h-logoBox{
-    height: 100%;
-}
-.header .headerNav .h-logoBox .h-logo{
+/* .headerNav .el-menu-item i{
+    color:#fff;
+} */
+/* .headerNav .el-submenu__title i{
+    color:#fff;
+} */
+.h-logoBox .h-logo{
     background: url(../../assets/logo.svg) no-repeat center;
     background-size: 100% 100%;
     width: 78px;
     height:100%;
 }
+.h-logoBox{
+    /* margin:0 40px; */
+    height: 48px;
+    line-height: 48px;
+    float: left;
+}
+.h-logoBox .h-logo{
+    background: url(../../assets/logo.svg) no-repeat center;
+    background-size: 100% 100%;
+    width: 78px;
+}
+.h-logoBox .h-logoName{
+    font-size: 14px;
+    color:#fff;
+    font-weight: 600;
+    margin-top: 3px;
+    margin-left: 8px;
+}
+/* .header .headerNav{
+    width:88%;
+    height: 100%;
+    margin:0 auto;
+}
+.header .headerNav 
+.header .headerNav 
 .header .headerNav .h-logoBox .h-logo a{
     width:100%;
     height: 100%;
     display: inline-table;
 }
-.header .headerNav .h-logoBox .h-logoName{
-    font-size: 14px;
-    color:#fff;
-    font-weight: 600;
-    margin-top: 18px;
-    margin-left: 8px;
-}
+
 .header .headerNav .h-menuBox{
     height: 100%;
 }
@@ -187,5 +239,5 @@ export default {
 .h-menu-lists>li{
     width:100%;
     text-align: center;
-}
+} */
 </style>

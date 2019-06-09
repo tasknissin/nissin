@@ -64,3 +64,20 @@ export function getSelfCenterList(empCode){
         })
     })
 }
+
+// 测试
+export function testList(){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.test_API,
+            method:'POST',
+        })
+        .then(({data,flag})=>{
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}

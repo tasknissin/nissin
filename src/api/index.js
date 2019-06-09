@@ -3,7 +3,8 @@ const SAT_HOST = 'http://localhost:8080';
 //测试
 const UAT_HOST = 'http://10.213.12.98:8080';
 //生产
-const PRO_HOST = 'http://hgpm.hoppre.haier.net';
+// const PRO_HOST = 'http://hgpm.hoppre.haier.net';
+const PRO_HOST = 'http://hgpm.hoppre.haier.net'
 
 
 
@@ -28,9 +29,10 @@ const MenuList_API = '/api/sys/profile.do';
 */
 const selfCenter_API = '/api/empController/getCatHrEmpBaseExtendAllData.do';
 
-
-
-
+/*
+测试
+*/
+const test_API = '/api/testController/seachAllData';
 
 
 
@@ -40,5 +42,6 @@ export default {
     PRO_HOST,
     Message_API,
     MenuList_API,
-    selfCenter_API
+    selfCenter_API,
+    test_API
 }
