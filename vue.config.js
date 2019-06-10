@@ -1,6 +1,9 @@
 
 module.exports = {
     outputDir: 'dist',
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/dist/'
+    : '/',
     devServer: {
         host: 'localhost', // 设置主机地址
         open: false, // 是否自动打开浏览器页面

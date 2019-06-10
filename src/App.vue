@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <app-header title="白瑞红"></app-header> -->
     <div class="app-Header">
       <div class="app-headerBox">
         <div class="h-logoBox fl clearfix" @click="GOHome">
@@ -26,22 +25,6 @@
     </div>
     <router-view></router-view>
     <!-- <p>hx修改</p> -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-    <!-- test -->
-
-    <!-- test1 -->
-    <!-- test1 -->
-    <!-- test1 -->
-    <!-- test1 -->
-    <!-- test1 -->
-    <!-- test1 -->
-    <!-- test1 -->
     
 
   </div>
