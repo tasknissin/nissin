@@ -72,7 +72,7 @@ export default {
 <style>
 .contentPage{
     width:calc(100% - 30px);
-    min-height: 220px;
+    height: calc(100% - 70px);
     margin:15px;
     border-radius: 10px;
     background: #fff;
