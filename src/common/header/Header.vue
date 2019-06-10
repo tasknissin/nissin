@@ -1,22 +1,5 @@
 <template>
     <div class="headerNav" >
-        <!--<span class="header-btn header-btn-left">
-            <slot name="left"/>
-        </span>
-        <h1 class="title">{{title}}</h1>
-        <span class="header-btn header-btn-right">
-            <slot name="right"/>   
-        </span> -->
-        <!-- <div class="headerNav">
-            <div class="h-logoBox fl clearfix">
-                <div class="h-logo fl" @click="GOHome">
-                </div>
-                <div class="h-logoName fl">
-                    <span>集团财务关键任务管理平台</span>
-                </div>
-            </div>
-        </div> -->
-        
         <template v-for="navMenu in navMenus">
                     <!-- 最后一级菜单 -->
                 <el-menu-item v-if="!navMenu.childs&&navMenu.entity"
@@ -50,15 +33,7 @@ export default {
     },
     data(){
         return {
-            // tabsList: [
-            //     // { id:'mgh', name: "管理中心", itemClass: "h-menuIcons el-icon-s-tools",itemListClass:'h-menu-list el-icon-caret-bottom'},
-            //     { id:'self',name: "个人中心", itemClass: "h-menuIcons el-icon-s-custom",itemListClass:'' },
-            //     { id:'mesg',name: "通知", itemClass: "h-menuIcons el-icon-message-solid",itemListClass:'' },
-            //     { id:'touxiang',name:this.title, itemClass: "h-touxiang",itemListClass:'' },
-            //     { id:'down',name:'', itemClass: "el-icon-switch-button",itemListClass:'' }
-            // ],
-            // menusList:[{id:"task",name:'任务中心'},{id:"mmgt",name:'管理中心'}],
-            // playFlag:false
+           
 
         };
     },
@@ -137,7 +112,10 @@ export default {
   padding:0; */
 }
 .el-menu-item{
-    padding:0 10px;
+    padding:0 10px !important;
+}
+.el-submenu__title{
+    padding:0 10px !important;
 }
 .header{
     width: 100%;
@@ -174,70 +152,4 @@ export default {
     margin-top: 3px;
     margin-left: 8px;
 }
-/* .header .headerNav{
-    width:88%;
-    height: 100%;
-    margin:0 auto;
-}
-.header .headerNav 
-.header .headerNav 
-.header .headerNav .h-logoBox .h-logo a{
-    width:100%;
-    height: 100%;
-    display: inline-table;
-}
-
-.header .headerNav .h-menuBox{
-    height: 100%;
-}
-.header .headerNav .h-menuBox>ul{
-    height:100%;
-    position: relative;
-}
-
-.header .headerNav .h-menuBox>ul>li{
-    float: left;
-    height: 48px;
-    line-height: 48px;
-    height:100%;
-    padding:0 12px;
-    color:#fff;
-}
-.header .headerNav .h-menuBox>ul>li .h-touxiang{
-    display: block;
-    float: left;
-    width: 25px;
-    height: 25px;
-    background: url(../../assets/user.png) no-repeat center;
-    background-size: 100% 100%;
-    margin:11px 5px 0 5px;
-
-}
-.header .headerNav .h-menuBox>ul>li .h-menuIcons{
-    font-size: 16px;
-    vertical-align: -1.2px;
-    margin-right: 5px;
-    color:#fff;
-}
-.header .headerNav .h-menuBox>ul>li .h-menu-listIcon{
-    margin-left: 3px;
-}
-.header .headerNav .h-menuBox>ul>li:hover{
-    background-color: #262e4c;
-}
-.header .headerNav .h-menuBox>ul>li:first-child{
-    width:96px;
-}
-.h-menu-lists{
-    width:120px;
-    position: absolute;
-    top:48px;
-    left:0;
-    background-color: #394263;
-    z-index: 10;
-}
-.h-menu-lists>li{
-    width:100%;
-    text-align: center;
-} */
 </style>

@@ -21,13 +21,7 @@ export default {
     },
     data(){
         return {
-            tabsList: [
-                { name: "管理中心", itemClass: "h-menuIcons el-icon-s-tools",itemListClass:'h-menu-list el-icon-caret-bottom'},
-                { name: "个人中心", itemClass: "h-menuIcons el-icon-s-custom",itemListClass:'' },
-                { name: "通知", itemClass: "h-menuIcons el-icon-bell",itemListClass:'' },
-                { name:this.title, itemClass: "h-touxiang",itemListClass:'' },
-                { name:'', itemClass: "el-icon-switch-button",itemListClass:'' }
-            ]
+           
         };
     },
     methods:{
