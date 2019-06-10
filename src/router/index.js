@@ -7,47 +7,68 @@ import taskCenterPage from '../pages/taskCenterPage/Root'
 import mgtCenterPage from '../pages/mgtPage/Root'
 import mgtFirstPage from '../components/mgtPage/mgtFirst.vue'
 import loginPage from '../pages/loginPage/login.vue'
-
+import elc from '../manage/elc.vue'
+import managePage from '../manage/manage.vue'
+import Mune from '../manage/mune.vue'
 Vue.use(Router)
 
-const router =  new Router({
-  // mode:"history",
-  routes: [
-    {
-      name:"home",
-      path:'/home',
-      component:Homepage
-    },
-    {
-      name:"self",
-      path:'/self',
-      component:Selfpage
-    },
-    {
-      name:"taskCenter",
-      path:'/taskCenter',
-      component:taskCenterPage
-    },
-    {
-      name:"mgtCenter",
-      path:'/mgtCenter',
-      component:mgtCenterPage,
-    },
-    {
-      name:"mgtFirst",
-      path:'/mgtFirst',
-      component:mgtFirstPage,
-    },
-    {
-      name:"login",
-      path:'/login',
-      component:loginPage,
-    },
-    {
-      path: '**',
-      redirect: '/home'
-    }
-  ]
+const router = new Router({
+    // mode:"history",
+    routes: [{
+            name: "home",
+            path: '/home',
+            component: Homepage
+        },
+        {
+            name: "self",
+            path: '/self',
+            component: Selfpage
+        },
+        {
+            name: "taskCenter",
+            path: '/taskCenter',
+            component: taskCenterPage
+        },
+        {
+            name: "mgtCenter",
+            path: '/mgtCenter',
+            component: mgtCenterPage,
+        },
+        {
+            name: "mgtFirst",
+            path: '/mgtFirst',
+            component: mgtFirstPage,
+        },
+        {
+            name: "login",
+            path: '/login',
+            component: loginPage,
+        },
+        {
+            path: '**',
+            redirect: '/home'
+        },
+
+        {
+            name: 'manage',
+            path: '/manage',
+            component: managePage,
+            children: [{
+                    name: 'elc',
+                    path: '/elc',
+                    meta: { title: '用户管理' },
+                    component: elc,
+                },
+                {
+                    name: 'menu',
+                    path: '/menu',
+                    meta: { title: '菜单管理' },
+                    component: Mune,
+                },
+
+            ]
+        }
+    ]
 })
 
 export default router;
