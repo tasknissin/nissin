@@ -113,6 +113,15 @@ export default {
                 alias: "管理",
                 value: ""
               }
+            },
+            {
+              entity: {
+                id: 9,
+                name: "manage",
+                icon: "el-icon-picture",
+                alias: "后台管理",
+                value: ""
+              }
             }
           ]
         },
