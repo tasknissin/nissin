@@ -44,11 +44,7 @@ const router = new Router({
             path: '/login',
             component: loginPage,
         },
-        {
-            path: '**',
-            redirect: '/home'
-        },
-
+        
         {
             name: 'manage',
             path: '/manage',
@@ -67,7 +63,12 @@ const router = new Router({
                 },
 
             ]
-        }
+        },
+        {
+            path: '**',
+            redirect: '/home'
+        },
+
     ]
 })
 
