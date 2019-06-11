@@ -47,7 +47,7 @@ let config = {
                     "entity": {
                         "id": 2,
                         "parentMenuId": 1,
-                        "name": "菜单管理",
+                        "name": "menu",
                         "icon": "el-icon-edit",
                         "alias": "菜单管理",
                         "state": "ENABLE",
