@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="">
-    <el-container style="height: 500px; border: 1px solid #eee">
+  <div class="" style="height: 92%;">
+    <el-container style="height: 100%; border: 1px solid #eee">
   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
     <!--左侧菜单组件-->
        <el-menu
@@ -59,4 +59,8 @@ export default {
 </script>
 
 <style lang="css">
+.el-main {
+    padding: 2px;
+}
+
 </style>

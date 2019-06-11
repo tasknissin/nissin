@@ -7,9 +7,16 @@ import taskCenterPage from '../pages/taskCenterPage/Root'
 import mgtCenterPage from '../pages/mgtPage/Root'
 import mgtFirstPage from '../components/mgtPage/mgtFirst.vue'
 import loginPage from '../pages/loginPage/login.vue'
-import elc from '../manage/elc.vue'
 import managePage from '../manage/manage.vue'
 import Mune from '../manage/mune.vue'
+import elc from '../manage/elc.vue'
+
+import department from '../manage/department/department.vue'
+import menuManagement from '../manage/menuManagement/menuManagement.vue'
+import roleManagement from '../manage/Rolemanagement/roleManagement.vue'
+import station from '../manage/station/station.vue'
+import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue'
+import userManagement from '../manage/userManagement/userandpassword.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -44,22 +51,58 @@ const router = new Router({
             path: '/login',
             component: loginPage,
         },
-        
+
         {
             name: 'manage',
             path: '/manage',
             component: managePage,
             children: [{
                     name: 'elc',
-                    path: '/elc',
-                    meta: { title: '用户管理' },
+                    path: 'elc',
+                    meta: { title: '权限管理' },
                     component: elc,
                 },
                 {
                     name: 'menu',
-                    path: '/menu',
+                    path: 'menu',
                     meta: { title: '菜单管理' },
                     component: Mune,
+                },
+                {
+                    name: 'department',
+                    path: 'department',
+                    meta: { title: '部门管理' },
+                    component: department,
+                },
+                {
+                    name: 'menuManagement',
+                    path: 'menuManagement',
+                    meta: { title: '岗位管理' },
+                    component: menuManagement,
+                },
+                {
+                    name: 'roleManagement',
+                    path: 'roleManagement',
+                    meta: { title: '角色管理' },
+                    component: roleManagement,
+                },
+                {
+                    name: 'station',
+                    path: 'station',
+                    meta: { title: '菜单管理' },
+                    component: station,
+                },
+                {
+                    name: 'systemConfiguration',
+                    path: 'systemConfiguration',
+                    meta: { title: '用户管理' },
+                    component: systemConfiguration,
+                },
+                {
+                    name: 'userManagement',
+                    path: 'userManagement',
+                    meta: { title: '系统配置' },
+                    component: userManagement,
                 },
 
             ]
