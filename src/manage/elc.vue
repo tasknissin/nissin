@@ -1,7 +1,9 @@
 <template lang="html">
   <div>
-    <div style="margin-bottom: 20px;">
+    <div style="">
+
     </div>
+    
     <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
   <el-tab-pane
     v-for="(item, index) in editableTabs2"
@@ -12,6 +14,7 @@
     {{item.title}}
   </el-tab-pane>
   </el-tabs>
+
     <el-table :data="tableData">
     <el-table-column prop="date" label="日期" width="140">
     </el-table-column>
@@ -48,7 +51,6 @@ export default {
       this.btn= true
         this.editableTabs2.forEach((v,k)=>{
           if(v.title==targetName){
-           
             this.btn = false;
             this.editableTabsValue2 = v.name
           }
@@ -98,6 +100,7 @@ export default {
   beforeRouteEnter (to, from, next) {
       console.log("我从哪里来",to.params.id,from)
       var self = this
+     
       next(vm=>{
       vm.item.name =to.params.id;
        vm.addTab(to.params.id);
