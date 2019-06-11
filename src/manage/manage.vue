@@ -15,6 +15,7 @@
      </el-aside>
 <el-container>
   <el-main>
+    
    <router-view></router-view>
   </el-main>
 </el-container>
@@ -28,7 +29,7 @@ export default {
   data() {
     return{
       totalList:[],
-      isId:"权限管理"
+      isId:"部门管理"
     }
 
   },

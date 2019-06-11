@@ -99,7 +99,7 @@ export default {
             {
               entity: {
                 id: 19,
-                name: "manage",
+                name: "/manage/elc",
                 icon: "el-icon-picture",
                 alias: "后台管理",
                 value: ""
