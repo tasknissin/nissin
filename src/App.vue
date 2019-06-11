@@ -111,7 +111,6 @@ export default {
           //一级
           entity: {
             id: 40,
-
             name: "",
             icon: "el-icon-s-custom",
             alias: "白瑞红"
