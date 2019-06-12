@@ -2,15 +2,15 @@
   <div class="navMenu">
     <label v-for="(navMenu,index) in navMenus" :key="index">
       <router-link :to="{ name:navMenu.entity.value, params: {id:navMenu.entity.name} }">
-        <el-menu-item v-if="navMenu.childs==null&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
+        <el-menu-item  v-if="navMenu.childs==null&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
                       :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name" :route="navMenu.entity.value">
           <i :class="navMenu.entity.icon"></i>
           <span slot="title">{{navMenu.entity.alias}}</span>
         </el-menu-item>
       </router-link>
-      <el-submenu v-if="navMenu.childs&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
+      <el-submenu  v-if="navMenu.childs&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
                   :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name">
-        <template slot="title">
+        <template slot="title" style="color: rgb(229, 236, 241);background-color: rgb(57, 66, 99);">
           <i :class="navMenu.entity.icon"></i>
           <span> {{navMenu.entity.alias}}</span>
         </template>
@@ -25,7 +25,9 @@
     name: 'NavMenu',
     props: ['navMenus'],
     data() {
-      return {}
+      return {
+     
+      }
     },
     
     methods: {}
@@ -35,6 +37,10 @@
 <style scoped>
     a{
       text-decoration:none
+    }
+    .el-menu-item {
+         color: rgb(229, 236, 241);
+    background-color: rgb(57, 66, 99);
     }
 </style>
 

@@ -99,7 +99,7 @@ export default {
             {
               entity: {
                 id: 19,
-                name: "/manage/elc",
+                name: "manage/department",
                 icon: "el-icon-picture",
                 alias: "后台管理",
                 value: ""
@@ -111,6 +111,7 @@ export default {
           //一级
           entity: {
             id: 40,
+
             name: "",
             icon: "el-icon-s-custom",
             alias: "白瑞红"

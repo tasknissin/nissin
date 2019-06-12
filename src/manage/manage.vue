@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="" style="height: 92%;">
     <el-container style="height: 100%; border: 1px solid #eee">
-  <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+  <el-aside class="el-left">
     <!--左侧菜单组件-->
        <el-menu
          :default-active="isId"
@@ -13,8 +13,8 @@
          <NavMenu :navMenus="totalList"></NavMenu>
        </el-menu>
      </el-aside>
-<el-container>
-  <el-main>
+<el-container class="el-right">
+  <el-main >
     
    <router-view></router-view>
   </el-main>
@@ -63,5 +63,21 @@ export default {
 .el-main {
     padding: 2px;
 }
+.el-left{
+width:15% !important;
+background-color: white
+}
+.el-right{
+width:80%;
+background-color: white
+}
+.el-container {
+  width:100%;
+}
+.el-menu-item,.el-submenu__title {
+            color: rgb(229, 236, 241) !important;
+    background-color: rgb(57, 66, 99)!important;
+    margin-bottom: 1px;
+    }
 
 </style>

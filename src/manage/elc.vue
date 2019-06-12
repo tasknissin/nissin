@@ -99,11 +99,11 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
       console.log("我从哪里来",to.params.id,from)
-      var self = this
+      let self = this
      
       next(vm=>{
-      vm.item.name =to.params.id;
-       vm.addTab(to.params.id);
+      vm.item.name =to.meta.title;
+       vm.addTab(to.meta.title);
       })
 
    
