@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="managePage">
-    <el-container style="height: 100%; border: 1px solid #eee">
+    <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <!--左侧菜单组件-->
         <el-menu
@@ -77,8 +77,6 @@ background-color: white
   width:100%;
 }
 .el-menu-item,.el-submenu__title {
-            color: rgb(229, 236, 241) !important;
-    background-color: rgb(57, 66, 99)!important;
     margin-bottom: 1px;
     }
 

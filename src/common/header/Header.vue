@@ -101,6 +101,7 @@ export default {
 }
 .el-menu.el-menu--horizontal{
     border-bottom:none;
+    height: 48px;
 }
 .el-menu--horizontal>div>.el-menu-item{
   border:none;
