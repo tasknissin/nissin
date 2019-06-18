@@ -44,7 +44,7 @@ export default {
           //一级
           entity: {
             id: 0,
-            name: "/",
+            name: "/home",
             icon: "el-icon-s-home",
             alias: "首页"
           }
@@ -61,7 +61,7 @@ export default {
               {
                 entity:{
                   id:1111,
-                  name:'self',
+                  name:'',
                   icon:"el-icon-s-claim",
                   alias:'任务反馈'
                 }
@@ -69,7 +69,7 @@ export default {
                {
                 entity:{
                   id:1112,
-                  name:'mgtCenter',
+                  name:'/mgtCenter',
                   icon:"el-icon-edit",
                   alias:'进度查询'
                 }
@@ -90,7 +90,7 @@ export default {
             {
               entity: {
                 id: 7,
-                name: "mgtFirst",
+                name: "/mgtFirst",
                 icon: "el-icon-phone-outline\r\n",
                 alias: "任务中心",
                 value: ""
@@ -99,7 +99,7 @@ export default {
             {
               entity: {
                 id: 8,
-                name: "integralManage",
+                name: "/integralManage",
                 icon: "el-icon-picture",
                 alias: "任务管理",
                 value: "/user/integral"
@@ -108,7 +108,7 @@ export default {
             {
               entity: {
                 id: 19,
-                name: "manage/department",
+                name: "/manage/department/test1",
                 icon: "el-icon-picture",
                 alias: "后台管理",
                 value: ""
@@ -119,8 +119,8 @@ export default {
         {
           //一级
           entity: {
-            id: 40,
-            name: "self",
+            id: 4011,
+            name: "/self",
             icon: "el-icon-s-custom",
             alias: "个人中心"
           },

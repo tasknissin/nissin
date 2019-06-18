@@ -22,7 +22,7 @@ let config = {
                         "alias": "部门管理",
                         "state": "ENABLE",
                         "sort": 0,
-                        "value": "department",
+                        "value": "test1",
                         "type": "LINK",
                         "createUserId": 1
                     },

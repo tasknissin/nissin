@@ -82,7 +82,7 @@ const router = new Router({
                         path:'test2',
                         component:()=>import ('../manage/department/depActions/table2')
                     }],
-                    redirect:'department/test1'
+                    // redirect:'department/test1'
                 },
                 {
                     name: 'menuManagement',
@@ -119,7 +119,7 @@ const router = new Router({
         },
         {
             path: '**',
-            redirect: '/home'
+            // redirect: '/home'
         },
 
     ]
