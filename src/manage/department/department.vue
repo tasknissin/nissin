@@ -9,37 +9,6 @@
         <router-view></router-view>
     </el-table>
     </div>
-<<<<<<< HEAD
-    <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
-  <el-tab-pane
-    v-for="(item, index) in editableTabs2"
-    :key="item.name"
-    :label="item.title"
-    :name="item.name"
-    class="tab-pane"
-  >
-    {{item.title}}
-  </el-tab-pane>
-  </el-tabs>
-
-    <el-table :data="tableData">
-    <el-table-column prop="deptCode" label="部门编号" width="140">
-    </el-table-column>
-    <el-table-column prop="deptName" label="部门名称" width="120">
-    </el-table-column>
-    <el-table-column prop="P_deptCode" label="父级部门编号">
-    </el-table-column>
-    <el-table-column prop="P_deptName" label="父级部门名称">
-    </el-table-column>
-    <el-table-column prop="deptType" label="部门类型">
-    </el-table-column>
-    <el-table-column prop="manager" label="部门负责人">
-    </el-table-column>
-    <el-table-column prop="Enabled" label="是否有效">
-    </el-table-column>
-  </el-table>
-</div>
-=======
     <!-- <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
       <el-tab-pane
         v-for="(item, index) in editableTabs2"
@@ -53,31 +22,17 @@
 
    
   </div>
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
   
 </template>
 <script>
 export default {
   data() {
     return {
-<<<<<<< HEAD
-      btn:true,
-      item:{
-        deptCode: '2018-11-11',
-        deptName: 'OnePiece',
-        P_deptCode: '郑州市高新区推进城',
-        P_deptName: '2018-11-11',
-        deptType: 'OnePiece',
-        manager: '郑州市高新区推进城',
-        Enabled: '郑州市高新区推进城',
-        
-=======
       btn: true,
       item: {
         date: "2018-11-11",
         name: "OnePiece",
         address: "郑州市高新区推进城"
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
       },
       editableTabsValue2: "2",
       editableTabs2: [],
@@ -135,20 +90,9 @@ export default {
   created() {
     this.tableData = Array(20).fill(this.item);
   },
-<<<<<<< HEAD
-  beforeRouteEnter (to, from, next) {
-      console.log("我从哪里来",to.params.id,from)
-      var self = this
-     
-      next(vm=>{
-      vm.item.name =to.meta.title;
-       vm.addTab(to.meta.title);
-      })
-=======
   beforeRouteEnter(to, from, next) {
     console.log("我从哪里来", to.params.id, from);
     var self = this;
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
 
     next(vm => {
       vm.item.name = to.params.id;
@@ -164,16 +108,6 @@ export default {
 };
 </script>
 
-<<<<<<< HEAD
-<style lang="css">
-.el-tabs__item.is-active {
-    color: #ffffff;
-}
-.el-tabs__nav {
-      background-color: #394263;
-}
-
-=======
 <style lang="scss">
 .manageTree{
   width:200px;
@@ -193,6 +127,5 @@ export default {
     border-bottom: 1px solid #EBEEF5;
   }
 }
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
 </style>
 

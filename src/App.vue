@@ -120,9 +120,6 @@ export default {
           //一级
           entity: {
             id: 40,
-<<<<<<< HEAD
-
-=======
             name: "self",
             icon: "el-icon-s-custom",
             alias: "个人中心"
@@ -132,7 +129,6 @@ export default {
           //一级
           entity: {
             id: 41,
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
             name: "",
             icon: "el-icon-s-custom",
             alias: "白瑞红"

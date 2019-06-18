@@ -1,27 +1,6 @@
 <template lang="html">
   <div class="managePage">
     <el-container style="height: 100%; border: 1px solid #eee">
-<<<<<<< HEAD
-  <el-aside class="el-left">
-    <!--左侧菜单组件-->
-       <el-menu
-         :default-active="isId"
-         @select="handleSelect"
-         class="el-menu-vertical-demo"
-         background-color="#F0F6F6"
-         text-color="#3C3F41"
-         active-text-color="#f60">
-         <NavMenu :navMenus="totalList"></NavMenu>
-       </el-menu>
-     </el-aside>
-<el-container class="el-right">
-  <el-main >
-    
-   <router-view></router-view>
-  </el-main>
-</el-container>
-</el-container>
-=======
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <!--左侧菜单组件-->
         <el-menu
@@ -40,7 +19,6 @@
         </el-main>
       </el-container>
     </el-container>
->>>>>>> 1f63fd6220952696f32805dc86169c56f2108d69
   </div>
 </template>
 <script>
