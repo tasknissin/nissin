@@ -44,26 +44,44 @@ export default {
           //一级
           entity: {
             id: 0,
-            name: "aa",
-            icon: "el-icon-message",
+            name: "/",
+            icon: "el-icon-s-home",
             alias: "首页"
           }
         },
         {
           //一级
           entity: {
-            id: 11,
-            name: "self",
+            id: 111,
+            name: "111",
             icon: "el-icon-message",
-            alias: "个人中心"
-          }
+            alias: "个人中心",
+          },
+          childs:[
+              {
+                entity:{
+                  id:1111,
+                  name:'self',
+                  icon:"el-icon-s-claim",
+                  alias:'任务反馈'
+                }
+              },
+               {
+                entity:{
+                  id:1112,
+                  name:'mgtCenter',
+                  icon:"el-icon-edit",
+                  alias:'进度查询'
+                }
+              }
+            ]
         },
         
         {
           //一级
           entity: {
             id: 6,
-            name: "mgtCenter",
+            name: "666",
             icon: "el-icon-news",
             alias: "管理中心"
           },
@@ -83,17 +101,8 @@ export default {
                 id: 8,
                 name: "integralManage",
                 icon: "el-icon-picture",
-                alias: "管理中心",
+                alias: "任务管理",
                 value: "/user/integral"
-              }
-            },
-            {
-              entity: {
-                id: 9,
-                name: "mgtCenter",
-                icon: "el-icon-picture",
-                alias: "管理",
-                value: ""
               }
             },
             {
@@ -111,6 +120,15 @@ export default {
           //一级
           entity: {
             id: 40,
+            name: "self",
+            icon: "el-icon-s-custom",
+            alias: "个人中心"
+          },
+        },
+        {
+          //一级
+          entity: {
+            id: 41,
             name: "",
             icon: "el-icon-s-custom",
             alias: "白瑞红"

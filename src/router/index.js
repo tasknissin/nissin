@@ -22,17 +22,17 @@ Vue.use(Router)
 const router = new Router({
     // mode:"history",
     routes: [{
-            name: "home",
+            name: "home",   //首页
             path: '/home',
             component: Homepage
         },
         {
-            name: "self",
+            name: "self",    // 个人中心
             path: '/self',
             component: Selfpage
         },
         {
-            name: "taskCenter",
+            name: "taskCenter",   //任务管理
             path: '/taskCenter',
             component: taskCenterPage
         },
@@ -73,6 +73,16 @@ const router = new Router({
                     path: 'department',
                     meta: { title: '部门管理' },
                     component: department,
+                    children:[{
+                        name:'test1',
+                        path:'test1',
+                        component:()=>import ('../manage/department/depActions/table1')
+                    },{
+                        name:'test2',
+                        path:'test2',
+                        component:()=>import ('../manage/department/depActions/table2')
+                    }],
+                    redirect:'department/test1'
                 },
                 {
                     name: 'menuManagement',

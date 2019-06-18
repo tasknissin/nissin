@@ -108,8 +108,8 @@
         },
     }
 </script>
-<style lang="css">
+<style lang="scss">
 .el-main {
-    padding: 2px;
+    /* padding: 2px; */
 }
 </style>

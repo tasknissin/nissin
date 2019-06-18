@@ -1,25 +1,24 @@
 <template lang="html">
-  <div class="" style="height: 92%;">
+  <div class="managePage">
     <el-container style="height: 100%; border: 1px solid #eee">
-  <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-    <!--左侧菜单组件-->
-       <el-menu
-         :default-active="isId"
-         @select="handleSelect"
-         class="el-menu-vertical-demo"
-         background-color="#F0F6F6"
-         text-color="#3C3F41"
-         active-text-color="#f60">
-         <NavMenu :navMenus="totalList"></NavMenu>
-       </el-menu>
-     </el-aside>
-<el-container>
-  <el-main>
-    
-   <router-view></router-view>
-  </el-main>
-</el-container>
-</el-container>
+      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <!--左侧菜单组件-->
+        <el-menu
+          :default-active="isId"
+          @select="handleSelect"
+          class="el-menu-vertical-demo"
+          background-color="#F0F6F6"
+          text-color="#3C3F41"
+          active-text-color="#f60">
+          <NavMenu :navMenus="totalList"></NavMenu>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 <script>
@@ -59,9 +58,13 @@ export default {
 }
 </script>
 
-<style lang="css">
-.el-main {
-    padding: 2px;
+<style lang="scss">
+.managePage{
+  height:calc(100% - 48px);
 }
+.el-main {
+    padding: 0px;
+}
+
 
 </style>
