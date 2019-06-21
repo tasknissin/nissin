@@ -4,8 +4,8 @@ const SAT_HOST = 'http://localhost:8080';
 const UAT_HOST = 'http://10.213.12.98:8080';
 //生产
 // const PRO_HOST = 'http://hgpm.hoppre.haier.net';
-const PRO_HOST = 'http://hgpm.hoppre.haier.net'
-
+// const PRO_HOST = 'http://hgpm.hoppre.haier.net'
+const PRO_HOST = 'http://47.92.121.252:8080/'
 
 
 /*

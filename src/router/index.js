@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import Selfpage from '../pages/selfPage/Root'
 import Homepage from '../pages/homePage/Root'
-import taskCenterPage from '../pages/taskCenterPage/Root'
 import mgtCenterPage from '../pages/mgtPage/Root'
 import mgtFirstPage from '../components/mgtPage/mgtFirst.vue'
 import loginPage from '../pages/loginPage/login.vue'
@@ -34,7 +33,7 @@ const router = new Router({
         {
             name: "taskCenter",   //任务管理
             path: '/taskCenter',
-            component: taskCenterPage
+            component: ()=>import('../pages/taskCenterPage/Taskmanage')
         },
         {
             name: "mgtCenter",

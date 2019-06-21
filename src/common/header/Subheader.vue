@@ -27,13 +27,12 @@ export default {
     methods:{
         setHeadAction(item,index){
             if(index == 1){ 
-                console.log(item.name)
                 this.$router.push({ name:'self', params:{id:'2'}})
             }
         }
     },
     created(){
-        console.log(this.title)
+        // console.log(this.title)
     }
 }
 </script>

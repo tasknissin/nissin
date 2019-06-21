@@ -1,4 +1,4 @@
 //系统配置
 <template>
-    <div>sczdcdz</div>
+    <div>系统配置</div>
 </template>

@@ -1,7 +1,7 @@
 
 <template>
     <div class="contentPage">
-        <ul class="selectbox">
+        <!-- <ul class="selectbox">
             <li v-for="(item1,index) in selectData" :key="index">
                 <label>完成状态</label>
                 <el-select v-model="dataModel[index].value1">
@@ -14,8 +14,7 @@
                 </el-select>
             </li>
             
-        </ul>
-        <button v-on:click="submitClick">提交</button>
+        </ul> -->
         <slot/>
         
     </div>
@@ -35,14 +34,12 @@ export default {
         }
     },
     created(){
-        console.log(this.selectObj)
-        console.log(this.selectData)
-        // 这里是动态生成v-model,这个可以放在网络请求成功里面;
-        for (var i = 0; i < this.selectData.length; i++) {
-            var item = {value1: '',};
-            this.dataModel.push(item);
-        }
-        console.log(this.dataModel)
+        // // 这里是动态生成v-model,这个可以放在网络请求成功里面;
+        // for (var i = 0; i < this.selectData.length; i++) {
+        //     var item = {value1: '',};
+        //     this.dataModel.push(item);
+        // }
+        // console.log(this.dataModel)
     },
     methods: {
         // 显示v-model里面的数据
@@ -78,6 +75,7 @@ export default {
     background: #fff;
     padding:10px 15px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 .contentPage .selectbox{
     width:100%;
