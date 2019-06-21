@@ -275,11 +275,14 @@
         },
         methods: {
             onSubmit(form) {
+
                const formData=this.formD;
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // console.log(formData);
-                        getTaskupdata(formData);
+                        getTaskupdata(formData).then((data)=>{
+                            console.log(data)
+                        });
                         // alert('submit!');
                     } else {
                         console.log('error submit!!');
