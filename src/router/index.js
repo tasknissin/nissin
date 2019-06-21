@@ -16,22 +16,23 @@ import roleManagement from '../manage/Rolemanagement/roleManagement.vue'
 import station from '../manage/station/station.vue'
 import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue'
 import userManagement from '../manage/userManagement/userandpassword.vue'
+import taskPage from '../pages/taskFeedback/taskfeedback.vue'
 Vue.use(Router)
 
 const router = new Router({
     // mode:"history",
     routes: [{
-            name: "home",   //首页
+            name: "home", //首页
             path: '/home',
             component: Homepage
         },
         {
-            name: "self",    // 个人中心
+            name: "self", // 个人中心
             path: '/self',
             component: Selfpage
         },
         {
-            name: "taskCenter",   //任务管理
+            name: "taskCenter", //任务管理
             path: '/taskCenter',
             component: ()=>import('../pages/taskCenterPage/Taskmanage')
         },
@@ -49,6 +50,12 @@ const router = new Router({
             name: "login",
             path: '/login',
             component: loginPage,
+        },
+        {
+            name: 'task',
+            path: '/task',
+            component: taskPage
+
         },
 
         {
@@ -72,14 +79,16 @@ const router = new Router({
                     path: 'department',
                     meta: { title: '部门管理' },
                     component: department,
-                    children:[{
-                        name:'test1',
-                        path:'test1',
-                        component:()=>import ('../manage/department/depActions/table1')
-                    },{
-                        name:'test2',
-                        path:'test2',
-                        component:()=>import ('../manage/department/depActions/table2')
+                    children: [{
+                        name: 'test1',
+                        path: 'test1',
+                        component: () =>
+                            import ('../manage/department/depActions/table1')
+                    }, {
+                        name: 'test2',
+                        path: 'test2',
+                        component: () =>
+                            import ('../manage/department/depActions/table2')
                     }],
                     // redirect:'department/test1'
                 },
