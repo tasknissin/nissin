@@ -46,7 +46,7 @@ export default {
             id: 0,
             name: "/home",
             icon: "el-icon-s-home",
-            alias: "首页"
+            alias: "任务管理"
           }
         },
         {
@@ -76,7 +76,6 @@ export default {
               }
             ]
         },
-        
         {
           //一级
           entity: {
