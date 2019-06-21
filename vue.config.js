@@ -16,7 +16,7 @@ module.exports = {
                 target: "http://42.56.90.221:8081",
                 changeOrigin: true
             },
-            "/feedbackInfoController": {
+            "/task": {
                 target: "http://47.92.121.252:8080",
                 changeOrigin: true
             },
