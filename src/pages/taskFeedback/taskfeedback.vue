@@ -21,7 +21,7 @@
                 <el-table-column prop="totalStatus" label="整体任务完成状态" width="180"></el-table-column>
                 <el-table-column prop="selfEvaluate" label="自评" width="180"></el-table-column>
                 <el-table-column prop="finalEvaluate" label="公议" width="180"></el-table-column>
-                <el-table-column label="操作" v-if= "tableactive"></el-table-column>
+                <el-table-column label="操作" ></el-table-column>
 
             </el-table>
         </app-content>
@@ -276,11 +276,14 @@
         },
         methods: {
             onSubmit(form) {
+
                const formData=this.formD;
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // console.log(formData);
-                        getTaskupdata(formData);
+                        getTaskupdata(formData).then((data)=>{
+                            console.log(data)
+                        });
                         // alert('submit!');
                     } else {
                         console.log('error submit!!');
