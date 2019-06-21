@@ -1,4 +1,4 @@
 //岗位
 <template>
-    <div>aaaaaa</div>
+    <div>。。</div>
 </template>

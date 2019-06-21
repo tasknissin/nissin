@@ -6,7 +6,9 @@
     </div>
     <div class="manage_bmTable">
         <header>菜单定义</header>
-        <router-view></router-view>
+        <div style="border-left:1px solid #EBEEF5;">
+          <router-view></router-view>
+        </div>
     </el-table>
     </div>
     <!-- <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
@@ -91,7 +93,6 @@ export default {
     this.tableData = Array(20).fill(this.item);
   },
   beforeRouteEnter(to, from, next) {
-    console.log("我从哪里来", to.params.id, from);
     var self = this;
 
     next(vm => {
@@ -113,7 +114,6 @@ export default {
   width:200px;
   height: 100%;
   position: fixed;
-  border-right:1px solid #EBEEF5;
   box-sizing: border-box;
 }
 .manage_bmTable{

@@ -53,7 +53,7 @@ export default {
           //一级
           entity: {
             id: 111,
-            name: "111",
+            name: "",
             icon: "el-icon-message",
             alias: "个人中心",
           },
@@ -99,7 +99,7 @@ export default {
             {
               entity: {
                 id: 8,
-                name: "/integralManage",
+                name: "/taskCenter",
                 icon: "el-icon-picture",
                 alias: "任务管理",
                 value: "/user/integral"
