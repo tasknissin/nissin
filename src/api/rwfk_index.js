@@ -16,7 +16,7 @@ finalEvaluate	公议
 dataStatus	数据状态
 
  */
-const taskFk_API = "/feedbackInfoController/saveData";
+const taskFk_API = "/task/feedbackInfoController/saveData";
 export default {
     taskFk_API,
 }

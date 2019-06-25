@@ -30,10 +30,21 @@
             </li>
         </ul>
       <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%" id="taskManTable">
-        <el-table-column prop="date" label="日期" width="180"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column label="操作" v-if="handlesActive">
+        <el-table-column prop="sortNo" label="任务排序"></el-table-column>
+        <el-table-column prop="parentTaskCode" label="父级任务编号"></el-table-column>
+        <el-table-column prop="taskType" label="任务类型"></el-table-column>
+        <el-table-column prop="urgent" label="紧急程度"></el-table-column>
+        <el-table-column prop="important" label="重要程度"></el-table-column>
+        <el-table-column prop="context" label="任务内容"></el-table-column>
+        <el-table-column prop="standard" label="目标与要求"></el-table-column>
+        <el-table-column prop="requestFinishDate" label="要求完成时间"></el-table-column>
+        <el-table-column prop="owner" label="责任人"></el-table-column>
+        <el-table-column prop="coordicator" label="协同节点"></el-table-column>
+        <el-table-column prop="finishStatus" label="完成状态"></el-table-column>
+        <el-table-column prop="progress" label="目前进度"></el-table-column>
+        <el-table-column prop="taskStatus" label="任务状态"></el-table-column>
+
+        <el-table-column label="操作" v-if="handlesActive"  width="200">
           <template slot-scope="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
@@ -42,16 +53,62 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @close="cancelHandel">
-        <el-form :model="form">
-          <el-form-item label="日期" :label-width="formLabelWidth">
-            <el-date-picker v-model="form.date" type="date" placeholder="选择日期"></el-date-picker>
+      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @close="cancelHandel" >
+        <el-form  :inline="true"  :model="form" :rules="rules"  size="small">
+         
+          <el-form-item label="任务排序"  prop="sortNo">
+            <el-input v-model="form.sortNo" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="地址" :label-width="formLabelWidth">
-            <el-input v-model="form.address" auto-complete="off"></el-input>
+          <el-form-item label="父级任务编号"  prop="parentTaskCode">
+            <el-input v-model="form.parentTaskCode" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="姓名" :label-width="formLabelWidth">
-            <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-form-item label="任务类型"  prop="taskType">
+            <el-input v-model="form.taskType" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="紧急程度"  prop="urgent">
+             <el-select v-model="form.urgent" placeholder="请选择紧急程度">
+                <el-option label="紧急" value="11"></el-option>
+                <el-option label="不紧急" value="22"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="重要程度"  prop="important">
+            <el-select v-model="form.important" placeholder="请选择重要程度">
+                <el-option label="重要" value="1"></el-option>
+                <el-option label="不重要" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="任务内容"  prop="context">
+            <el-input v-model="form.context" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="目标与要求"  prop="standard">
+            <el-input v-model="form.standard" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="要求完成时间"  prop="requestFinishDate">
+            <el-date-picker v-model="form.requestFinishDate" type="date" placeholder="选择日期"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="责任人"  prop="owner">
+            <el-input v-model="form.owner" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="协同节点"  prop="coordicator">
+            <el-input v-model="form.coordicator" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="完成状态"  prop="finishStatus">
+            <el-select v-model="form.finishStatus" placeholder="请选择完成状态">
+                <el-option label="完成" value="1"></el-option>
+                <el-option label="未完成" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="目前进度"  prop="progress">
+            <el-select v-model="form.progress" placeholder="请选择目前进度">
+                <el-option label="完成" value="1"></el-option>
+                <el-option label="未完成" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="任务状态"  prop="taskStatus">
+            <el-select v-model="form.taskStatus" placeholder="请选择任务状态">
+                <el-option label="完成" value="1"></el-option>
+                <el-option label="未完成" value="2"></el-option>
+            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -77,7 +134,7 @@ export default {
     return {
       heightItem: window.innerHeight - 185, // 计算表格的高度
       form: {},      // 新增弹出框
-      formLabelWidth: '80px',   //
+      formLabelWidth: '100px',   //
       dialogFormVisible: false,   //是否显示弹出框
       formIndex:-1,
       oldform : {},
@@ -184,182 +241,555 @@ export default {
       tableData: [
         {
           id:'1',
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'2',
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'3',
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'4',
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'5',
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'6',
-
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'7',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'8',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'9',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'10',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'11',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'12',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'13',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'14',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'15',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'16',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'197',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'187',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'167',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'157',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'117',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
           id:'17',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
-          id:'127',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
-          id:'137',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
-          id:'172',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
         },
         {
-          id:'171',
-
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
+        },
+        {
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
+        },
+        {
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
+        },
+        {
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
+        },
+        {
+          id:'17',
+          sortNo:'1',
+          parentTaskCode:'23',
+          taskType:'true',
+          urgent:'紧张',
+          important:'重要',
+          context:'文本',
+          standard:'状态',
+          requestFinishDate:'2019-03-03',
+          owner:'王小虎',
+          coordicator:'上海市普陀区金沙江路',
+          finishStatus:'完成',
+          progress:'未完成',
+          taskStatus:'完成'
+        },
+      ],
+      rules: {
+        sortNo: [{
+            required: true,
+            message: '任务排序',
+            trigger: 'blur'
+        }],
+        parentTaskCode: [{
+            required: true,
+            message: '父级任务编号',
+            trigger: 'blur'
+        }],
+        taskType: [{
+            type: 'date',
+            required: true,
+            message: '任务类型',
+            trigger: 'blur'
+        }],
+        urgent: [{
+            // type: 'date',
+            required: true,
+            message: '紧急程度',
+            trigger: 'change'
+        }],
+        important: [{
+            //type: 'array',
+            required: true,
+            message: '重要程度',
+            trigger: 'change'
+        }],
+        context: [{
+            required: true,
+            message: '任务内容',
+            trigger: 'blur'
+        }],
+        standard: [{
+          required: true,
+          message: '目标与要求',
+          trigger: 'blur'
+        }],
+        requestFinishDate: [{
+          required: true,
+          message: '要求完成时间',
+          trigger: 'change'
+        }],
+        owner: [{
+            required: true,
+            message: '责任人',
+            trigger: 'blur'
+        }],
+        coordicator: [{
+            required: true,
+            message: '协同节点',
+            trigger: 'blur'
+        }],
+        finishStatus: [{
+            required: true,
+            message: '完成状态',
+            trigger: 'change'
+        }],
+        progress: [{
+            required: true,
+            message: '目前进度',
+            trigger: 'change'
+        }],
+        taskStatus: [{
+            required: true,
+            message: '任务状态',
+            trigger: 'change'
+        }]
+      },
     };
   },
   watch: {
@@ -388,18 +818,30 @@ export default {
     // 新增操作
     addTaskHandle() {
       this.form = {
-        date: "",
-        name: "",
-        address: ""
+        sortNo:'',
+        parentTaskCode:'',
+        taskType:'',
+        urgent:'',
+        important:'',
+        context:'',
+        standard:'',
+        requestFinishDate:'',
+        owner:'',
+        coordicator:'',
+        finishStatus:'',
+        progress:'',
+        taskStatus:''
       };
       this.dialogFormVisible = true;
+      console.log(this.form)
     },
     // 取消新增操作
     cancelHandel(){
       this.dialogFormVisible = false;
-      this.form.date = this.oldform.date
-      this.form.name = this.oldform.name;
-      this.form.address = this.oldform.address;
+      console.log(this.oldform)
+      for(var m in this.form){
+        this.form[m] = this.oldform[m]
+      }
     },
     // 确定新增数据
     updateHandle(){
@@ -561,5 +1003,16 @@ export default {
     height: 300px;
     background: greenyellow;    
 } */
+/* .el-dialog{
+  height: 72%;
+  font-size: 14px !important;
+  overflow-y: auto;
+} */
+/* .el-form--inline .el-form-item__label{
+  min-width: 110px;
+} */
+.el-form--inline .el-form-item{
+  min-width: 45%;
+}
 </style>
 
