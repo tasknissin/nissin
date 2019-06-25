@@ -2,7 +2,7 @@
     <div class="mTreepage">
         <header>{{treeName}}</header>
         <el-tree 
-            :data="data" 
+            :data="treeData" 
             :props="defaultProps" 
             node-key="id"
             :default-expanded-keys="[1,3]"
@@ -17,6 +17,7 @@ export default {
     name:'ManageTree',
     props:{
         treeName:String,
+        treeData:Array
     },
     data(){
         return{
