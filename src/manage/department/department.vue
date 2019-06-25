@@ -2,7 +2,7 @@
 <template lang="html">
   <div style="width:100%;height:100%;">
     <div class="manageTree">
-      <ManageTree :treeName="manageTreeName"></ManageTree>
+      <ManageTree :treeName="manageTreeName" :treeData="treeData"></ManageTree>
     </div>
     <div class="manage_bmTable">
         <header>菜单定义</header>
@@ -41,7 +41,50 @@ export default {
       tabIndex: 0,
       tableData: [],
       totalList: [],
-      manageTreeName: '部门组织树'
+      manageTreeName: '部门组织树',
+      treeData: [{
+                id:'1',
+                label: '一级 1',
+                children: [{
+                    id:'2',
+                    label: '表格1',
+                    value:""
+                },{
+                    id:'3',
+                    label: '表格2',
+                    value:""
+
+                }]
+                }, {
+                id:'4',
+                label: '一级 2',
+                children: [{
+                    id:'5',
+                    label: '二级 2-1',
+                    children: [{
+                    id:'6',
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+                }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                    label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                    label: '三级 3-2-1'
+                    }]
+                }]
+            }],
     };
   },
   methods: {
