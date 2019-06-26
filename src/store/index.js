@@ -4,26 +4,46 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  // state: {
-  //   city:localStorage.getItem('city')?localStorage.getItem('city'):'深圳',
-  //   cityID:localStorage.getItem('cityID')?localStorage.getItem('cityID'):30
 
-  // },
-  // mutations: {
-  //   setCity(state,value){
-  //     state.city = value;
-  //   },
-  //   setCityID(state,value){
-  //     state.cityID = value;
-  //   }
-  // },
-  // actions: {
-  //   selectCity(context,params){
-  //     context.commit('setCity',params.city)
-  //     context.commit('setCityID', params.id);
-  //     // 持久化保存数据
-  //     localStorage.setItem('city', params.city);
-  //     localStorage.setItem('cityID', params.id);
-  //   }
-  // }
+    state: {
+        // city:localStorage.getItem('city')?localStorage.getItem('city'):'深圳',
+        // cityID:localStorage.getItem('cityID')?localStorage.getItem('cityID'):30
+
+
+        id: '',
+
+    },
+
+
+    getters: {
+        get_id: state => state.id,
+    },
+    mutations: {
+        // setCity(state,value){
+        //   state.city = value;
+        // },
+        // setCityID(state,value){
+        //   state.cityID = value;
+        // }
+        change_id(state, str) {
+            state.id = str;
+        }
+
+
+
+    },
+    actions: {
+        // selectCity(context,params){
+        //   context.commit('setCity',params.city)
+        //   context.commit('setCityID', params.id);
+        //   // 持久化保存数据
+        //   localStorage.setItem('city', params.city);
+        //   localStorage.setItem('cityID', params.id);
+        // }
+        getid(context, id) {
+            context.commit('change_id', id)
+        }
+
+    },
+
 })
