@@ -37,7 +37,7 @@ let config = {
                         "alias": "岗位管理",
                         "state": "ENABLE",
                         "sort": 1,
-                        "value": "menuManagement",
+                        "value": "postManage",
                         "type": "LINK",
                         "createUserId": 1
                     },
@@ -83,7 +83,7 @@ let config = {
                         "alias": "用户管理",
                         "state": "ENABLE",
                         "sort": 4,
-                        "value": "systemConfiguration",
+                        "value": "userManage",
                         "type": "LINK",
                         "createUserId": 1
                     },

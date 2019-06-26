@@ -97,6 +97,11 @@ const router = new Router({
                     path: 'menuManagement',
                     meta: { title: '岗位管理' },
                     component: menuManagement,
+                    children:[{
+                        name:'postManage',
+                        path:'postManage',
+                        component:() => import ('../manage/menuManagement/actions/postManage.vue')
+                    }]
                 },
                 {
                     name: 'roleManagement',
@@ -115,6 +120,11 @@ const router = new Router({
                     path: 'systemConfiguration',
                     meta: { title: '用户管理' },
                     component: systemConfiguration,
+                    children:[{
+                        name:'userManage',
+                        path:'userManage',
+                        component:() => import ('../manage/systemConfiguration/actions/userManage.vue')
+                    }]
                 },
                 {
                     name: 'userManagement',

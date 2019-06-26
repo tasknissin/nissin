@@ -5,6 +5,7 @@
             :data="treeData" 
             :props="defaultProps" 
             node-key="id"
+            :highlight-current="true"
             :default-expanded-keys="[1,3]"
             @node-click="handleNodeClick"
         >
@@ -17,56 +18,16 @@ export default {
     name:'ManageTree',
     props:{
         treeName:String,
-        treeData:Array
+        treeData:Array,
+        firstId:String,
     },
     data(){
         return{
-            data: [{
-                id:'1',
-                label: '一级 1',
-                children: [{
-                    id:'2',
-                    label: '表格1',
-                    value:"/manage/department/test1"
-                },{
-                    id:'3',
-                    label: '表格2',
-                    value:"/manage/department/test2"
-
-                }]
-                }, {
-                id:'4',
-                label: '一级 2',
-                children: [{
-                    id:'5',
-                    label: '二级 2-1',
-                    children: [{
-                    id:'6',
-                    label: '三级 2-1-1'
-                    }]
-                }, {
-                    label: '二级 2-2',
-                    children: [{
-                    label: '三级 2-2-1'
-                    }]
-                }]
-                }, {
-                label: '一级 3',
-                children: [{
-                    label: '二级 3-1',
-                    children: [{
-                    label: '三级 3-1-1'
-                    }]
-                }, {
-                    label: '二级 3-2',
-                    children: [{
-                    label: '三级 3-2-1'
-                    }]
-                }]
-            }],
             defaultProps: {
-                children: 'children',
-                label: 'label'
+                // children: 'children',
+                // label: 'label'
+                children: 'childrenList',
+                label: 'departmantName'
             },
             hashPath:'',
             
@@ -74,15 +35,11 @@ export default {
     },
     methods: {
         handleNodeClick(data) {
-            if(data.value){
-
-                console.log(data);
-                console.log(this.hashPath)
-                console.log(window.location)
-                this.$router.push({path:data.value})
-            }
+            this.$center.$emit('dep-event', data.id);   
+            this.$center.$emit('user-event', data.id);   
         }
     },
+    
     
 }
 </script>
