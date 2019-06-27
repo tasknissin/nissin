@@ -201,11 +201,11 @@ export default {
     watch: {
         heightItem(val) {
             if (!this.timer) {
-                this.heightItem = val
-                this.timer = true
-                const that = this
-                setTimeout(function() {
-                that.timer = false
+                    this.heightItem = val
+                    this.timer = true
+                    const that = this
+                    setTimeout(function() {
+                    that.timer = false
                 }, 400)
             }
         }

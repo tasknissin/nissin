@@ -13,10 +13,11 @@ import elc from '../manage/elc.vue'
 import department from '../manage/department/department.vue'
 import menuManagement from '../manage/menuManagement/menuManagement.vue'
 import roleManagement from '../manage/Rolemanagement/roleManagement.vue'
-import station from '../manage/station/station.vue'
-import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue'
-import userManagement from '../manage/userManagement/userandpassword.vue'
-import taskPage from '../pages/taskFeedback/taskfeedback.vue'
+import station from '../manage/station/station.vue';
+import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue';
+import systemDictionary from '../manage/systemdictionary/systemdictionary.vue';
+import userManagement from '../manage/userManagement/userandpassword.vue';
+import taskPage from '../pages/taskFeedback/taskfeedback.vue';
 Vue.use(Router)
 
 const router = new Router({
@@ -131,6 +132,17 @@ const router = new Router({
                     path: 'userManagement',
                     meta: { title: '系统配置' },
                     component: userManagement,
+                },
+                {
+                    name: 'systemDictionary',
+                    path: 'systemDictionary',
+                    meta: { title: '系统字典' },
+                    component: systemDictionary,
+                    children:[{
+                        name:'dictionary',
+                        path:'dictionary',
+                        component:() => import ('../manage/systemdictionary/actions/dictionary.vue')
+                    }]
                 },
 
             ]

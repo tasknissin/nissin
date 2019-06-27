@@ -104,7 +104,21 @@ let config = {
                     },
                     "childs": null
                 },
-
+                {
+                    "entity": {
+                        "id": 8,
+                        "parentMenuId": 1,
+                        "name": "系统字典管理",
+                        "icon": "el-icon-mobile-phone\r\n",
+                        "alias": "系统字典管理",
+                        "state": "ENABLE",
+                        "sort": 6,
+                        "value": "dictionary",
+                        "type": "LINK",
+                        "createUserId": 1
+                    },
+                    "childs": null
+                },
 
             ]
         },
