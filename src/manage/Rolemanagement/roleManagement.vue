@@ -12,7 +12,7 @@
                         <el-input v-model="resultData.roleName"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth">
-                        <el-checkbox v-if="resultData.enabled=1" checked="true" v-model="checked">是否有效</el-checkbox>
+                        <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>

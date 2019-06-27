@@ -5,8 +5,7 @@
             <el-button type="primary" icon="el-icon-edit" @click="updataDepartment">修改</el-button>
             <el-button type="danger" icon="el-icon-delete" @click="deleteclick"> 删除</el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
-                <el-form :model="resultData" ref="resultData" :rules="rules">
-
+                <el-form  :model="resultData"  ref="resultData"  :rules="rules">
                     <el-form-item label="部门编号" :label-width="formLabelWidth" prop="departmant">
                         <el-input v-model="resultData.departmant"></el-input>
                     </el-form-item>
@@ -29,13 +28,12 @@
                         <el-input v-model="resultData.sortNo"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth">
-                        <el-checkbox v-if="resultData.enabled=1" checked="true" v-model="checked">是否有效</el-checkbox>
+                        <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
 
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
                         <el-button @click="callOf(resultData)">取消</el-button>
-                      
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -43,9 +41,9 @@
         </el-row>
         <app-content>
             <!-- //:resultObj=resultObj -->
-            <el-form :model="formData" ref="formData">
+            <el-form :data="formData" ref="formData">
                 <el-form-item label="部门编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmant" :disabled="true"></el-input>
+                    <el-input  v-model="formData.departmant" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="部门名称" :label-width="formLabelWidth">
                     <el-input v-model="formData.departmantName" :disabled="true"></el-input>
@@ -66,7 +64,9 @@
                     <el-input v-model="formData.departmantOwner" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="是否有效" :label-width="formLabelWidth">
-                    <el-checkbox v-if="formData.enabled=1" checked="true" :disabled="true">是否有效</el-checkbox>
+                    <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked" :disabled="true"> 是否有效
+                    </el-checkbox>
+                    <!-- <el-checkbox v-if="formData.enabled=1" checked="true" >是否有效</el-checkbox> -->
                 </el-form-item>
             </el-form>
         </app-content>
@@ -86,7 +86,7 @@
     export default {
         data() {
             return {
-                formData: [],
+                formData: {},
                 resultData: {
                     id: '',
                     departmant: '',
@@ -145,15 +145,20 @@
 
             }
         },
-        computed: mapState(['get_id']),
+        computed:mapState({
+            dataId(state){
+                return state.department.treeid
+            }
+        }),
         mounted() {
-            let id = this.$store.state.id;
+            let id = this.$store.state.department.treeid;
             this.created(id)
         },
         methods: {
             created(id) {
                 getDepartment(id).then((data) => {
-                    this.formData = data.data.result;
+                    this.formData ={...data.data.result} ;
+                    //console.log(this.formData)
                 });
                 this.testHeight = document.querySelector('body').offsetHeight - 90;
             },
@@ -189,9 +194,9 @@
                         AddDepartment(formData).then((data) => {
 
                             this.$message({
-                            type: 'success',
-                            message: '操作成功!'
-                        })
+                                type: 'success',
+                                message: '操作成功!'
+                            })
                         });
                         // alert('submit!');
                     } else {
@@ -207,13 +212,14 @@
                 });
             },
             //form 表单关闭
-             callOf(formName) {
+            callOf(formName) {
                 this.dialogFormVisible = false;
                 this.$refs[formName].resetFields();
-                   getRoleData('1', this.pagesize).then((data) => {
-                    this.tableData = data.data.result;
-                    this.total = this.tableData.length;
-                });
+                // getRoleData('1', this.pagesize).then((data) => {
+                //     this.tableData = data.data.result;
+                //     this.total = this.tableData.length;
+                // });
+                 this.created(this.$store.state.department.treeid)
             },
             proving1(e) {
                 var boolean = new RegExp("^\+?[1-9][0-9]*$").test(e.target.value);
@@ -226,12 +232,11 @@
 
         },
         watch: {
-            get_id: function (str) {
+             dataId: function (str) {
                 this.id = str;
                 this.created(str)
-
             },
-  
+
 
         }
     }

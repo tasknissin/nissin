@@ -28,7 +28,7 @@
         },
         methods: {
             handleNodeClick(data) {
-              this.$store.dispatch('getid',data.id);
+               this.$store.dispatch('getmenuid',data.id);
                // console.log(data.id);
             }
         },

@@ -88,6 +88,7 @@
     created() {
       getMenuTree().then((data) => {
         this.treeData = data.data.result;
+          this.$store.dispatch('getmenuid', this.treeData[0].id);
       });
       this.tableData = Array(20).fill(this.item);
     },

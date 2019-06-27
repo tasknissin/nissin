@@ -21,7 +21,7 @@
                     </el-form-item> -->
 
                     <el-form-item label="是否有效" :label-width="formLabelWidth">
-                        <el-checkbox v-if="resultData.enabled=1" checked="true" v-model="checked">是否有效</el-checkbox>
+                        <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
                     <el-form-item label="类型" :label-width="formLabelWidth" prop="type">
                         <el-select v-model="resultData.type" @change="qh($event, item)" placeholder="请选择类型">
@@ -54,7 +54,7 @@
         </el-row>
         <app-content>
             <!-- //:resultObj=resultObj -->
-            <el-form :model="formData" ref="formData">
+            <el-form :data="formData" ref="formData">
                 <el-form-item label="菜单编号" :label-width="formLabelWidth">
                     <el-input v-model="formData.menuCode" :disabled="true"></el-input>
                 </el-form-item>
@@ -65,12 +65,12 @@
                     <el-input v-model="formData.parentId" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
-                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" :disabled="true" checked="true">
+                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" checked="checked" :disabled="true" >
                         {{item.menuName}}</el-checkbox>
 
                 </el-form-item>
                 <el-form-item label="" :label-width="formLabelWidth">
-                    <el-checkbox v-if="formData.enabled=1" checked="true" :disabled="true">是否有效</el-checkbox>
+                    <el-checkbox v-if="formData.enabled=1" checked="checked"  v-model="checked"  :disabled="true">是否有效</el-checkbox>
                 </el-form-item>
 
             </el-form>
@@ -91,7 +91,7 @@
     export default {
         data() {
             return {
-                formData: [],
+                formData:{},
                 type: false,
                 resultData: {
                     id: '',
@@ -168,17 +168,21 @@
 
             }
         },
-        computed: mapState(['get_id']),
+        computed: mapState({
+            menudataId(state){
+                return state.menuManage.treeid;
+            }
+        }),
         mounted() {
-            let id = this.$store.state.id;
+            let id = this.$store.state.menuManage.treeid;
             this.created(id)
         },
         methods: {
             created(id) {
                 //console.log(this.$store.state.id);
                 menuGetData(id).then((data) => {
-                    console.log(data)
-                    this.formData = data.data.result;
+                    //console.log(data)
+                    this.formData ={...data.data.result} ;
                 });
                 this.testHeight = document.querySelector('body').offsetHeight - 90;
             },
@@ -186,10 +190,8 @@
              callOf(formName) {
                 this.dialogFormVisible = false;
                 this.$refs[formName].resetFields();
-                   getRoleData('1', this.pagesize).then((data) => {
-                    this.tableData = data.data.result;
-                    this.total = this.tableData.length;
-                });
+                this.created(this.$store.state.menuManage.treeid)
+                  
             },
             qh(event, item) {
                 console.log(event)
@@ -265,7 +267,7 @@
 
         },
         watch: {
-            get_id: function (str) {
+            menudataId: function (str) {
                 this.id = str;
                 this.created(str)
             }
