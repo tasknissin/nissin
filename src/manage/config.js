@@ -68,7 +68,7 @@ let config = {
                         "alias": "菜单管理",
                         "state": "ENABLE",
                         "sort": 3,
-                        "value": "station",
+                        "value": "menu1",
                         "type": "LINK",
                         "createUserId": 1
                     },

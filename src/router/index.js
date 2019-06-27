@@ -35,7 +35,8 @@ const router = new Router({
         {
             name: "taskCenter", //任务管理
             path: '/taskCenter',
-            component: ()=>import('../pages/taskCenterPage/Taskmanage')
+            component: () =>
+                import ('../pages/taskCenterPage/Taskmanage')
         },
         {
             name: "mgtCenter",
@@ -84,7 +85,7 @@ const router = new Router({
                         name: 'test1',
                         path: 'test1',
                         component: () =>
-                            import ('../manage/department/depActions/table1')
+                            import ('../manage/department/depActions/chackPage.vue')
                     }, {
                         name: 'test2',
                         path: 'test2',
@@ -94,14 +95,14 @@ const router = new Router({
                     // redirect:'department/test1'
                 },
                 {
-                    name: 'menuManagement',
-                    path: 'menuManagement',
+                    name: 'station',
+                    path: 'station',
                     meta: { title: '岗位管理' },
-                    component: menuManagement,
+                    component: station,
                     children:[{
                         name:'postManage',
                         path:'postManage',
-                        component:() => import ('../manage/menuManagement/actions/postManage.vue')
+                        component:() => import ('../manage/station/actions/postManage.vue')
                     }]
                 },
                 {
@@ -111,10 +112,16 @@ const router = new Router({
                     component: roleManagement,
                 },
                 {
-                    name: 'station',
-                    path: 'station',
+                    name: 'menuManagement',
+                    path: 'menuManagement',
                     meta: { title: '菜单管理' },
-                    component: station,
+                    component: menuManagement,
+                    children: [{
+                        name: 'menu1',
+                        path: 'menu1',
+                        component: () =>
+                            import ('../manage/menuManagement/menu/menuPage.vue')
+                    }],
                 },
                 {
                     name: 'systemConfiguration',

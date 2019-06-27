@@ -10,6 +10,7 @@
             @node-click="handleNodeClick"
         >
         </el-tree>
+
     </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
     },
     methods: {
         handleNodeClick(data) {
+            this.$store.dispatch('getid',data.id);
             this.$center.$emit('dep-event', data.id);   
             this.$center.$emit('user-event', data.id);   
         }
@@ -45,9 +47,9 @@ export default {
 </script>
 
 <style lang="scss">
-    .mTreepage{
-        header{
-            width:100%;
+    .mTreepage {
+        header {
+            width: 100%;
             height: 30px;
             line-height: 30px;
             text-align: center;
