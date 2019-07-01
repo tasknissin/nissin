@@ -1,15 +1,11 @@
 <template>
     <div>
-        <el-row>
-            <el-button type="primary" icon="el-icon-circle-plus" @click="addRole">增加</el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible">
+        <el-row style="top: .01rem;padding-left: .04rem;">
+            <el-button type="primary"  size='small' icon="el-icon-circle-plus" @click="addRole">增加</el-button>
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
-
-                    <!-- <el-form-item label="ID" :label-width="formLabelWidth" prop="menuCode">
-                        <el-input v-model="resultData.menuCode"></el-input>
-                    </el-form-item> -->
                     <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
-                        <el-input v-model="resultData.roleName"></el-input>
+                        <el-input v-model="resultData.roleName"  style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox>
@@ -20,6 +16,7 @@
                     </el-form-item>
                 </el-form>
             </el-dialog>
+
         </el-row>
         <div id="tableId1" style="height:60%">
             <el-table :row-style="{height:'30px'}" :cell-style="{padding:'0'}"
@@ -36,17 +33,38 @@
                         </el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
+                        <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)">权限</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <el-pagination class="fy" layout="prev, pager, next" @current-change="current_change" :total="total"
                 background>
             </el-pagination>
+            <el-dialog title="权限设置" :visible.sync="dialogFormVisibleqx" id="roledialogqxxg">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <!-- <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
+                       
+                    </el-tab-pane> -->
+                    <el-tab-pane style="min-height:200px;" label="菜单权限" name="first">
+                        <el-tree :data="treedata" show-checkbox default-expand-all ref="tree" node-key="id"
+                            highlight-current :props="defaultProps" :default-checked-keys="defaultcheckedkeys">
+                        </el-tree>
+                    </el-tab-pane>
+                    <el-tab-pane style="min-height:200px;" label="分配用户" name="second">
+                        <el-transfer v-model="Uservalue" :props="{
+                            key: 'id',
+                            label: 'userName'
+                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata">
+                        </el-transfer>
+
+                    </el-tab-pane>
+                </el-tabs>
+                <div slot="footer" class="dialog-footer">
+                    <el-button size="small" @click="cancelHandel">取 消</el-button>
+                    <el-button size="small" type="primary" @click="submitqx">确 定</el-button>
+                </div>
+            </el-dialog>
         </div>
-        <!-- <div style="text-align: center;margin-top: 30px;">
-            <el-pagination background layout="prev, pager, next" :total="total" @current-change="current_change">
-            </el-pagination>
-        </div> -->
     </div>
 
 </template>
@@ -57,399 +75,21 @@
     import {
         getRoleData,
         addRoleData,
-        deleteRoleData
+        deleteRoleData,
+        getMenuTree,
+        getUserData,
+        addAndUpduteData,
+        qxtreeDatachecked,
+        getroleGJjsID
     } from '../../services/rwfkPage.js'
+    import {
+        constants
+    } from 'crypto';
+
     export default {
         data() {
             return {
-                tableData: [{
-                        id: "12987122",
-                        name: "王小虎qweqfsdfsdfdsbdfs of手动阀is电脑佛山带你飞山东试点佛山的烦恼搜地方你啥都发送东方手动阀",
-                        amount1: "234",
-                        amount2: "3.2",
-                        amount3: 10,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987122",
-                        name: "王小虎",
-                        amount1: "234",
-                        amount2: "3.2",
-                        amount3: 10,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987122",
-                        name: "王小虎",
-                        amount1: "234",
-                        amount2: "3.2",
-                        amount3: 10,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987122",
-                        name: "王小虎",
-                        amount1: "234",
-                        amount2: "3.2",
-                        amount3: 10,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987122",
-                        name: "王小虎",
-                        amount1: "234",
-                        amount2: "3.2",
-                        amount3: 10,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987123",
-                        name: "王小虎1",
-                        amount1: "165",
-                        amount2: "4.43",
-                        amount3: 12,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987124",
-                        name: "王小虎2",
-                        amount1: "324",
-                        amount2: "1.9",
-                        amount3: 9,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987125",
-                        name: "王小虎3",
-                        amount1: "621",
-                        amount2: "2.2",
-                        amount3: 17,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    },
-                    {
-                        id: "12987126",
-                        name: "王小虎4",
-                        amount1: "539",
-                        amount2: "4.1",
-                        amount3: 15,
-                        amount4: 10
-
-                    }
-                ],
+                tableData: [],
                 resultData: {
                     roleName: '',
                     enabled: '',
@@ -470,32 +110,64 @@
                 pagesize: 5,
                 currentPage: 1,
                 dialogFormVisible: false,
+                dialogFormVisibleqx: false,
                 formLabelWidth: '80px',
                 form: {},
                 value6: '',
                 // currentPage3: 1,
                 currentIndex: '',
                 formIndex: -1,
+                activeName: 'first',
+                treedata: [],
+                defaultProps: {
+                    children: 'childrenList',
+                    label: 'menuName'
+                },
+                transferUserdata: [],
+                Uservalue: [],
+                defaultcheckedkeys: [],
+
+                // munevalue: []
+
             };
         },
 
         mounted() {
             this.created()
+
         },
         methods: {
+            //默认进来获取数据
             created() {
                 getRoleData('1', this.pagesize).then((data) => {
                     this.tableData = data.data.result;
+                    for (var i = 0; i < data.data.result.length; i++) {
+                        if (data.data.result[i].enabled == 1) {
+                            this.tableData[i].enabled = '有效'
+                        } else {
+                            this.tableData[i].enabled = '无效'
+                        }
+
+                    }
                     this.total = this.tableData.length;
                 });
                 //getRoledata()
             },
+            //获取角色数据
             getRoledata() {
                 getRoleData('1', this.pagesize).then((data) => {
                     this.tableData = data.data.result;
-                    this.total = this.tableData.length;
+
                 });
             },
+            //获取用户信息
+            getUserManList() {
+                getUserData().then((data) => {
+                    this.transferUserdata = data.data.result;
+
+                });
+            },
+
             //自动添加序列号
             indexMethod(index) {
                 return index++;
@@ -515,7 +187,12 @@
                 this.currentIndex = index
                 this.resultData.id = this.tableData[index].id;
                 this.resultData.roleName = this.tableData[index].roleName;
-                this.resultData.enabled = this.tableData[index].enabled;
+                if(this.tableData[index].enabled=="有效" || this.tableData[index].enabled=="1"){
+                     this.resultData.enabled ='1';
+                }else{
+                    this.resultData.enabled ='0';
+                }
+               
                 this.dialogFormVisible = true
             },
             //行删除
@@ -557,8 +234,9 @@
                                 this.$message({
                                     type: 'success',
                                     message: '操作成功!'
-                                })
-                                
+                                });
+                                  this.dialogFormVisible = false;
+
                             }
                             //alert("成功！")
                         });
@@ -569,6 +247,7 @@
                     }
                 })
             },
+            //关闭
             closeDialog(done) {
                 this.$confirm('确认关闭？')
                     .then(_ => {
@@ -577,14 +256,120 @@
                     })
                     .catch(_ => {});
             },
+            //获取所有的菜单
+            getALLmenuData() {
+                getMenuTree().then((data) => {
+                    this.treedata = data.data.result;
+                });
+            },
+            //权限弹窗
+            addRoleqx(index, row) {
+                this.resultData.id = this.tableData[index].id;
+                this.dialogFormVisibleqx = true;
+                this.getALLmenuData();
+                this.getTreeDatagj_id(this.resultData.id);
+
+
+            },
+            //根据用户ID 获取用户拥有的菜单(树形结构)
+            getTreeDatagj_id(roleId) {
+                qxtreeDatachecked(roleId).then((data) => {
+                    var result = data.data.result;
+                    var treedata = [];
+                    for (let i = 0; i < result.length; i++) {
+                        treedata.push(result[i].id);
+                    }
+                    this.defaultcheckedkeys = treedata;
+                })
+
+            },
+
+            //根据角色ID查询（全部）
+            getRolesGjuserid(roleId) {
+                qxtreeDatachecked(roleId).then((data) => {
+                    var result = data.data.result;
+                    var transferData = [];
+                    for (let i = 0; i < result.length; i++) {
+                        transferData.push(result[i].id);
+                    }
+                    this.Uservalue = transferData;
+                })
+
+            },
+            //权限菜单权限新增提交
+            submitqx() {
+                let roleId = this.resultData.id;
+                if (this.activeName == "first") {
+
+                    //获取最底层节点的数据
+                    let treechildrendata = this.$refs.tree.getCheckedNodes();
+                    //获取半选中节点的数据
+                    let treeparentsData = this.$refs.tree.getHalfCheckedNodes();
+
+                    let menuIds = [];
+                    for (var i = 0; i < treechildrendata.length; i++) {
+                        menuIds.push(treechildrendata[i].id)
+                    }
+                    for (var j = 0; j < treeparentsData.length; j++) {
+                        menuIds.push(treeparentsData[j].id)
+                    }
+                    let menuIds2 = JSON.stringify(menuIds);
+                    addAndUpduteData(roleId, menuIds2).then((data) => {
+                        if (data.data.success == true) {
+                            this.$message({
+                                type: 'success',
+                                message: '操作成功！'
+                            });
+                              this.qxtiqx() 
+
+                        }
+                    });
+                } else {
+                    let userIds = JSON.stringify([...this.Uservalue]);
+                    // console.log(userIds);
+                    addAndUpduteData(roleId, userIds).then((data) => {
+                        if (data.data.success == true) {
+                            this.$message({
+                                type: 'success',
+                                message: '操作成功！'
+                            })
+                            this.qxtiqx() 
+                        }
+
+                    });
+
+                }
+
+
+
+            },
+            //权限宫格取消
+            qxtiqx() {
+                this.dialogFormVisibleqx = false;
+            },
+            handleClick(tab, event) { //切换新增标签栏的事件
+                if (tab.name == 'second') {
+                    this.getUserManList();
+                    this.getRolesGjuserid(this.resultData.id)
+                } else {
+                    this.getALLmenuData();
+                    this.getTreeDatagj_id(this.resultData.id);
+                    this.transferUserdata = [];
+                }
+            },
             callOf(formName) {
                 this.dialogFormVisible = false;
-                this.$refs[formName].resetFields();
+                this.resultData.id = '';
+                this.resultData.roleName = '';
+                this.resultData.enabled = '';
                 this.created()
-                // getRoleData('1', this.pagesize).then((data) => {
-                //     this.tableData = data.data.result;
-                //     this.total = this.tableData.length;
-                // });
+            },
+            // 取消新增操作
+            cancelHandel() {
+                this.dialogFormVisibleqx = false;
+                this.activeName = 'first';
+                this.treedata = [];
+
             },
             objectSpanMethod({
                 row,

@@ -201,3 +201,148 @@ export function deleteRoleData(id) {
             })
     })
 }
+
+
+// 获取用户信息
+export function getUserData() {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.getuserData_API,
+                method: 'POST',
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+//菜单权限新增修改用户信息
+
+export function addAndUpduteData(roleId, menuIds) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.AddAndUpdaturoleData_API,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                    menuIds: menuIds
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+
+//用户新增修改用户信息
+
+export function addAndUpduteUserData(roleId, userIds) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.AddAndUpdatuUserData_API,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                    userIds: userIds
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+// 根据用户ID 获取用户拥有的菜单(树形结构)	路径	sysMenuController/searchDataByUserId	
+
+export function qxtreeDatachecked(roleId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.qxtreeDatachecked,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+// 根据角色ID查询（全部）
+
+export function getroleGJjsID(roleId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.getroleGJjsID,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+//获取所有的部门
+export function getAlldepartsinfo(roleId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.getAlldepartsinfo,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+//获取所有的菜单
+
+export function getAllmenuinfo(roleId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.getAllmenuinfo,
+                method: 'POST',
+                data: {
+                    roleId: roleId,
+                }
+
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}

@@ -1,20 +1,30 @@
 <template>
     <div>
-        <el-row>
-            <el-button type="primary" icon="el-icon-circle-plus" @click="addDepartment">增加</el-button>
-            <el-button type="primary" icon="el-icon-edit" @click="updataDepartment">修改</el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deleteclick"> 删除</el-button>
+        <el-row style="top: .02rem;padding-left: .15rem;">
+            <el-button type="primary" size='small' icon="el-icon-circle-plus" @click="addDepartment">增加</el-button>
+            <el-button type="primary"  size='small' icon="el-icon-edit" @click="updataDepartment">修改</el-button>
+            <el-button type="danger"   size='small' icon="el-icon-delete" @click="deleteclick"> 删除</el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
 
                     <el-form-item label="菜单编号" :label-width="formLabelWidth" prop="menuCode">
-                        <el-input v-model="resultData.menuCode"></el-input>
+                        <el-input v-model="resultData.menuCode"  style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="menuName">
-                        <el-input v-model="resultData.menuName"></el-input>
+                        <el-input v-model="resultData.menuName"  style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item label="父级菜单编号" :label-width="formLabelWidth" prop="parentId">
-                        <el-input v-model="resultData.parentId"></el-input>
+                        <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
+                             <el-option 
+                         key="#" 
+                         label="根节点" 
+                         value="#">
+                        </el-option>
+                            <el-option v-for="item in options" :key="item.id" :label="item.menuName"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <!-- <el-input v-model="resultData.parentId"></el-input> -->
                     </el-form-item>
                     <!-- <el-form-item label="父级菜单名称" :label-width="formLabelWidth" prop="parentName">
                         <el-input v-model="resultData.parentName"></el-input>
@@ -30,19 +40,19 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="type" label="图标" :label-width="formLabelWidth" prop="icon">
-                        <el-input v-model="resultData.icon"></el-input>
+                        <el-input v-model="resultData.icon"  style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item item v-if="type" label="路由" :label-width="formLabelWidth" prop="route">
-                        <el-input v-model="resultData.route"></el-input>
+                        <el-input v-model="resultData.route"  style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item item v-if="type" label="位置" :label-width="formLabelWidth" prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
-                            <el-option label="left" value="left"></el-option>
-                            <el-option label="top" value="top"></el-option>
+                            <el-option label="左侧" value="left"></el-option>
+                            <el-option label="顶部" value="top"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item item v-if="type" label="菜单排序" :label-width="formLabelWidth" prop="sortNo">
-                        <el-input v-model="resultData.sortNo"></el-input>
+                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
@@ -56,21 +66,33 @@
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="菜单编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuCode" :disabled="true"></el-input>
+                    <el-input v-model="formData.menuCode" :disabled="true"  style="width: 0.43rem;"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuName" :disabled="true"></el-input>
+                    <el-input v-model="formData.menuName" :disabled="true"  style="width: 0.43rem;"></el-input>
                 </el-form-item>
                 <el-form-item label="父级菜单编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.parentId" :disabled="true"></el-input>
+                    <!-- <el-input v-model="formData.parentId" :disabled="true"></el-input> -->
+                     <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
+                             <el-option 
+                         key="#" 
+                         label="根节点" 
+                         value="#">
+                        </el-option>
+                            <el-option v-for="item in options" :key="item.id" :label="item.menuName"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
-                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" checked="checked" :disabled="true" >
+                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" checked="checked"
+                        :disabled="true">
                         {{item.menuName}}</el-checkbox>
 
                 </el-form-item>
                 <el-form-item label="" :label-width="formLabelWidth">
-                    <el-checkbox v-if="formData.enabled=1" checked="checked"  v-model="checked"  :disabled="true">是否有效</el-checkbox>
+                    <el-checkbox v-if="formData.enabled=1" checked="checked" v-model="checked" :disabled="true">是否有效
+                    </el-checkbox>
                 </el-form-item>
 
             </el-form>
@@ -82,7 +104,8 @@
     import {
         AddAndUpdatamenu,
         menuGetData,
-        deleteMenu
+        deleteMenu,
+        getAllmenuinfo
 
     } from '../../../services/rwfkPage.js'
     import {
@@ -91,7 +114,7 @@
     export default {
         data() {
             return {
-                formData:{},
+                formData: {},
                 type: false,
                 resultData: {
                     id: '',
@@ -105,9 +128,6 @@
                     icon: '',
                     route: '',
                     location: '',
-
-
-
                 },
                 title: '菜单新增',
                 rules: {
@@ -133,7 +153,7 @@
                         message: '请输入排序编码',
                     }, {
                         type: 'number',
-                        message: '必须是数字'
+                        message: '必须是数字',
                     }],
                     enabled: [{
                         required: true,
@@ -164,34 +184,64 @@
                 dialogFormVisible: false,
                 checked: false,
                 formLabelWidth: '120px',
-                id: ''
+                id: '',
+                options:[]
 
             }
         },
         computed: mapState({
-            menudataId(state){
+            menudataId(state) {
                 return state.menuManage.treeid;
             }
         }),
         mounted() {
             let id = this.$store.state.menuManage.treeid;
-            this.created(id)
+            this.created(id);
+            this.getUserDataParent();
         },
         methods: {
             created(id) {
                 //console.log(this.$store.state.id);
                 menuGetData(id).then((data) => {
                     //console.log(data)
-                    this.formData ={...data.data.result} ;
+                    this.formData = {
+                        ...data.data.result
+                    };
                 });
                 this.testHeight = document.querySelector('body').offsetHeight - 90;
             },
+            getUserDataParent() {
+                getAllmenuinfo().then((data) => {
+                   // this.options = data.data.result;
+                    var xldata = [];
+                    for (var i = 0; i < data.data.result.length; i++) {
+                        if (this.resultData.id != data.data.result[i].id) {
+                            xldata.push(data.data.result[i])
+                        }
+                    }
+                    this.options = xldata;
+                });
+
+
+            },
             //form 表单关闭
-             callOf(formName) {
+            callOf(formName) {
                 this.dialogFormVisible = false;
-                this.$refs[formName].resetFields();
+                this.resultData.id = '';
+                this.resultData.menuCode = '';
+                this.resultData.menuName = '';
+                this.resultData.parentId = '';
+                this.resultData.enabled = '';
+                this.resultData.sortNo = '';
+                this.resultData.icon = '';
+                this.resultData.route = '';
+                this.resultData.location = '';
+                this.resultData.type = '';
+                this.options=[];
+                //  location.reload();
+                  this.type = false;
                 this.created(this.$store.state.menuManage.treeid)
-                  
+
             },
             qh(event, item) {
                 console.log(event)
@@ -215,6 +265,7 @@
                 this.resultData.route = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
+                this.getUserDataParent();
             },
             updataDepartment() {
                 this.title = "菜单修改"
@@ -230,6 +281,7 @@
                 this.resultData.location = this.formData.location;
                 this.resultData.type = this.formData.type;
                 this.type = this.formData.type;
+                this.getUserDataParent();
             },
             onSubmit(form) {
                 if (this.checked == true) {
@@ -244,7 +296,11 @@
                         // console.log(formData);
                         AddAndUpdatamenu(formData).then((data) => {
                             if (data.data.result) {
-                                alert("操作成功成功！")
+                                  this.$message({
+                                type: 'success',
+                                message: '操作成功!'
+                            });
+                                  this.dialogFormVisible = false;
                             }
                             //alert("成功！")
                         });
