@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
+    <div class="userManageBox" style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
         <div class="postButtons">
             <el-button type="primary" icon="el-icon-circle-plus" v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
         </div>
@@ -434,7 +434,8 @@ export default {
 </script>
 
 <style lang="scss">
-    .postButtons{
+.userManageBox{
+     .postButtons{
         width:100%;
         height: 28px;
         padding:5px 10px;
@@ -451,7 +452,7 @@ export default {
     }
     
     .el-table th.gutter{
-        display: table-cell!important;
+        display: table-cell !important;
     }
     #userDialog{
         .el-dialog__body{
@@ -481,4 +482,6 @@ export default {
     .el-form-item{
         min-width: 45%;
     }
+}
+   
 </style>

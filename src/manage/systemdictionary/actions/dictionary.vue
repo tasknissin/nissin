@@ -32,7 +32,7 @@
                         <span>{{setTableHandle(scope.row.enabled)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="150">
+                <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
@@ -399,5 +399,10 @@ export default {
         .el-input--suffix .el-input__inner{
             padding-right: 15px;
         }
+        .el-table th.gutter{
+            width:17px !important;
+            display: table-cell !important;
+        }
+       
     }
 </style>
