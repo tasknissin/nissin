@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="menuPage">
         <el-row class="elrow">
             <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addDepartment">增加
             </el-button>
@@ -203,6 +203,7 @@
                     this.formData = {
                         ...data.data.result
                     };
+                    this.l
                 });
                 this.testHeight = document.querySelector('body').offsetHeight - 90;
             },

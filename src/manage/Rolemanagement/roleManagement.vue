@@ -1,11 +1,12 @@
 <template>
-    <div>
+    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
         <el-row class="elrow">
-            <el-button type="primary"  size='small' icon="el-icon-circle-plus"  class="elbutton" @click="addRole">增加</el-button>
+            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addRole">增加
+            </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
-                        <el-input v-model="resultData.roleName"  style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.roleName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox>
@@ -25,14 +26,16 @@
                
 
                 <el-table-column prop="id" label="ID" width="60" height="10"></el-table-column> -->
-           
-            <!-- </el-table> --> 
 
-            <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%" :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
-               <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="120" height="10"></el-table-column>
+            <!-- </el-table> -->
+
+            <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%"
+                :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
+                <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="120" height="10">
+                </el-table-column>
                 <el-table-column prop="roleName" label="角色名称"></el-table-column>
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
-              <el-table-column label="操作"  width="250">
+                <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
@@ -90,10 +93,11 @@
     import {
         constants
     } from 'crypto';
-  import ' ./../../public/css/manage.css'
+    import ' ./../../public/css/manage.css'
     export default {
         data() {
             return {
+                loading: true,
                 tableData: [],
                 resultData: {
                     roleName: '',
@@ -131,7 +135,7 @@
                 transferUserdata: [],
                 Uservalue: [],
                 defaultcheckedkeys: [],
-                 heightItem: window.innerHeight - 160, // 计算表格的高度
+                heightItem: window.innerHeight - 160, // 计算表格的高度
 
                 // munevalue: []
 
@@ -153,9 +157,8 @@
                         } else {
                             this.tableData[i].enabled = '无效'
                         }
-
                     }
-                    console.log(this.tableData);
+                    this.loading = false;
                     // this.total = this.tableData.length;
                 });
                 //getRoledata()
@@ -189,18 +192,18 @@
             },
             //修改
             handleEdit(index, row) {
-                  this.title = "菜单修改"
+                this.title = "菜单修改"
                 this.form = this.tableData[index]
                 this.formIndex = index
                 this.currentIndex = index
                 this.resultData.id = this.tableData[index].id;
                 this.resultData.roleName = this.tableData[index].roleName;
-                if(this.tableData[index].enabled=="有效" || this.tableData[index].enabled=="1"){
-                     this.resultData.enabled ='1';
-                }else{
-                    this.resultData.enabled ='0';
+                if (this.tableData[index].enabled == "有效" || this.tableData[index].enabled == "1") {
+                    this.resultData.enabled = '1';
+                } else {
+                    this.resultData.enabled = '0';
                 }
-               
+
                 this.dialogFormVisible = true
             },
             //行删除
@@ -243,7 +246,7 @@
                                     type: 'success',
                                     message: '操作成功!'
                                 });
-                                  this.dialogFormVisible = false;
+                                this.dialogFormVisible = false;
 
                             }
                             //alert("成功！")
@@ -328,7 +331,7 @@
                                 type: 'success',
                                 message: '操作成功！'
                             });
-                              this.qxtiqx() 
+                            this.qxtiqx()
 
                         }
                     });
@@ -341,7 +344,7 @@
                                 type: 'success',
                                 message: '操作成功！'
                             })
-                            this.qxtiqx() 
+                            this.qxtiqx()
                         }
 
                     });
@@ -373,12 +376,12 @@
                 this.created()
             },
             // 取消新增操作
-            cancelHandel() { 
+            cancelHandel() {
                 this.$refs['resultData'].resetFields();
                 this.dialogFormVisibleqx = false;
                 this.activeName = 'first';
                 this.treedata = [];
-                
+
 
             },
             objectSpanMethod({

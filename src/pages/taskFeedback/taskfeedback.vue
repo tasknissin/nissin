@@ -5,9 +5,11 @@
                 <i class="sub-lefticon el-icon-s-home"></i><span>个人中心首页</span>
             </div>
         </app-subheader>
-        <div slot="rigth">
-            <el-button type="primary"><i class="el-icon-printer"></i>导出</el-button>
-            <el-button type="text" @click="addnewTask">任务新增</el-button>
+        <div slot="rigth" class="top_btn">
+            <el-button type="primary" style="margin-left: .03rem;" @click="export2Excel"><i
+                    class="el-icon-printer"></i>导出</el-button>
+            <el-button type="primary" size='small' icon="el-icon-circle-plus" style="width:80px" @click="addnewTask">
+                任务新增</el-button>
         </div>
         <app-content :selectData=selectData :selectObj=selectObj>
             <el-table :data="tableData" :height="heightItem" ref="multipleTable" border style="width:100%">
@@ -369,7 +371,7 @@
                 this.formD.completedStatus = '';
                 this.formD.totalStatus = '';
                 this.formD.selfEvaluate = '';
-                this.formD.finalEvaluate = '';
+                this.formD.finalEvaluatecompletedStatus = '';
                 this.dialogFormVisible = true;
 
             },
@@ -392,7 +394,31 @@
                     }
 
                 })
+            },
+            // 导出
+            export2Excel() {
+                require.ensure([], () => {
+                    const {
+                        export_json_to_excel
+                    } = require('./../../pages/homePage/Export2Excel.js'); //Export2Excel.js
+                    const tHeader = ['任务编号', '反馈类型', '反馈时间', '完成情况', '差因', '下一步计划', '完成状态', '整体任务完成状态', '自评',
+                        '公议',
+                    ];
+                    // 上面设置Excel的表格第一行的标题
+                    const filterVal = ['taskId', 'feedbackType', 'feedbackTime', 'completedDesc', 'gap',
+                        'nextPlan', 'completedStatus', 'totalStatus', 'selfEvaluate',
+                        'finalEvaluatecompletedStatus'
+                    ];
+                    // 上面的index、nickName、name是tableData里对象的属性
+                    const list = this.tableData; //把data里的tableData存到list
+                    const data = this.formatJson(filterVal, list);
+                    export_json_to_excel(tHeader, data, '列表excel');
+                })
+            },
+            formatJson(filterVal, jsonData) {
+                return jsonData.map(v => filterVal.map(j => v[j]))
             }
+
         },
 
     }
@@ -437,5 +463,12 @@
 
     #taskPage .el-select {
         width: 99%;
+    }
+
+    #taskPage .top_btn {
+        background-color: white;
+        height: 40px;
+        padding-top: 10px;
+        width: 100%;
     }
 </style>
