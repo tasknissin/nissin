@@ -7,10 +7,10 @@
         </app-subheader>
         <div slot="rigth">
             <el-button type="primary"><i class="el-icon-printer"></i>导出</el-button>
-            <el-button type="text" @click="dialogFormVisible = true">任务反馈</el-button>
+            <el-button type="text" @click="addnewTask">任务新增</el-button>
         </div>
         <app-content :selectData=selectData :selectObj=selectObj>
-            <el-table :data="tableData" :height="heightItem" border style="width:100%">
+            <el-table :data="tableData" :height="heightItem" ref="multipleTable" border style="width:100%">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
                 <el-table-column prop="feedbackType" label="反馈类型" width="180"></el-table-column>
                 <el-table-column prop="feedbackTime" label="反馈时间" width="180"></el-table-column>
@@ -21,11 +21,22 @@
                 <el-table-column prop="totalStatus" label="整体任务完成状态" width="180"></el-table-column>
                 <el-table-column prop="selfEvaluate" label="自评" width="180"></el-table-column>
                 <el-table-column prop="finalEvaluate" label="公议" width="180"></el-table-column>
-                <el-table-column label="操作" ></el-table-column>
-
+                <el-table-column label="操作" width="180">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
+                        </el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                        </el-button>
+                        <!-- <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)"></el-button> -->
+                    </template>
+                </el-table-column>
             </el-table>
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
         </app-content>
-        <el-dialog title="任务反馈" :visible.sync="dialogFormVisible">
+        <el-dialog :title='title' :visible.sync="dialogFormVisible" style="hieght:400px">
             <el-form :model="formD" ref="formD" :rules="rules">
                 <el-form-item label="任务编号" :label-width="formLabelWidth" prop="taskId">
                     <el-input v-model="formD.taskId"></el-input>
@@ -39,9 +50,9 @@
 
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="反馈时间" :label-width="formLabelWidth" prop="feedbackTime">
+                <el-form-item label="反馈时间" :label-width="formLabelWidth" prop="feedbackTime">
                     <el-date-picker v-model="formD.feedbackTime" type="date" placeholder="选择日期"></el-date-picker>
-                </el-form-item> -->
+                </el-form-item>
                 <el-form-item label="完成情况" :label-width="formLabelWidth" prop="completedDesc">
                     <el-input v-model="formD.completedDesc"></el-input>
                 </el-form-item>
@@ -76,17 +87,20 @@
                         <el-option label="未公议" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item style="width: 96%;float: none;text-align: right;z-index: 1; ">
                     <el-button type="primary" @click="onSubmit('formD')">提交</el-button>
-                    <el-button @click="dialogFormVisible = false">取消</el-button>
+                    <el-button @click="deleteTC">取消</el-button>
                 </el-form-item>
+
             </el-form>
         </el-dialog>
     </div>
 </template>
 <script>
     import {
-        getTaskupdata
+        getTaskupdata,
+        getAlltaskFeedback,
+        deleteTaskFeedback
     } from '../../services/rwfkPage.js'
     export default {
         data() {
@@ -115,13 +129,13 @@
                         trigger: 'change'
                     }],
                     feedbackTime: [{
-                        type: 'date',
+                        type: 'string',
                         required: true,
                         message: '请选择反馈时间',
                         trigger: 'change'
                     }],
                     completedDesc: [{
-                       // type: 'date',
+                        // type: 'date',
                         required: true,
                         message: '请填写完成情况',
                         trigger: 'blur'
@@ -137,13 +151,13 @@
                         message: '请填写下一个计划',
                         trigger: 'blur'
                     }],
-                   
+
                     completedStatus: [{
                         required: true,
                         message: '请选择完成状态',
                         trigger: 'change'
                     }],
-                     totalStatus: [{
+                    totalStatus: [{
                         required: true,
                         message: '请选择整体任务完成状态',
                         trigger: 'change'
@@ -269,20 +283,44 @@
                     ptcode: ''
                 },
                 heightItem: '',
-                formLabelWidth: '125px',
-                dialogFormVisible: false
+                formLabelWidth: '135px',
+                dialogFormVisible: false,
+                total: 5,
+                currentPage: 1,
+                pageSize: 10,
+                title: '任务新增'
 
             }
         },
-        methods: {
-            onSubmit(form) {
+        mounted() {
+            this.getAlltaskFdata(1, this.pageSize);
 
-               const formData=this.formD;
+        },
+        methods: {
+            getAlltaskFdata(pageNo, pageSize) {
+                getAlltaskFeedback(pageNo, pageSize).then((data) => {
+                    if (data.data.result.length > 0) {
+                        this.tableData = data.data.result;
+                        this.total = data.data.result.length + 1;
+                        this.currentPage = data.data.curr;
+                    }
+                });
+
+            },
+            onSubmit(form) {
+                const formData = this.formD;
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         // console.log(formData);
-                        getTaskupdata(formData).then((data)=>{
-                            console.log(data)
+                        getTaskupdata(formData).then((data) => {
+                            if (data.success) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                })
+                                location.reload();
+                            }
+
                         });
                         // alert('submit!');
                     } else {
@@ -292,12 +330,71 @@
                 })
 
 
+            },
+            handleSizeChange(val) {
+                this.pageSize = val;
+                this.currentPage = 1;
+                this.getAlltaskFdata(1, val);
+                // console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getAlltaskFdata(val, this.pageSize);
+                // console.log(`当前页: ${val}`);
+            },
+            //任务修改
+            handleEdit(index, row) {
+                this.title = "任务修改"
+                this.formD.taskId = row.taskId;
+                this.formD.feedbackType = row.feedbackType;
+                this.formD.feedbackTime = row.feedbackTime;
+                this.formD.completedDesc = row.completedDesc;
+                this.formD.gap = row.gap;
+                this.formD.nextPlan = row.nextPlan;
+                this.formD.completedStatus = row.completedStatus;
+                this.formD.totalStatus = row.totalStatus;
+                this.formD.selfEvaluate = row.selfEvaluate;
+                this.formD.finalEvaluate = row.finalEvaluate;
+                this.dialogFormVisible = true;
+            },
+            //任务新增添
+            addnewTask() {
+                this.title = "任务新增"
+                this.formD.taskId
+                this.formD.feedbackType = '';
+                this.formD.feedbackTime = '';
+                this.formD.completedDesc = '';
+                this.formD.gap = '';
+                this.formD.nextPlan = '';
+                this.formD.completedStatus = '';
+                this.formD.totalStatus = '';
+                this.formD.selfEvaluate = '';
+                this.formD.finalEvaluate = '';
+                this.dialogFormVisible = true;
+
+            },
+            deleteTC() {
+                this.dialogFormVisible = false;
+            },
+            //任务删除
+            handleDelete(index, row) {
+                deleteTaskFeedback(row.id).then((data) => {
+                    if (data.data.success) {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        })
+                    } else {
+                        this.$message({
+                            type: 'success',
+                            message: '删除失败!'
+                        })
+                    }
+
+                })
             }
         },
-        created() {},
-        mounted() {
 
-        }
     }
 </script>
 <style>
@@ -315,7 +412,7 @@
     }
 
     #taskPage .el-button {
-        width: 80px;
+        width: 62px;
         padding: 0;
         height: 26px;
         line-height: 26px;
@@ -325,5 +422,20 @@
         width: 100%;
         height: 300px;
         background: greenyellow;
+    }
+
+    #taskPage .el-form-item {
+        position: relative;
+        float: left;
+        width: 50%;
+        z-index: 3;
+    }
+
+    #taskPage .el-input {
+        width: 89%;
+    }
+
+    #taskPage .el-select {
+        width: 99%;
     }
 </style>

@@ -222,7 +222,9 @@
             },
             //form 表单关闭
             callOf(formName) {
+                 this.$refs['resultData'].resetFields();
                 this.dialogFormVisible = false;
+               
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';

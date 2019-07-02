@@ -11,7 +11,6 @@ export function getTaskupdata(getdata) {
             })
             .then(({ data, status }) => {
                 resolve(data);
-                alert("返回成功")
 
             }).catch(error => {
                 console.log(error);
@@ -373,6 +372,45 @@ export function sysMenuYZ(id) {
                 method: 'POST',
                 data: {
                     id: id,
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+//任务反馈查询接口
+export function getAlltaskFeedback(pageNo, pageSize) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.taskFeedback_api,
+                method: 'POST',
+                data: {
+                    pageNo: pageNo,
+                    pageSize: pageSize
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+//任务反馈删除
+export function deleteTaskFeedback(id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.deleteTask,
+                method: 'POST',
+                data: {
+                    id: id,
+
                 }
             })
             .then((data, status) => {

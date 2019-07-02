@@ -337,9 +337,14 @@ const getAllmenuinfo = '/task/sysMenuController/searchAllData'
 部门删除验证
 */
 const sysDepartmant_yz = '/task/sysDepartmantController/verificationIncidenceRelationByChildren'
-
-
+    //菜单管理删除验证
 const sysMenu_yz = '/task/sysMenuController/verificationIncidenceRelationByChildren'
+
+//任务反馈查询接口
+const taskFeedback_api = '/task/feedbackInfoController/searchAllData'
+
+//任务反馈任务删除接口
+const deleteTask = '/task/feedbackInfoController/deleteById'
 export default {
     taskFk_API,
     department_API,
@@ -361,6 +366,8 @@ export default {
     getAlldepartsinfo,
     getAllmenuinfo,
     sysDepartmant_yz,
-    sysMenu_yz
+    sysMenu_yz,
+    taskFeedback_api,
+    deleteTask
 
 }

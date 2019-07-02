@@ -43,7 +43,7 @@
 
                     <el-form-item class="formitem_btn">
                         <el-button type="primary" class="elbutton2" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2" style="margin-right: .1rem;">取消
+                        <el-button @click="callOf('rules')" class="elbutton2" style="margin-right: .1rem;">取消
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -283,10 +283,10 @@
 
             },
             //form 表单关闭
-            callOf(formName) {
+            callOf(formName) { 
+                this.$refs['resultData'].resetFields();
                 this.dialogFormVisible = false;
-                this.options = [];
-                // this.$refs[formName].resetFields();
+               
                 this.options = [];
                 this.resultData.id = '';
                 this.resultData.departmant = '';
@@ -298,6 +298,7 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 // location.reload();
+              
                 this.created(this.$store.state.department.treeid)
             },
             proving1(e) {

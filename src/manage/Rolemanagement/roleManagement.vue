@@ -1,7 +1,7 @@
 <template>
     <div>
-        <el-row style="top: .01rem;padding-left: .04rem;">
-            <el-button type="primary"  size='small' icon="el-icon-circle-plus" @click="addRole">增加</el-button>
+        <el-row class="elrow">
+            <el-button type="primary"  size='small' icon="el-icon-circle-plus"  class="elbutton" @click="addRole">增加</el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
@@ -12,13 +12,13 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf(resultData)">取消</el-button>
+                        <el-button @click="callOf('rules')">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
 
         </el-row>
-        <div id="tableId1" style="height:60%">
+        <div id="tableId1" style="height:60%; margin-top: 0.02rem;">
             <!-- <el-table :row-style="{height:'30px'}" :cell-style="{padding:'0'}"
                 :data="tableData" 
                 :default-sort="{prop:'date',order:'descending'}" border style="width: 100%; height:80%;font-size:12px">
@@ -90,7 +90,7 @@
     import {
         constants
     } from 'crypto';
-
+  import ' ./../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -373,10 +373,12 @@
                 this.created()
             },
             // 取消新增操作
-            cancelHandel() {
+            cancelHandel() { 
+                this.$refs['resultData'].resetFields();
                 this.dialogFormVisibleqx = false;
                 this.activeName = 'first';
                 this.treedata = [];
+                
 
             },
             objectSpanMethod({
