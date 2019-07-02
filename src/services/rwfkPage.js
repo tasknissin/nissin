@@ -150,15 +150,15 @@ export function getMenuTree() {
 }
 
 // //角色分页查询
-export function getRoleData(pageNo, pageSize, ) {
+export function getRoleData() {
     return new Promise((resolve, reject) => {
         http({
                 url: API_Tack.Roledata_API,
                 method: 'POST',
-                data: {
-                    pageNo: pageNo,
-                    pageSize: pageSize
-                }
+                // data: {
+                //     pageNo: pageNo,
+                //     pageSize: pageSize
+                // }
             })
             .then((data, status) => {
                 resolve(data);
@@ -337,6 +337,43 @@ export function getAllmenuinfo(roleId) {
                     roleId: roleId,
                 }
 
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+//部门删除验证
+
+export function sysDepartmantYZ(id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.sysDepartmant_yz,
+                method: 'POST',
+                data: {
+                    id: id,
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+//菜单删除验证
+export function sysMenuYZ(id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.sysMenu_yz,
+                method: 'POST',
+                data: {
+                    id: id,
+                }
             })
             .then((data, status) => {
                 resolve(data);

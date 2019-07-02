@@ -1,18 +1,21 @@
 <template>
     <div>
-        <el-row style="top: .02rem;padding-left: .15rem;">
-            <el-button type="primary"  size='small' icon="el-icon-circle-plus" @click="addDepartment">增加</el-button>
-            <el-button type="primary"  size='small' icon="el-icon-edit" @click="updataDepartment">修改</el-button>
-            <el-button type="danger"  size='small' icon="el-icon-delete" @click="deleteclick"> 删除</el-button>
+        <el-row class="elrow">
+            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addDepartment">增加
+            </el-button>
+            <el-button type="primary" size='small' icon="el-icon-edit" class="elbutton" @click="updataDepartment">修改
+            </el-button>
+            <el-button type="danger" size='small' icon="el-icon-delete" class="elbutton" @click="deleteclick"> 删除
+            </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
-                    <el-form-item label="部门编号" :label-width="formLabelWidth" prop="departmant">
-                        <el-input v-model="resultData.departmant"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="部门编号" :label-width="formLabelWidth" class="formitem" prop="departmant">
+                        <el-input v-model="resultData.departmant" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="部门名称" :label-width="formLabelWidth" prop="departmantName">
-                        <el-input v-model="resultData.departmantName"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="部门名称" :label-width="formLabelWidth" class="formitem" prop="departmantName">
+                        <el-input v-model="resultData.departmantName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="父级部门编号" :label-width="formLabelWidth" prop="parentId">
+                    <el-form-item label="父级部门编号" :label-width="formLabelWidth" class="formitem" prop="parentId">
                         <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
                             <el-option key="#" label="根节点" value="#">
                             </el-option>
@@ -28,19 +31,20 @@
                     <!-- <el-form-item label="部门类型" :label-width="formLabelWidth" prop="departmantType">
                         <el-input v-model="resultData.departmantType"></el-input>
                     </el-form-item> -->
-                    <el-form-item label="部门负责人" :label-width="formLabelWidth">
-                        <el-input v-model="resultData.departmantOwner"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="部门负责人" :label-width="formLabelWidth" class="formitem">
+                        <el-input v-model="resultData.departmantOwner" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="部门排序" :label-width="formLabelWidth" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="部门排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
+                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否有效" :label-width="formLabelWidth">
+                    <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
 
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf(resultData)">取消</el-button>
+                    <el-form-item class="formitem_btn">
+                        <el-button type="primary" class="elbutton2" @click="onSubmit('resultData')">提交</el-button>
+                        <el-button @click="callOf(resultData)" class="elbutton2" style="margin-right: .1rem;">取消
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -91,12 +95,14 @@
         AddDepartment,
         getDepartment,
         deleteDepartment,
-        getAlldepartsinfo
+        getAlldepartsinfo,
+        sysDepartmantYZ
 
     } from '../../../services/rwfkPage.js'
     import {
         mapState
     } from 'vuex'
+    import ' ../../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -234,7 +240,7 @@
                                 type: 'success',
                                 message: '操作成功!'
                             });
-                              this.dialogFormVisible = false;
+                            this.dialogFormVisible = false;
                         });
                         // alert('submit!');
                     } else {
@@ -244,9 +250,37 @@
                 })
             },
             deleteclick() {
-                deleteDepartment(this.resultData.id).then((data) => {
-                    alert("删除成功")
-                });
+                this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    sysDepartmantYZ(this.$store.state.department.treeid).then((data) => {
+                        if (data.data.success == true) {
+                            deleteDepartment(this.$store.state.department.treeid).then((result) => {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功'
+                                })
+                            });
+                        }else{
+                            this.$message({
+                                    type: 'success',
+                                    message: data.data.message
+                                })
+                        }
+
+
+                    });
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                })
+
             },
             //form 表单关闭
             callOf(formName) {
@@ -287,6 +321,7 @@
     }
 </script>
 
-<style>
+<style scoped>
+
 
 </style>

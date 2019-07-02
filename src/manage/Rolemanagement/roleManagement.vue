@@ -19,15 +19,20 @@
 
         </el-row>
         <div id="tableId1" style="height:60%">
-            <el-table :row-style="{height:'30px'}" :cell-style="{padding:'0'}"
-                :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" stripe
+            <!-- <el-table :row-style="{height:'30px'}" :cell-style="{padding:'0'}"
+                :data="tableData" 
                 :default-sort="{prop:'date',order:'descending'}" border style="width: 100%; height:80%;font-size:12px">
-                <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="60" height="10">
-                </el-table-column>
-                <!-- <el-table-column prop="id" label="ID" width="60" height="10"></el-table-column> -->
+               
+
+                <el-table-column prop="id" label="ID" width="60" height="10"></el-table-column> -->
+           
+            <!-- </el-table> --> 
+
+            <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%" :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
+               <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="120" height="10"></el-table-column>
                 <el-table-column prop="roleName" label="角色名称"></el-table-column>
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
-                <el-table-column label="操作">
+              <el-table-column label="操作"  width="250">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
@@ -37,9 +42,9 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-pagination class="fy" layout="prev, pager, next" @current-change="current_change" :total="total"
+            <!-- <el-pagination class="fy" layout="prev, pager, next" @current-change="current_change" :total="total"
                 background>
-            </el-pagination>
+            </el-pagination> -->
             <el-dialog title="权限设置" :visible.sync="dialogFormVisibleqx" id="roledialogqxxg">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <!-- <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
@@ -106,9 +111,9 @@
                 },
                 spanArr: [],
                 multipleSelection: [],
-                total: 100,
-                pagesize: 5,
-                currentPage: 1,
+                // total: 100,
+                // pagesize: 5,
+                // currentPage: 1,
                 dialogFormVisible: false,
                 dialogFormVisibleqx: false,
                 formLabelWidth: '80px',
@@ -126,6 +131,7 @@
                 transferUserdata: [],
                 Uservalue: [],
                 defaultcheckedkeys: [],
+                 heightItem: window.innerHeight - 160, // 计算表格的高度
 
                 // munevalue: []
 
@@ -133,12 +139,12 @@
         },
 
         mounted() {
-            this.created()
+            this.getRoledata();
 
         },
         methods: {
             //默认进来获取数据
-            created() {
+            getRoledata() {
                 getRoleData('1', this.pagesize).then((data) => {
                     this.tableData = data.data.result;
                     for (var i = 0; i < data.data.result.length; i++) {
@@ -149,17 +155,18 @@
                         }
 
                     }
-                    this.total = this.tableData.length;
+                    console.log(this.tableData);
+                    // this.total = this.tableData.length;
                 });
                 //getRoledata()
             },
             //获取角色数据
-            getRoledata() {
-                getRoleData('1', this.pagesize).then((data) => {
-                    this.tableData = data.data.result;
+            // getRoledata() {
+            //     getRoleData('1', this.pagesize).then((data) => {
+            //         this.tableData = data.data.result;
 
-                });
-            },
+            //     });
+            // },
             //获取用户信息
             getUserManList() {
                 getUserData().then((data) => {
@@ -182,6 +189,7 @@
             },
             //修改
             handleEdit(index, row) {
+                  this.title = "菜单修改"
                 this.form = this.tableData[index]
                 this.formIndex = index
                 this.currentIndex = index
@@ -197,7 +205,7 @@
             },
             //行删除
             handleDelete(index, row) {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -403,13 +411,13 @@
                     return buf;
                 }
             },
-            addUser() {
-                console.log(this.total)
-                this.total = 10;
-            },
-            current_change: function (currentPage) {
-                this.currentPage = currentPage;
-            },
+            // addUser() {
+            //     // console.log(this.total)
+            //     // this.total = 10;
+            // },
+            // current_change: function (currentPage) {
+            //     // this.currentPage = currentPage;
+            // },
             switchChange() {
                 this.istag = !this.istag;
 

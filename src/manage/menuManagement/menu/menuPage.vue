@@ -1,88 +1,82 @@
 <template>
     <div>
-        <el-row style="top: .02rem;padding-left: .15rem;">
-            <el-button type="primary" size='small' icon="el-icon-circle-plus" @click="addDepartment">增加</el-button>
-            <el-button type="primary"  size='small' icon="el-icon-edit" @click="updataDepartment">修改</el-button>
-            <el-button type="danger"   size='small' icon="el-icon-delete" @click="deleteclick"> 删除</el-button>
+        <el-row class="elrow">
+            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addDepartment">增加
+            </el-button>
+            <el-button type="primary" size='small' icon="el-icon-edit" class="elbutton" @click="updataDepartment">修改
+            </el-button>
+            <el-button type="danger" size='small' icon="el-icon-delete" class="elbutton" @click="deleteclick"> 删除
+            </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
-
-                    <el-form-item label="菜单编号" :label-width="formLabelWidth" prop="menuCode">
-                        <el-input v-model="resultData.menuCode"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="菜单编号" :label-width="formLabelWidth" class="formitem" prop="menuCode">
+                        <el-input v-model="resultData.menuCode" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="menuName">
-                        <el-input v-model="resultData.menuName"  style="width: 0.43rem;"></el-input>
+                    <el-form-item label="菜单名称" :label-width="formLabelWidth" class="formitem" prop="menuName">
+                        <el-input v-model="resultData.menuName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="父级菜单编号" :label-width="formLabelWidth" prop="parentId">
+                    <el-form-item label="父级菜单编号" :label-width="formLabelWidth" class="formitem" prop="parentId">
                         <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
-                             <el-option 
-                         key="#" 
-                         label="根节点" 
-                         value="#">
-                        </el-option>
-                            <el-option v-for="item in options" :key="item.id" :label="item.menuName"
-                                :value="item.id">
+                            <el-option key="#" label="根节点" value="#">
+                            </el-option>
+                            <el-option v-for="item in options" :key="item.id" :label="item.menuName" :value="item.id">
                             </el-option>
                         </el-select>
-                        <!-- <el-input v-model="resultData.parentId"></el-input> -->
                     </el-form-item>
-                    <!-- <el-form-item label="父级菜单名称" :label-width="formLabelWidth" prop="parentName">
-                        <el-input v-model="resultData.parentName"></el-input>
-                    </el-form-item> -->
-
-                    <el-form-item label="是否有效" :label-width="formLabelWidth">
+                    <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="类型" :label-width="formLabelWidth" prop="type">
+                    <el-form-item label="类型" :label-width="formLabelWidth" class="formitem" prop="type">
                         <el-select v-model="resultData.type" @change="qh($event, item)" placeholder="请选择类型">
                             <el-option label="菜单" value="menu"></el-option>
                             <el-option label="按钮" value="button"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item v-if="type" label="图标" :label-width="formLabelWidth" prop="icon">
-                        <el-input v-model="resultData.icon"  style="width: 0.43rem;"></el-input>
+                    <el-form-item v-if="type" label="图标" :label-width="formLabelWidth" class="formitem" prop="icon">
+                        <el-input v-model="resultData.icon" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="路由" :label-width="formLabelWidth" prop="route">
-                        <el-input v-model="resultData.route"  style="width: 0.43rem;"></el-input>
+                    <el-form-item item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
+                        <el-input v-model="resultData.route" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="位置" :label-width="formLabelWidth" prop="location">
+                    <el-form-item item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem"
+                        prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
                             <el-option label="左侧" value="left"></el-option>
                             <el-option label="顶部" value="top"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="菜单排序" :label-width="formLabelWidth" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;" ></el-input>
+                    <el-form-item item v-if="type" label="菜单排序" :label-width="formLabelWidth" class="formitem"
+                        prop="sortNo">
+                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf(resultData)">取消</el-button>
+                        <el-button type="primary" @click="onSubmit('resultData')" class="elbutton2">提交</el-button>
+                        <el-button @click="callOf(resultData)" class="elbutton2" style="margin-right: .1rem;">取消
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
-
+            <!-- <el-form-item label="父级菜单名称" :label-width="formLabelWidth" prop="parentName">
+                        <el-input v-model="resultData.parentName"></el-input>
+                    </el-form-item> -->
         </el-row>
         <app-content>
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="菜单编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuCode" :disabled="true"  style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.menuCode" :disabled="true" style="width: 0.43rem;"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuName" :disabled="true"  style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.menuName" :disabled="true" style="width: 0.43rem;"></el-input>
                 </el-form-item>
                 <el-form-item label="父级菜单编号" :label-width="formLabelWidth">
                     <!-- <el-input v-model="formData.parentId" :disabled="true"></el-input> -->
-                     <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
-                             <el-option 
-                         key="#" 
-                         label="根节点" 
-                         value="#">
+                    <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
+                        <el-option key="#" label="根节点" value="#">
                         </el-option>
-                            <el-option v-for="item in options" :key="item.id" :label="item.menuName"
-                                :value="item.id">
-                            </el-option>
-                        </el-select>
+                        <el-option v-for="item in options" :key="item.id" :label="item.menuName" :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
                     <el-checkbox v-for="item in formData.childrenList" :key="item.id" checked="checked"
@@ -105,12 +99,14 @@
         AddAndUpdatamenu,
         menuGetData,
         deleteMenu,
-        getAllmenuinfo
+        getAllmenuinfo,
+        sysMenuYZ
 
     } from '../../../services/rwfkPage.js'
     import {
         mapState
     } from 'vuex'
+    import ' ../../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -170,11 +166,11 @@
                         message: '请输入按钮图标地址',
                         trigger: 'blur'
                     }],
-                    route: [{
-                        required: true,
-                        message: '请输入路由地址',
-                        trigger: 'blur'
-                    }],
+                    // route: [{
+                    //     required: true,
+                    //     message: '请输入路由地址',
+                    //     trigger: 'blur'
+                    // }],
                     location: [{
                         required: true,
                         message: '请选择按钮位置',
@@ -185,7 +181,7 @@
                 checked: false,
                 formLabelWidth: '120px',
                 id: '',
-                options:[]
+                options: []
 
             }
         },
@@ -212,7 +208,7 @@
             },
             getUserDataParent() {
                 getAllmenuinfo().then((data) => {
-                   // this.options = data.data.result;
+                    // this.options = data.data.result;
                     var xldata = [];
                     for (var i = 0; i < data.data.result.length; i++) {
                         if (this.resultData.id != data.data.result[i].id) {
@@ -237,9 +233,9 @@
                 this.resultData.route = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
-                this.options=[];
+                this.options = [];
                 //  location.reload();
-                  this.type = false;
+                this.type = false;
                 this.created(this.$store.state.menuManage.treeid)
 
             },
@@ -296,11 +292,11 @@
                         // console.log(formData);
                         AddAndUpdatamenu(formData).then((data) => {
                             if (data.data.result) {
-                                  this.$message({
-                                type: 'success',
-                                message: '操作成功!'
-                            });
-                                  this.dialogFormVisible = false;
+                                this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                });
+                                this.dialogFormVisible = false;
                             }
                             //alert("成功！")
                         });
@@ -313,10 +309,40 @@
             },
             deleteclick() {
 
-                deleteMenu(this.resultData.id).then((data) => {
-                    alert("删除成功")
+                // deleteMenu(this.resultData.id).then((data) => {
+                //     alert("删除成功")
 
-                });
+                // });
+                this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    sysMenuYZ(this.$store.state.menuManage.treeid).then((data) => {
+                        if (data.data.success == true) {
+                            deleteMenu(this.$store.state.menuManage.treeid).then((result) => {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功'
+                                })
+                            });
+                        } else {
+                            this.$message({
+                                type: 'success',
+                                message: data.data.message
+                            })
+                        }
+
+
+                    });
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                })
 
 
             }

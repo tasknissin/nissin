@@ -151,14 +151,14 @@ const menudelete_API = "/task/sysMenuController/deleteById"
          */
 const menuTree_API = "/task/sysMenuController/searchTreeAllData"
     /**
-     * 角色菜单分页查询
+     * 角色菜单查询全部
      * pageNo	页码
     pageSize	条数
     id	主键
     roleName	角色名称
     enabled	是否有效
      */
-const Roledata_API = "/task/sysRoleController/searchData"
+const Roledata_API = "/task/sysRoleController/searchAllData"
     /**
      * 角色菜单的添加
 post	
@@ -333,6 +333,13 @@ const getAlldepartsinfo = '/task/sysDepartmantController/searchAllData'
  */
 const getAllmenuinfo = '/task/sysMenuController/searchAllData'
 
+/*
+部门删除验证
+*/
+const sysDepartmant_yz = '/task/sysDepartmantController/verificationIncidenceRelationByChildren'
+
+
+const sysMenu_yz = '/task/sysMenuController/verificationIncidenceRelationByChildren'
 export default {
     taskFk_API,
     department_API,
@@ -352,6 +359,8 @@ export default {
     qxtreeDatachecked,
     getroleGJjsID,
     getAlldepartsinfo,
-    getAllmenuinfo
+    getAllmenuinfo,
+    sysDepartmant_yz,
+    sysMenu_yz
 
 }
