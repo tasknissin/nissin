@@ -1,0 +1,27 @@
+.elrow {
+    padding-left: 0.04rem;
+    border-bottom: 1px solid #ebe9e9;
+    height: 0.1rem;
+}
+
+.elbutton {
+    margin-top: 0.02rem;
+}
+
+.formitem {
+    width: 50%;
+    position: relative;
+    float: left;
+    z-index: 11;
+}
+
+.formitem_btn {
+    width: 100%;
+    text-align: right;
+}
+
+.elbutton2 {
+    height: .07rem;
+    line-height: .03rem;
+    margin-left: .1rem;
+}
