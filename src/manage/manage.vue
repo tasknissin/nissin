@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="managePage">
+  <div class="managePage" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
     <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <!--左侧菜单组件-->
@@ -35,6 +35,8 @@
 <script>
 import config from "./config";
 import NavMenu from "./leftSidebar.vue";
+import {mapState} from 'vuex'
+import {searchTypeMenuData } from '../services/Manage/postManage'
 export default {
   data() {
     return {
@@ -50,8 +52,14 @@ export default {
         }
       ],
       tabIndex: 1,
+      loading:true,
       tabsPath:[{'name':'部门管理','path':'/manage/department/test1'}]
     };
+  },
+  computed: {
+    ...mapState({
+      userId:state => state.user.userId
+    })
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -146,8 +154,17 @@ export default {
       this.isId = to.params.id;
     }
   },
-  created() {
-    this.totalList = config.childs;
+  created() {   
+    // 获取侧边栏菜单数据
+    searchTypeMenuData(this.userId,'left').then(result=>{
+      // console.log(result)
+      if(result.success){
+        this.totalList = result.result
+        this.loading = false;
+      }
+    })
+
+    // this.totalList = config.childs;
     var _this = this;
     window.addEventListener('load',function(){
       if(window.location.hash.indexOf('manage')){

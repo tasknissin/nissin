@@ -1,9 +1,9 @@
 <template>
-  <div class="page" id="taskManagePage" ref="taskconTable">
+  <div class="page" id="taskManagePage" ref="taskconTable" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
     <app-subheader>
       <div slot="left">
         <i class="sub-lefticon el-icon-s-home"></i>
-        <span>个人中心首页</span>
+        <span>任务管理</span>
       </div>
       <div slot="right">
         <el-button type="primary">
@@ -54,7 +54,7 @@
         </el-table-column>
       </el-table>
       <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @close="cancelHandel" >
-        <el-form  :inline="true"  :model="form" :rules="rules"  size="small">
+        <el-form  :inline="true"  :model="form"  size="small">
          
           <el-form-item label="任务排序"  prop="sortNo">
             <el-input v-model="form.sortNo" auto-complete="off"></el-input>
@@ -125,7 +125,8 @@ import {
   getMessageList,
   getMenuList,
   getSelfCenterList,
-  testList
+  testList,
+  getAlltaskManageList
 } from "../../services/selfPage.js";
 var XLSX = require('xlsx')
 var FileSaver = require('file-saver')
@@ -790,6 +791,7 @@ export default {
             trigger: 'change'
         }]
       },
+      loading:true,
     };
   },
   watch: {
@@ -912,34 +914,12 @@ export default {
     }
   },
   created() {
-    // let userid = "1128605053055246336";
-    // testList()
-    //   .then(data => {
-    //     console.log(data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
-    // getMessageList(userid).then((data)=>{
-    //     console.log(data)
-    // }).catch((error)=>{
-    //     console.log(error)
-    // })
-    // 获取角色
-    // console.log('执行了')
-    // getMenuList(userid).then((data)=>{
-    //     console.log(data)
-    // }).catch((error)=>{
-    //     console.log(error)
-    // })
-    // // // 获取表格数据
-    // getSelfCenterList().then((data)=>{
-    //     console.log(data)
-    // }).catch((error)=>{
-    //     console.log(error)
-    // })
-    for (var i = 0; i < this.selectData.length; i++) {
+    // 请求表格数据
+    this.loading = false;
+    getAlltaskManageList().then(result=>{
+      console.log(result)
+    })
+    for (var i = 0; i < this.selectData.length; i++) {   //循环遍历下拉框
         var item = {value1: '',};
         this.dataModel.push(item);
     }
@@ -998,19 +978,6 @@ export default {
 .selectbox>li .el-input__icon{
     line-height: 30px;
 }
-/* #table{
-    width:100%;
-    height: 300px;
-    background: greenyellow;    
-} */
-/* .el-dialog{
-  height: 72%;
-  font-size: 14px !important;
-  overflow-y: auto;
-} */
-/* .el-form--inline .el-form-item__label{
-  min-width: 110px;
-} */
 .el-form--inline .el-form-item{
   min-width: 45%;
 }

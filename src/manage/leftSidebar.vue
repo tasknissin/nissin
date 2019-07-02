@@ -1,20 +1,20 @@
 <template>
   <div class="navMenu">
     <label v-for="(navMenu,index) in navMenus" :key="index">
-      <router-link :to="{ name:navMenu.entity.value, params: {id:navMenu.entity.name} }">
-        <el-menu-item  v-if="navMenu.childs==null&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
-                      :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name" :route="navMenu.entity.value">
-          <i :class="navMenu.entity.icon"></i>
-          <span slot="title">{{navMenu.entity.alias}}</span>
+      <router-link :to="{ name:navMenu.route, params: {id:navMenu.menuName} }">
+        <el-menu-item  v-if="navMenu.childrenList==null"
+                      :key="navMenu.id" :data="navMenu" :index="navMenu.menuName" :route="navMenu.route">
+          <i :class="navMenu.icon"></i>
+          <span slot="title">{{navMenu.menuName}}</span>
         </el-menu-item>
       </router-link>
-      <el-submenu  v-if="navMenu.childs&&navMenu.entity&&navMenu.entity.state==='ENABLE'"
-                  :key="navMenu.entity.id" :data="navMenu" :index="navMenu.entity.name">
+      <el-submenu  v-if="navMenu.childrenList"
+                  :key="navMenu.id" :data="navMenu" :index="navMenu.menuName">
         <template slot="title" style="color: rgb(229, 236, 241);background-color: rgb(57, 66, 99);">
-          <i :class="navMenu.entity.icon"></i>
-          <span> {{navMenu.entity.alias}}</span>
+          <i :class="navMenu.icon"></i>
+          <span> {{navMenu.menuName}}</span>
         </template>
-        <NavMenu :navMenus="navMenu.childs"></NavMenu>
+        <NavMenu :navMenus="navMenu.childrenList"></NavMenu>
       </el-submenu>
     </label>
   </div>

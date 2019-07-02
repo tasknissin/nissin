@@ -85,6 +85,24 @@ export function testList(){
  * 任务管理
  * **/
 
- // 任务管理查询
- 
+// 任务管理查询
 
+export function getAlltaskManageList(){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.getallTaskManageData_API,
+            method:'POST',
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}

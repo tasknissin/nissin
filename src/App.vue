@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="app-Header">
+    <div class="app-Header" v-if="headerFalg">
       <div class="app-headerBox">
         <div class="h-logoBox fl clearfix" @click="GOHome">
                 <div class="h-logo fl">
@@ -9,6 +9,10 @@
                     <span>集团财务关键任务管理平台</span>
                 </div>
             </div>
+        <ul class="userInfo-box">
+            <li><i class="el-icon-s-custom"></i><span>白瑞红</span></li>
+            <li @click="loginOutHandle"><i class="el-icon-switch-button"></i><span></span></li>
+        </ul>
         <el-menu
           mode="horizontal"
           background-color="#394263"
@@ -19,8 +23,9 @@
           menu-trigger="hover"
           style="float:right"
         >
-          <NavMenu :navMenus="menuData"></NavMenu>
+        <NavMenu :navMenus="menuData"></NavMenu>
         </el-menu>
+        
       </div>
     </div>
     <router-view></router-view>
@@ -32,6 +37,9 @@
 </template>
 <script>
 import NavMenu from "./common/header/Header.vue";
+import {searchTypeMenuData} from './services/Manage/postManage'
+import {mapState} from 'vuex';
+import {removeToken,removeUserId} from '@/utils/auth.js'
 export default {
   components: {
     NavMenu: NavMenu
@@ -39,115 +47,44 @@ export default {
   data(){
     return{
       activeIndex: 'home',
-      menuData: [
-        {
-          //一级
-          entity: {
-            id: 0,
-            name: "/home",
-            icon: "el-icon-s-home",
-            alias: "任务管理"
-          }
-        },
-        {
-          //一级
-          entity: {
-            id: 111,
-            name: "",
-            icon: "el-icon-message",
-            alias: "个人中心",
-          },
-          childs:[
-              {
-                entity:{
-                  id:1111,
-                  name:'task',
-                  icon:"el-icon-s-claim",
-                  alias:'任务反馈'
-                }
-              },
-               {
-                entity:{
-                  id:1112,
-                  name:'/mgtCenter',
-                  icon:"el-icon-edit",
-                  alias:'进度查询'
-                }
-              }
-            ]
-        },
-        {
-          //一级
-          entity: {
-            id: 6,
-            name: "666",
-            icon: "el-icon-news",
-            alias: "管理中心"
-          },
-          //二级
-          childs: [
-            {
-              entity: {
-                id: 7,
-                name: "/mgtFirst",
-                icon: "el-icon-phone-outline\r\n",
-                alias: "任务中心",
-                value: ""
-              },
-            },
-            {
-              entity: {
-                id: 8,
-                name: "/taskCenter",
-                icon: "el-icon-picture",
-                alias: "任务管理",
-                value: "/user/integral"
-              }
-            },
-            {
-              entity: {
-                id: 19,
-                name: "/manage/department/test1",
-                icon: "el-icon-picture",
-                alias: "后台管理",
-                value: ""
-              }
-            }
-          ]
-        },
-        {
-          //一级
-          entity: {
-            id: 4011,
-            name: "/self",
-            icon: "el-icon-s-custom",
-            alias: "个人中心"
-          },
-        },
-        {
-          //一级
-          entity: {
-            id: 41,
-            name: "",
-            icon: "el-icon-s-custom",
-            alias: "白瑞红"
-          },
-        },
-        {
-          //一级
-          entity: {
-            id: 42,
-            name: "",
-            icon: "el-icon-switch-button",
-            alias: ""
-          },
-        }
-      ],
+      menuData: [],
+      headerFalg:true,
     }
+  },
+  computed: {
+    ...mapState({
+      userId:state => state.user.userId,
+      token:state => state.user.token
+    })
+  },
+  watch:{
+      '$route.path':function(newVal,oldVal){
+        if(newVal === '/login'){
+          this.headerFalg = false;
+        } else{
+          this.headerFalg = true;         
+        }
+      }
   },
   methods: {
     GOHome(){
       this.$router.push({ name:'home'})
+    },
+    loginOutHandle(){
+      this.$router.push({ name:'login'})
+      removeToken();
+      removeUserId();
+    }
+  },
+  created() {
+    // 获取头部的信息
+    searchTypeMenuData(this.userId,'top').then((result)=>{
+      if(result.success){
+        this.menuData = result.result
+      }
+    })
+    if(window.location.hash.indexOf('login') != -1){   // 当为登录页面时隐藏头部
+      this.headerFalg = false;
     }
   },
 };
@@ -166,6 +103,8 @@ export default {
 .app-Header .app-headerBox{
   width:90%;
   height: 100%;
+  white-space: nowrap;
+  overflow: hidden;
   margin:0 auto;
 }
 .h-logoBox .h-logo{
@@ -176,9 +115,10 @@ export default {
 }
 .h-logoBox{
     /* margin:0 40px; */
-    width:30%;
+    width:25%;
     height: 48px;
     line-height: 48px;
+    white-space: nowrap;
     float: left;
 }
 
@@ -188,5 +128,36 @@ export default {
     font-weight: 600;
     margin-top: 3px;
     margin-left: 8px;
+}
+.userInfo-box{
+    float:right;
+}
+.userInfo-box li{
+    height: 48px;
+    line-height: 48px;
+    float:left;
+    color: rgb(255, 255, 255);
+    border-bottom-color: transparent;
+    background-color: rgb(57, 66, 99);
+    font-size: 14px;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-transition: border-color .3s,background-color .3s,color .3s;
+    transition: border-color .3s,background-color .3s,color .3s;
+    white-space: nowrap;
+    padding:0 10px;
+}
+.userInfo-box li:hover{
+    background-color: rgb(46,53,69) !important;
+    color: rgb(255, 255, 255); 
+    border-bottom-color: transparent; 
+    background-color: rgb(57, 66, 99);
+}
+.userInfo-box li i{
+    margin-right: 5px;
+    text-align: center;
+    font-size: 18px;
+    vertical-align: middle;
+    color: #909399;
 }
 </style>

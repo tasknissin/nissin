@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { getdepartmentTree } from "../../services/postManage/postManage.js";
+import { getdepartmentTree } from "../../services/Manage/postManage.js";
 export default {
   data() {
     return {

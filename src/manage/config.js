@@ -5,7 +5,7 @@ let config = {
                 "id": 1,
                 "parentMenuId": 0,
                 "name": "系统管理",
-                "icon": "el-icon-message\r\n",
+                "icon": "el-icon-message",
                 "alias": "系统管理",
                 "state": "ENABLE",
                 "sort": 0,
@@ -30,10 +30,10 @@ let config = {
                 },
                 {
                     "entity": {
-                        "id": 3,
-                        "parentMenuId": 1,
-                        "name": "岗位管理",
-                        "icon": "el-icon-bell",
+                        "id": 3,  //
+                        "parentMenuId": 1,//
+                        "name": "岗位管理",  //
+                        "icon": "el-icon-bell",  //
                         "alias": "岗位管理",
                         "state": "ENABLE",
                         "sort": 1,
@@ -64,7 +64,7 @@ let config = {
                         "id": 5,
                         "parentMenuId": 1,
                         "name": "菜单管理",
-                        "icon": "el-icon-mobile-phone\r\n",
+                        "icon": "el-icon-mobile-phone",   // 
                         "alias": "菜单管理",
                         "state": "ENABLE",
                         "sort": 3,
@@ -79,11 +79,11 @@ let config = {
                         "id": 6,
                         "parentMenuId": 1,
                         "name": "用户管理",
-                        "icon": "el-icon-mobile-phone\r\n",
+                        "icon": "el-icon-mobile-phone",
                         "alias": "用户管理",
-                        "state": "ENABLE",
-                        "sort": 4,
-                        "value": "userManage",
+                        "state": "ENABLE",    // 
+                        "sort": 4,  // sortNo
+                        "value": "userManage",  //url
                         "type": "LINK",
                         "createUserId": 1
                     },
@@ -94,7 +94,7 @@ let config = {
                         "id": 7,
                         "parentMenuId": 1,
                         "name": "系统管理",
-                        "icon": "el-icon-mobile-phone\r\n",
+                        "icon": "el-icon-mobile-phone",
                         "alias": "系统管理",
                         "state": "ENABLE",
                         "sort": 5,
@@ -109,7 +109,7 @@ let config = {
                         "id": 8,
                         "parentMenuId": 1,
                         "name": "系统字典管理",
-                        "icon": "el-icon-mobile-phone\r\n",
+                        "icon": "el-icon-mobile-phone",
                         "alias": "系统字典管理",
                         "state": "ENABLE",
                         "sort": 6,

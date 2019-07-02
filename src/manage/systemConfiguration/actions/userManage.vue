@@ -1,7 +1,7 @@
 <template>
     <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
         <div class="postButtons">
-            <el-button v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
         </div>
         <div class="postTable">
             <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border  :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
@@ -17,9 +17,9 @@
                 </el-table-column>
                 <el-table-column label="操作" v-if="handlesActive"  width="150">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑
+                        <el-button type="primary" icon="el-icon-edit"  size="mini" @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -27,7 +27,7 @@
             <el-dialog title="增加用户信息" :visible.sync="dialogFormVisible" id="userDialog">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
-                        <el-form :label-position="labelPosition"  :inline="true"  :model="form"  size="small" label-width="100px">
+                        <el-form :label-position="labelPosition"  :inline="true"  :model="form"  size="small" label-width="100px" :rules="rulesForm" ref="userManageFormLog">
                             <el-form-item label="用户编号"  prop="userCode" width="200">
                                 <el-input v-model="form.userCode" auto-complete="off"></el-input>
                             </el-form-item>
@@ -40,7 +40,7 @@
                             <el-form-item label="邮箱"  prop="mail" width="200"
                             :rules="[
                                 { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                                { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+                                { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
                             ]">
                                 <el-input v-model="form.mail" auto-complete="off"></el-input>
                             </el-form-item>
@@ -82,13 +82,6 @@
                             <el-form-item label="确认密码" prop="checkPass" width="200">
                                 <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
                             </el-form-item>
-                            <!-- <el-form-item label="年龄" prop="age">
-                                <el-input v-model.number="ruleForm.age"></el-input>
-                            </el-form-item> -->
-                            <!-- <el-form-item>
-                                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                                <el-button @click="resetForm('ruleForm')">重置</el-button>
-                            </el-form-item> -->
                         </el-form>
                     </el-tab-pane>
                 </el-tabs>
@@ -115,26 +108,10 @@ import {
         searchUser_RolesManList,
         searchUser_DepsManList,
         resetoneUserPasswordList
-    } from '../../../services/postManage/postManage.js'
+    } from '../../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
 export default {
     data() {
-        // var checkAge = (rule, value, callback) => {
-        //     if (!value) {
-        //         return callback(new Error('年龄不能为空'));
-        //     }
-        //     setTimeout(() => {
-        //         if (!Number.isInteger(value)) {
-        //             callback(new Error('请输入数字值'));
-        //         } else {
-        //             if (value < 18) {
-        //             callback(new Error('必须年满18岁'));
-        //             } else {
-        //             callback();
-        //             }
-        //         }
-        //     }, 1000);
-        // };
         var validatePass = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入密码'));
@@ -192,11 +169,28 @@ export default {
                 //     { validator: checkAge, trigger: 'blur' }
                 // ]
             },
+            rulesForm:{
+                userCode:[
+                    { required: true, message: '请输入用户编码', trigger: 'blur' },
+                ],
+                userName:[
+                    { required: true, message: '请输入用户姓名', trigger: 'blur' },                    
+                ],
+                password:[
+                    { required: true, message: '请输入用户密码', trigger: 'blur' },                    
+                ],
+                mobile:[
+                    { required: true, message: '请输入手机号', trigger: 'blur' },                    
+                ]
+            },
             elTabFour:false,   //是否展示重置密码框
         }
     },
     computed: {
-        ...mapState(['city','cityID','btns'])
+        ...mapState({
+            btns: state => state.btns,
+            userId:state => state.user.userId
+        })
     },
     watch: {
         heightItem(val) {
@@ -211,6 +205,8 @@ export default {
         }
     },
     created(){
+        // console.log(this.btns)
+        // console.log(this.userId)
         this.btns.map((item,index)=>{
             if(this.minBtns.indexOf(item.name) != -1){
                 this.allBtns.push({
@@ -262,7 +258,7 @@ export default {
                     password:'',   //用户密码
                     mail:'',        // 邮箱号
                     mobile:'',    // 手机号
-                    enabled:''    //是否有效
+                    enabled:'1'    //是否有效
             };
             this.Rloevalue = [];
             this.Depvalue = []
@@ -276,6 +272,7 @@ export default {
         cancelHandel(){
             this.dialogFormVisible = false;
             this.activeName = 'first'
+            this.$refs['userManageFormLog'].resetFields();
             for(var m in this.form){
                 this.form[m] = this.oldform[m]
             }
@@ -409,10 +406,6 @@ export default {
                 })
             })
         },
-        // 密码重置功能
-        resetPassword(){
-            console.log('调用了')
-        },
         // submitForm(formName) {
         //     console.log(this.ruleForm)
         //     console.log(formName)
@@ -446,9 +439,15 @@ export default {
         height: 28px;
         padding:5px 10px;
         border-bottom: 1px solid rgb(235, 238, 245);
+        .el-button--mini, .el-button--mini.is-round{
+            padding:6px;
+        }
     }
     .postTable{
         padding:6px;
+        .el-button--mini, .el-button--mini.is-round{
+            padding:6px;
+        }
     }
     
     .el-table th.gutter{
@@ -471,6 +470,9 @@ export default {
             .el-form{
                 width:288px !important;
             }
+        }
+        .el-input--suffix .el-input__inner{
+            padding-right: 15px;
         }
         
        

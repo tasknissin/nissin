@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {getdepartmentTree} from '../../services/postManage/postManage.js'
+import {getdepartmentTree} from '../../services/Manage/postManage.js'
 export default {
     data(){
         return{
@@ -34,10 +34,8 @@ export default {
         },
     },
     created() {
-        console.log('12333333')
         setTimeout(() => {
             if (window.location.hash.indexOf("postManage") != -1) {
-                console.log('执行了')
                 getdepartmentTree(this.id,this.key,this.type,this.enabled).then((result)=>{
                     if(result.result.length > 0){
                     this.firstId = result.result[0].id;

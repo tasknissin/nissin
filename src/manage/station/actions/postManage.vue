@@ -1,35 +1,48 @@
 <template>
-    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
+    <div class="postmanage" style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
         <div class="postButtons">
-            <el-button v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
+            <el-button  type="primary" icon="el-icon-circle-plus" v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
         </div>
         <div class="postTable">
             <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border  :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
                 <el-table-column type="index" label="序号" width="100"></el-table-column>
                 <el-table-column prop="titleName" label="岗位名称"></el-table-column>
                 <el-table-column prop="titleType" label="岗位类型"></el-table-column>
+                <el-table-column prop="hierarchy" label="岗位级别"></el-table-column>
                 <el-table-column label="是否有效">
                     <template slot-scope="scope">
                         <span>{{setTableHandle(scope.row.enabled)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="createdTime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" v-if="handlesActive"  width="150">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑
+                        <el-button type="primary" icon="el-icon-edit"  size="mini" @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @close="cancelHandel">
-                <el-form  :inline="true"  :model="form"  size="small">
+                <el-form :label-position="labelPosition" ref="postManageFormLog"  :inline="true"  :model="form"  size="small" label-width="100px" :rules="rules">
                     <el-form-item label="岗位名称"  prop="titleName">
                         <el-input v-model="form.titleName" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="岗位类型"  prop="titleType">
                         <el-input v-model="form.titleType" auto-complete="off"></el-input>
+                    </el-form-item>
+                     <el-form-item label="岗位级别"  prop="hierarchy">
+                        <el-input v-model="form.hierarchy" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="父级岗位"  prop="parentId">
+                        <el-select v-model="form.parentId" placeholder="请选择">
+                            <el-option v-for="item in parentIdSelectArr" :key="item.id" :label="item.value" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="所属部门"  prop="departmantId">
+                        <el-select v-model="form.departmantId" placeholder="请选择">
+                            <el-option v-for="item in departmantIdArr" :key="item.id + item.value"  :label="item.value" :value="item.id"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="是否有效"  prop="enabled">
                         <el-select v-model="form.enabled" placeholder="请选择">
@@ -37,8 +50,7 @@
                             <el-option label="无效" value="0"></el-option>
                         </el-select>
                     </el-form-item>
-                    
-                     <el-form-item label="排序字段"  prop="sortNo">
+                    <el-form-item label="排序字段"  prop="sortNo">
                         <el-input v-model="form.sortNo" auto-complete="off"></el-input>
                     </el-form-item>
                 </el-form>
@@ -53,9 +65,12 @@
 </template>
 
 <script>
-import {getpostManageList,addpostManList,deletepostManList} from '../../../services/postManage/postManage.js'
+import {getpostManageList,addpostManList,deletepostManList,getDepartmentDialogData} from '../../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
 export default {
+    props:{
+        treeData:Array
+    },
     data() {
         return {
             loading: true,
@@ -77,20 +92,36 @@ export default {
             oldform : {},
             dataModel:[],
             timer:false,
-            updateIndex:''
+            updateIndex:'',
+            parentIdSelectArr: [{id:'#',value:'根节点'}], // 新增时的所有父级岗位
+            departmantIdArr:[], // 新增时的所有部门,
+            labelPosition:'right',
+            rules:{
+                titleName:[
+                    { required: true, message: '请输入岗位名称', trigger: 'blur' },
+                ],
+                titleType:[
+                    { required: true, message: '请输入岗位类型', trigger: 'blur' },                    
+                ],
+                hierarchy:[
+                    { required: true, message: '请输入岗位级别', trigger: 'blur' },                    
+                ],
+                parentId:[
+                    { required: true, message: '请选择父级岗位', trigger: 'change' },                    
+                ],
+                sortNo:[
+                    { required: true, message: '请输入排序号', trigger: 'blur' },                    
+                ]
+            }
         }
     },
     computed: {
         ...mapState(['city','cityID','btns'])
     },
     watch: {
-        // dataModel:{
+        // treeData:{
         //     handler(newVal,oldVal){
-        //         newVal.map((item,index)=>{
-        //         if(item.value1 != ''){
-        //             this.selectChangeHandle(newVal)
-        //         }
-        //         })
+        //         console.log(newVal)
         //     },
         //     deep: true
         // },
@@ -115,11 +146,16 @@ export default {
             }
         })
         this.$center.$on('dep-event',(value)=>{
+            this.parentIdSelectArr = [{id:'#',value:'根节点'}]
             if(value != this.departmantId){
                 this.departmantId = value;
                 getpostManageList(this.departmantId).then((result) => {
+                    console.log(result)
                     if(result.success){
                         this.tableData = result.result;
+                        result.result.map((item,index)=>{
+                            this.parentIdSelectArr.push({id:item.id,value:item.titleName})
+                        })
                         this.loading = false
                     }else{
                         this.loading = false
@@ -129,8 +165,16 @@ export default {
                         })
                     }
                 });
+                
             }
             
+        })
+        getDepartmentDialogData().then(result=>{
+            if(result.success){
+                result.result.map((item,index)=>{
+                    this.departmantIdArr.push({id:item.id,value:item.departmantName})    
+                })
+            }
         })
        
     },
@@ -144,8 +188,12 @@ export default {
             this.form = {
                 titleName:'',   //岗位名称
                 titleType:'',   //岗位类型
-                enabled:'',        // 是否有效
-                sortNo:''    // 排序字段
+                enabled:'1',        // 是否有效
+                sortNo:'',    // 排序字段
+                hierarchy:"", // 岗位级别
+                parentId:'',//父级岗位
+                departmantId: this.departmantId   // 部门id
+
             };
             this.dialogFormVisible = true;
         },
@@ -160,6 +208,7 @@ export default {
         // 取消新增操作
         cancelHandel(){
             this.dialogFormVisible = false;
+            this.$refs['postManageFormLog'].resetFields(); // 清空表单里的验证
             for(var m in this.form){
                 this.form[m] = this.oldform[m]
             }
@@ -171,10 +220,11 @@ export default {
                 titleType : this.form.titleType,
                 enabled : this.form.enabled,
                 sortNo : this.form.sortNo,
-                departmantId:this.departmantId,
+                hierarchy:this.form.hierarchy,
+                parentId:this.form.parentId,
+                departmantId:this.form.departmantId,
                 id:this.updateIndex ? this.updateIndex : ''
             }
-            // this.tableData.push(this.form) //在表格最后添加好数据
             this.dialogFormVisible = false
             this.form.departmantId = this.departmantId;
             addpostManList(obj).then((result)=>{
@@ -197,6 +247,12 @@ export default {
         // 表格修改
         handleEdit(index, row) {
             this.updateIndex = this.tableData[index].id;
+            this.parentIdSelectArr.map((item,index)=>{
+                if(item.id == this.updateIndex){
+                    this.parentIdSelectArr.splice(index,1)
+                }
+            })
+            console.log(this.tableData)
             this.form = this.tableData[index];
             this.oldform = {...this.tableData[index]}
             this.formIndex = index
@@ -247,17 +303,29 @@ export default {
 </script>
 
 <style lang="scss">
-    .postButtons{
-        width:100%;
-        height: 28px;
-        padding:5px 10px;
-        border-bottom: 1px solid rgb(235, 238, 245);
+    .postmanage{
+        .postButtons{
+            width:100%;
+            height: 28px;
+            padding:5px 10px;
+            border-bottom: 1px solid rgb(235, 238, 245);
+            .el-button--mini, .el-button--mini.is-round{
+                padding:6px;
+            }
+        }
+        .postTable{
+            padding:6px;
+            .el-button--mini, .el-button--mini.is-round{
+                padding:6px;
+            }
+        }
+        
+        .el-table th.gutter{
+            display: table-cell!important;
+        }
+        
     }
-    .postTable{
-        padding:6px;
-    }
-    
-    .el-table th.gutter{
-        display: table-cell!important;
+    .el-input--suffix .el-input__inner{
+        padding-right:15px;
     }
 </style>

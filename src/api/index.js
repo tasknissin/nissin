@@ -8,6 +8,10 @@ const UAT_HOST = 'http://10.213.12.98:8080';
 const PRO_HOST = 'http://47.92.121.252:8080'
 
 
+/**
+ * 系统管理模块的岗位，用户，系统字典，登录，菜单下拉
+ */
+
 /*
 获取通知信息接口
 参数： userId 用户id
@@ -61,6 +65,12 @@ const addPostmanage_API = '/task/sysTitleController/saveData'
 */
 const deletePostmanage_API = '/task/sysTitleController/deleteById'
 
+/*
+*   岗位中查询所有部门进行所属部门的改变
+**/
+
+const searchAllDepartmentData_API = '/task/sysDepartmantController/searchAllData'
+ 
 /*用户查询
 **参数
 */
@@ -110,6 +120,46 @@ const searchUser_Depmanage_API = '/task/sysTitleController/searchAllDataByUserId
 */
 const resetoneUserPassword_API = '/task/sysUserController/resetPassword'
 
+/*系统字典-查询系统字典下拉框数据
+**参数
+*/
+const searchDictionarySelectdata_API = '/task/sysDictionariesController/searchAllGroupData'
+
+/*系统字典-查询系统字典数据
+**参数
+*/
+const searchDictionaryAlldata_API = '/task/sysDictionariesController/searchAllData'
+
+/*系统字典-查询系统字典数据
+**参数
+*/
+const addUpdateDictionary_API = '/task/sysDictionariesController/saveData'
+
+/*系统字典-系统字典删除
+**参数
+*/
+const deleteDictionary_API = '/task/sysDictionariesController/deleteById'
+
+/*系统字典-判断系统字典的key，用户新增时是否已经存在
+**参数
+*/
+const judgeDictionaryKey_API = '/task/sysDictionariesController/verificationRepeat'
+/*菜单权限渲染接口
+**参数
+*/
+const searchtypeMenuData_API = '/task/sysMenuController/searchDataByUserId'
+
+/**
+ * 任务管理模块
+ * 
+ */
+
+ /**
+  * 任务管理查询
+  */
+ const getallTaskManageData_API = '/task/taskInfoController/searchAllData'
+
+
 export default {
     SAT_HOST,
     UAT_HOST,
@@ -130,5 +180,13 @@ export default {
     addUser_Depmanage_API,
     searchUser_Rolemanage_API,
     searchUser_Depmanage_API,
-    resetoneUserPassword_API
+    resetoneUserPassword_API,
+    searchDictionarySelectdata_API,
+    searchDictionaryAlldata_API,
+    addUpdateDictionary_API,
+    deleteDictionary_API,
+    judgeDictionaryKey_API,
+    searchtypeMenuData_API,
+    searchAllDepartmentData_API,
+    getallTaskManageData_API
 }

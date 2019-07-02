@@ -6,7 +6,7 @@
             :props="defaultProps" 
             node-key="id"
             :highlight-current="true"
-            :default-expanded-keys="[1,3]"
+            :default-expanded-keys="[5,3,2]"
             @node-click="handleNodeClick"
         >
         </el-tree>
@@ -25,13 +25,19 @@ export default {
     data(){
         return{
             defaultProps: {
-                // children: 'children',
-                // label: 'label'
                 children: 'childrenList',
                 label: 'departmantName'
             },
             hashPath:'',
             
+        }
+    },
+    watch: {
+        treeData:{
+            handler:(val,oldval) => {  
+            },  
+            immediate:true,//关键
+            deep:true
         }
     },
     methods: {
@@ -40,9 +46,7 @@ export default {
             this.$center.$emit('dep-event', data.id);   
             this.$center.$emit('user-event', data.id);   
         }
-    },
-    
-    
+    }
 }
 </script>
 
@@ -54,7 +58,6 @@ export default {
             line-height: 30px;
             text-align: center;
             border-bottom: 1px solid #EBEEF5;
-
         }
     }
 </style>

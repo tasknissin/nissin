@@ -97,9 +97,8 @@ export default {
     }
   },
   created() {
-    // document.cookie='token=' + 123333
-    //     this.$router.push('/cinema');
-    }
+    
+  }
 };
 </script>
 

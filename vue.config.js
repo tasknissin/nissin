@@ -1,8 +1,8 @@
 
 module.exports = {
-    outputDir: 'dist',
+    outputDir: 'nissin',
     publicPath: process.env.NODE_ENV === 'production'
-    ? '/dist/'
+    ? './'
     : '/',
     devServer: {
         host: 'localhost', // 设置主机地址

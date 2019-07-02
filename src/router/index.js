@@ -16,7 +16,6 @@ import roleManagement from '../manage/Rolemanagement/roleManagement.vue'
 import station from '../manage/station/station.vue';
 import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue';
 import systemDictionary from '../manage/systemdictionary/systemdictionary.vue';
-import userManagement from '../manage/userManagement/userandpassword.vue';
 import taskPage from '../pages/taskFeedback/taskfeedback.vue';
 Vue.use(Router)
 
@@ -135,12 +134,6 @@ const router = new Router({
                     }]
                 },
                 {
-                    name: 'userManagement',
-                    path: 'userManagement',
-                    meta: { title: '系统配置' },
-                    component: userManagement,
-                },
-                {
                     name: 'systemDictionary',
                     path: 'systemDictionary',
                     meta: { title: '系统字典' },
@@ -165,22 +158,21 @@ const router = new Router({
 export default router;
 // 全局守卫
 
-// router.beforeEach((to,from,next)=>{
-//   const nextRoute = ['home', 'self', 'taskCenter', 'mgtFirst'];
-//   let obj = {}
-//   let _cookie = document.cookie.split('; ');
-//   for(var i = 0; i < _cookie.length; i++) {
-//       var arr = _cookie[i].split('=');
-//       obj[arr[0]] = arr[1];
-//   }
-//   console.log(obj.token)
-//   if(nextRoute.indexOf(to.name) >= 0) {  //判断该页面是否需要登陆
-//     if(!obj.token) {   //判断登陆状态
-//       next({ name : 'login'})   //如果未登录，则跳转到登录页
-//     } else {
-//       next()  //如果已经登陆，那就可以跳转
-//     }
-//   } else {  //其他的无需登陆的页面不做验证
-//       next()
-//   }
-// })
+router.beforeEach((to,from,next)=>{
+  const nextRoute = ['home'];
+  let obj = {}
+  let _cookie = document.cookie.split('; ');
+  for(var i = 0; i < _cookie.length; i++) {
+      var arr = _cookie[i].split('=');
+      obj[arr[0]] = arr[1];
+  }
+  if(nextRoute.indexOf(to.name) >= 0) {  //判断该页面是否需要登陆
+    if(!obj.AdminToken) {   //判断登陆状态
+      next({ name : 'login'})   //如果未登录，则跳转到登录页
+    } else {
+      next()  //如果已经登陆，那就可以跳转
+    }
+  } else {  //其他的无需登陆的页面不做验证
+      next()
+  }
+})
