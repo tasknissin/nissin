@@ -1,8 +1,14 @@
 <template>
     <div class="mTreepage">
         <header>{{treeName}}</header>
-        <el-tree :data="treeData" :props="defaultProps"  node-key="id" :default-expanded-keys="[1,3]"
-            @node-click="handleNodeClick">
+        <el-tree :data="treeData" 
+        :props="defaultProps" 
+        node-key="id" 
+        :current-node-key="currentNodekey"
+        :default-expanded-keys="expandedkeys"
+         @node-click="handleNodeClick"
+         ref="tree"
+         >
         </el-tree>
 
     </div>
@@ -10,6 +16,7 @@
 
 <script>
     export default {
+         
         name: 'menuTree',
         props: {
             treeName: String,
@@ -24,12 +31,18 @@
                     label: 'menuName'
                 },
                 hashPath: '',
+                currentNodekey: "", //默认选中的节点树
+            expandedkeys: [], //默认展开的节点树 
             }
+        },
+       mounted(){
+        //    /  this.$refs.tree.setCurrentKey();//一定要加这个选中了否则样式没有出来
         },
         methods: {
             handleNodeClick(data) {
-               this.$store.dispatch('getmenuid',data.id);
-               // console.log(data.id);
+                this.$store.dispatch('getmenuid', data.id);
+               // this.$refs.tree.setCurrentKey();//一定要加这个选中了否则样式没有出来
+                // console.log(data.id);
             }
         },
     }

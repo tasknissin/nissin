@@ -2,10 +2,10 @@
 <template lang="html">
   <div style="width:100%;height:100%;">
     <div class="manageTree">
-      <menuTree :treeName="menuTreeName" :treeData="treeData" ></menuTree>
+      <menuTree :treeName="menuTreeName" :treeData="treeData" ref="tree" :currentNodekey='currentNodekey'  :expandedkeys='expandedkeys'></menuTree>
     </div>
     <div class="manage_bmTable">
-      <header>菜单定义</header>
+      <header>菜单管理</header>
       <div style="border-left:1px solid #EBEEF5;">
         <router-view></router-view>
       </div>
@@ -34,7 +34,9 @@
         tableData: [],
         totalList: [],
         menuTreeName: '菜单组织树',
-        treeData: []
+        treeData: [],
+        currentNodekey: "", //默认选中的节点树
+        expandedkeys: [], //默认展开的节点树 
       };
     },
     methods: {
@@ -89,6 +91,12 @@
       getMenuTree().then((data) => {
         this.treeData = data.data.result;
           this.$store.dispatch('getmenuid', this.treeData[0].id);
+          if( this.treeData.length>0){
+                  this.currentNodekey =  this.treeData[0].id;
+                  this.expandedkeys.push( this.treeData[0].id);
+
+              }
+
       });
       this.tableData = Array(20).fill(this.item);
     },

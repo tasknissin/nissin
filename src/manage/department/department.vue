@@ -5,7 +5,7 @@
       <ManageTree :treeName="manageTreeName" :treeData="treeData"  ></ManageTree>
     </div>
     <div class="manage_bmTable">
-      <header>菜单定义</header>
+      <header>部门管理</header>
       <div style="border-left:1px solid #EBEEF5;">
         <router-view></router-view>
       </div>
