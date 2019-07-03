@@ -1,5 +1,5 @@
 <template>
-    <div class="dictionary" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
+    <div class="dictionary" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)" style="width:100%;height:100%;">
         <header>
             <div class="dictionaryButtons">
                 <el-button type="primary" icon="el-icon-circle-plus" v-for="(item,index) in allBtns" @click="toggle(item.name)" :key="index" size="mini">{{item.value}}</el-button>
@@ -32,7 +32,7 @@
                         <span>{{setTableHandle(scope.row.enabled)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="160">
+                <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
@@ -164,6 +164,7 @@ export default {
                     that.timer = false
                 }, 400)
             }
+            deep: true
         }
     },
     computed: {
@@ -301,6 +302,17 @@ export default {
                 })
             })
         },
+        getStyle(ele) {
+            var style = null;
+            
+            if(window.getComputedStyle) {
+                style = window.getComputedStyle(ele, null);
+            }else{
+                style = ele.currentStyle;
+            }
+            
+            return style;
+        }
     },
     created(){
         this.btns.map((item,index)=>{
@@ -325,8 +337,20 @@ export default {
                 if(result.success){
                     this.loading = false;
                 }
+                this.$nextTick(function () {
+                    setTimeout(() => {
+                        const selectWrap = this.$el.querySelector('.el-table__body-wrapper')
+                        const gutterWrap = this.$el.querySelector('.gutter')
+                        let style = this.getStyle(selectWrap)
+                            if(style.overflowY == 'auto'){
+                                gutterWrap.style.width = '17px'
+                            }else{
+                                gutterWrap.style.width = '0px'
+                            }
+                        })
+                    }, 100);
+                })
             })
-        })
         // 加载系统字典数据
        
         for (var i = 0; i < this.selectData.length; i++) {
@@ -341,8 +365,7 @@ export default {
                 that.heightItem = window.innerHeight - 160
             })()
         }
-    }
-    
+    },
    
 }
 </script>
@@ -400,9 +423,7 @@ export default {
             padding-right: 15px;
         }
         .el-table th.gutter{
-            width:17px !important;
             display: table-cell !important;
         }
-       
     }
 </style>
