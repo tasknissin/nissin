@@ -341,7 +341,7 @@ const sysDepartmant_yz = '/task/sysDepartmantController/verificationIncidenceRel
 const sysMenu_yz = '/task/sysMenuController/verificationIncidenceRelationByChildren'
 
 //任务反馈查询接口
-const taskFeedback_api = '/task/feedbackInfoController/searchAllData'
+const taskFeedback_api = '/task/feedbackInfoController/searchData'
 
 //任务反馈任务删除接口
 const deleteTask = '/task/feedbackInfoController/deleteById'

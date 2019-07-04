@@ -19,10 +19,12 @@
                 <el-table-column prop="completedDesc" label="完成情况" width="180"></el-table-column>
                 <el-table-column prop="gap" label="差因" width="180"></el-table-column>
                 <el-table-column prop="nextPlan" label="下一步计划" width="180"></el-table-column>
-                <el-table-column prop="completedStatus" label="完成状态" width="180"></el-table-column>
+                <el-table-column prop="completedStatus" :formatter="formatterColumn" label="完成状态" width="180">
+                </el-table-column>
                 <el-table-column prop="totalStatus" label="整体任务完成状态" width="180"></el-table-column>
                 <el-table-column prop="selfEvaluate" label="自评" width="180"></el-table-column>
-                <el-table-column prop="finalEvaluate" label="公议" width="180"></el-table-column>
+                <el-table-column prop="finalEvaluate" label="公议" :formatter="formatterColumngy" width="180">
+                </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
@@ -34,7 +36,7 @@
                 </el-table-column>
             </el-table>
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
+                :current-page="currentPage" :page-sizes="[5,10, 50, 100, 200]" :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </app-content>
@@ -52,8 +54,9 @@
 
                     </el-select>
                 </el-form-item>
-                <el-form-item label="反馈时间" :label-width="formLabelWidth" prop="feedbackTime">
-                    <el-date-picker v-model="formD.feedbackTime" type="date" placeholder="选择日期"></el-date-picker>
+                <el-form-item label="反馈时间" :label-width="formLabelWidth">
+                    <el-date-picker v-model="formD.feedbackTime" type="date" placeholder="选择日期" format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="完成情况" :label-width="formLabelWidth" prop="completedDesc">
                     <el-input v-model="formD.completedDesc"></el-input>
@@ -175,43 +178,7 @@
                         trigger: 'change'
                     }]
                 },
-                tableData: [{
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    },
-                    {
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    },
-                    {
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    }
-                ],
+                tableData: [],
                 selectData: [{
                         name: "year",
                         options: [{
@@ -289,7 +256,7 @@
                 dialogFormVisible: false,
                 total: 5,
                 currentPage: 1,
-                pageSize: 10,
+                pageSize: 5,
                 title: '任务新增'
 
             }
@@ -302,12 +269,39 @@
             getAlltaskFdata(pageNo, pageSize) {
                 getAlltaskFeedback(pageNo, pageSize).then((data) => {
                     if (data.data.result.length > 0) {
-                        this.tableData = data.data.result;
-                        this.total = data.data.result.length + 1;
-                        this.currentPage = data.data.curr;
+
+                        this.tableData = data.data.result
+                        this.total = data.data.rowCount;
+                        //this.currentPage = data.data.curr;
                     }
                 });
 
+            },
+             formatterColumn(column,row) {
+                switch (row.completedStatus) {
+                    case 0:
+                        return '未完成';
+                        break;
+                    case 1:
+                        return '完成';
+                        break;
+
+                    default:
+                        return '';
+                }
+            },
+            formatterColumngy(column,row) {
+                switch (row.finalEvaluate) {
+                    case 0:
+                        return '未公议';
+                        break;
+                    case 1:
+                        return '已公议';
+                        break;
+
+                    default:
+                        return '';
+                }
             },
             onSubmit(form) {
                 const formData = this.formD;
@@ -386,11 +380,13 @@
                             type: 'success',
                             message: '删除成功!'
                         })
+                        location.reload();
                     } else {
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
                         })
+                        location.reload();
                     }
 
                 })
