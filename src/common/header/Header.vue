@@ -74,7 +74,7 @@ export default {
   outline:none;
 }
 /* 水平样式 */
- .el-menu--horizontal>div>.el-submenu {
+.el-menu--horizontal>div>.el-submenu {
     float: left;
 }
 
@@ -106,19 +106,19 @@ export default {
 .el-menu--horizontal>div>.el-menu-item{
   border:none;
 }
-.el-submenu__title{
+.headerNav .el-submenu__title{
   height: 48px !important;
   line-height: 48px !important;
   /* margin:0;
   padding:0; */
 }
-.el-menu-item{
+.headerNav .el-menu-item{
     padding:0 10px !important;
 }
-.el-submenu__title{
+.headerNav .el-submenu__title{
     padding:0 10px !important;
 }
-.header{
+.headerNav .header{
     width: 100%;
     height: 48px;
     background: #394263;
@@ -129,24 +129,24 @@ export default {
 /* .headerNav .el-submenu__title i{
     color:#fff;
 } */
-.h-logoBox .h-logo{
+.headerNav .h-logoBox .h-logo{
     background: url(../../assets/logo.svg) no-repeat center;
     background-size: 100% 100%;
     width: 78px;
     height:100%;
 }
-.h-logoBox{
+.headerNav .h-logoBox{
     /* margin:0 40px; */
     height: 48px;
     line-height: 48px;
     float: left;
 }
-.h-logoBox .h-logo{
+.headerNav .h-logoBox .h-logo{
     background: url(../../assets/logo.svg) no-repeat center;
     background-size: 100% 100%;
     width: 78px;
 }
-.h-logoBox .h-logoName{
+.headerNav .h-logoBox .h-logoName{
     font-size: 14px;
     color:#fff;
     font-weight: 600;

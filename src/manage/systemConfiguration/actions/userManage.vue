@@ -24,7 +24,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="增加用户信息" :visible.sync="dialogFormVisible" id="userDialog">
+            <el-dialog title="增加用户信息" :visible.sync="dialogFormVisible" id="userDialog" @close="cancelHandel">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
                         <el-form :label-position="labelPosition"  :inline="true"  :model="form"  size="small" label-width="100px" :rules="rulesForm" ref="userManageFormLog">
@@ -35,7 +35,7 @@
                                 <el-input v-model="form.userName" auto-complete="off"></el-input>
                             </el-form-item>
                             <el-form-item v-if="passwordFlag" label="用户密码"  prop="password" width="200">
-                                <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+                                <el-input auto-complete="new-password" type="password" v-model="form.password" ></el-input>
                             </el-form-item>
                             <el-form-item label="邮箱"  prop="mail" width="200"
                             :rules="[
@@ -85,14 +85,12 @@
                         </el-form>
                     </el-tab-pane>
                 </el-tabs>
-
                 <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="cancelHandel">取 消</el-button>
-                <el-button size="small" type="primary" @click="updateHandle">确 定</el-button>
+                    <el-button size="small" @click="cancelHandel">取 消</el-button>
+                    <el-button size="small" type="primary" @click="updateHandle">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
-       
     </div>
 </template>
 
@@ -132,11 +130,11 @@ export default {
             }
         };
         return {
-            loading: true,
+            loading: true,     //页面加载
             minBtns:['Add'],   //本页按钮
             allBtns:[],    // 总按钮
             departmantId:'',  //部门id
-            tableData:[],
+            tableData:[],    //表格数据
             heightItem: window.innerHeight - 150, // 计算表格的高度
             handlesActive:true, //是否显示表格的操作,
             form: {},      // 新增弹出框
@@ -144,7 +142,7 @@ export default {
             formIndex:-1,
             oldform : {}, // 取消新增后重置
             dataModel:[],
-            timer:false,
+            timer:false, //定时高度的
             updateIndex:'',
             passwordFlag:true, // 是否展示密码输入框
             activeName: 'first',
@@ -266,7 +264,7 @@ export default {
             this.passwordFlag = true;
             this.elTabFour = false;
             this.activeName = 'first'            
-
+            console.log(this.form)
         },
         // 取消新增操作
         cancelHandel(){
@@ -295,7 +293,7 @@ export default {
                         mail:this.form.mail,        // 邮箱号
                         mobile:this.form.mobile,    // 手机号
                         enabled:this.form.enabled,    //是否有效
-                        userId:'123'     // 登录人（用户ID）
+                        userId:this.userId   // 登录人（用户ID）
                 }
                 this.dialogFormVisible = false
                 this.form.departmantId = this.departmantId;

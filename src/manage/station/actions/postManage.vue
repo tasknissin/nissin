@@ -298,7 +298,7 @@ export default {
             that.heightItem = window.innerHeight - 185
             })()
         }
-  }
+    }
 }
 </script>
 

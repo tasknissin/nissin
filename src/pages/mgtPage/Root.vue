@@ -74,13 +74,13 @@
     </div>
    
     <div class="tabListPage">
-            <el-pagination @size-change="handleSizeChange" 
-                        @current-change="handleCurrentChange" 
-                        :current-page="currentPage" 
-                        :page-sizes="pageSizes" 
-                        :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" 
-                        :total="totalCount">
-            </el-pagination>
+        <el-pagination @size-change="handleSizeChange" 
+                    @current-change="handleCurrentChange" 
+                    :current-page="currentPage" 
+                    :page-sizes="pageSizes" 
+                    :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper" 
+                    :total="totalCount">
+        </el-pagination>
     </div>
     <button @click="gotoFirst">跳转</button>
 </div>
@@ -89,7 +89,8 @@
 import {
     getMessageList,
     getMenuList,
-    getSelfCenterList
+    getSelfCenterList,
+    getPaginationTaskManageList
 } from '../../services/selfPage.js'
 var XLSX = require('xlsx')
 var FileSaver = require('file-saver')
@@ -259,29 +260,31 @@ export default {
         }
     },
     created:function(){
-        getSelfCenterList().then((data)=>{
-            let arr = []
-            for(var i = 0; i < 10; i++){
-                arr.push(...data.data)
-            }
-            this.tableData = arr
-            // 将数据的长度赋值给totalCount
-            this.totalCount=arr.length
-            let contactDot = 0;
-            this.tableData.forEach((item,index) => {
-                if(index===0){
-                    this.spanArr.push(1)
-                }else{
-                    if(item.id === this.tableData[index-1].id){
-                        this.spanArr[contactDot] += 1;
-                        this.spanArr.push(0)
-                    }else{
-                        contactDot = index
-                        this.spanArr.push(1)
-                    }
-                }
-            })
-        }) 
+        // getPaginationTaskManageList(this.currentPage,this.PageSize).then((result)=>{
+        //     console.log(result)
+           
+        // }) 
+        // let arr = []
+        // for(var i = 0; i < 10; i++){
+        //     arr.push(...data.data)
+        // }
+        // this.tableData = arr
+        // // 将数据的长度赋值给totalCount
+        // this.totalCount=arr.length
+        // let contactDot = 0;
+        // this.tableData.forEach((item,index) => {
+        //     if(index===0){
+        //         this.spanArr.push(1)
+        //     }else{
+        //         if(item.id === this.tableData[index-1].id){
+        //             this.spanArr[contactDot] += 1;
+        //             this.spanArr.push(0)
+        //         }else{
+        //             contactDot = index
+        //             this.spanArr.push(1)
+        //         }
+        //     }
+        // })
     },
     watch:{
         objlist:{

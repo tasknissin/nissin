@@ -159,6 +159,20 @@ const searchtypeMenuData_API = '/task/sysMenuController/searchDataByUserId'
   */
  const getallTaskManageData_API = '/task/taskInfoController/searchAllData'
 
+/**
+ * 任务管理新增，修改
+ */
+const updateTaskManageData_API = '/task/taskInfoController/saveData'
+
+/**
+ * 任务管理删除
+ */
+const deleteTaskManageData_API = '/task/taskInfoController/deleteById'
+
+/**
+ * 任务管理查询
+ */
+const getPaginationTaskManageData_API = '/task/taskInfoController/searchData'
 
 export default {
     SAT_HOST,
@@ -188,5 +202,8 @@ export default {
     judgeDictionaryKey_API,
     searchtypeMenuData_API,
     searchAllDepartmentData_API,
-    getallTaskManageData_API
+    getallTaskManageData_API,
+    updateTaskManageData_API,
+    deleteTaskManageData_API,
+    getPaginationTaskManageData_API
 }

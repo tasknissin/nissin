@@ -168,7 +168,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(['btns'])
+        ...mapState({
+            btns: state => state.btns,
+            userId:state => state.user.userId
+        })
     },
     methods: {
         toggle(val){
@@ -238,7 +241,7 @@ export default {
                 value:this.form.value,   //名称
                 enabled:this.form.enabled,    //是否有效
                 sortNo:this.form.sortNo,   //排序
-                userId:'123'     // 登录人（用户ID）
+                userId:this.userId     // 登录人（用户ID）
             }
             this.dialogFormVisible = false
             addUpdateDictionaryManList(obj).then((result)=>{
@@ -426,4 +429,5 @@ export default {
             display: table-cell !important;
         }
     }
+   
 </style>

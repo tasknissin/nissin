@@ -1,7 +1,13 @@
 <template lang="html">
   <div class="managePage" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
     <el-container>
-      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <el-aside width="200" style="background-color: rgb(238, 241, 246)">
+        <div style="text-align:right;background-color:rgb(240, 246, 246);"><el-checkbox-button style="display:inline-block;width:100%;" v-model="isCollapse" @change="radioChange" size="small"><i class="el-icon-s-operation"></i></el-checkbox-button></div>
+        
+        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;" @change="radioChange">
+          <el-radio-button :label="false">展开</el-radio-button>
+          <el-radio-button :label="true">收起</el-radio-button>
+        </el-radio-group> -->
       <!--左侧菜单组件-->
         <el-menu
           :default-active="isId"
@@ -9,8 +15,11 @@
           class="el-menu-vertical-demo"
           background-color="#F0F6F6"
           text-color="#3C3F41"
-          active-text-color="#f60">
-          <NavMenu :navMenus="totalList"></NavMenu>
+          active-text-color="#f60"
+          @open="handleOpen" 
+          @close="handleClose" 
+          :collapse="isCollapse">
+          <NavMenu :navMenus="totalList" :collpase="isCollapse"></NavMenu>
         </el-menu>
       </el-aside>
       <el-container>
@@ -53,8 +62,15 @@ export default {
       ],
       tabIndex: 1,
       loading:true,
-      tabsPath:[{'name':'部门管理','path':'/manage/department/test1'}]
+      tabsPath:[{'name':'部门管理','path':'/manage/department/test1'}],
+      isCollapse: false
+
     };
+  },
+  watch:{
+      isCollapse(val){
+        console.log(val)
+      }
   },
   computed: {
     ...mapState({
@@ -136,6 +152,19 @@ export default {
           this.$router.push({path:tab.path})
         }
       })
+    },
+     handleOpen(key, keyPath) {
+      // console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      // console.log(key, keyPath);
+    },
+    radioChange(val){
+      if(val){  
+        setTimeout(()=>{
+          document.querySelector('.navMenu .el-submenu__icon-arrow').style.display = 'none'
+        },340)
+      }
     }
   },
   components: {
@@ -194,13 +223,31 @@ export default {
   width: 100%;
   height: 100%;
 }
-.el-menu-item,
+/* .el-menu-item,
 .el-submenu__title {
   margin-bottom: 1px;
-}
+} */
 .ManageContents {
   width: 100%;
   height: calc(100% - 42px);
   overflow: hidden;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: calc(100% - 48px);
+}
+.managePage .el-menu-vertical-demo {
+  min-height: calc(100% - 48px);
+}
+.managePage .el-checkbox-button__inner{
+  padding:6px 2px;
+  border-radius: 0 !important;
+}
+.managePage .el-menu{
+  border-right: none !important;
+}
+.el-checkbox-button__inner{
+  display: inline-block;
+  width:100%;
 }
 </style>
