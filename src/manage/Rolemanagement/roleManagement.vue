@@ -1,19 +1,19 @@
 <template>
-    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
+    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)" id="rolemanegePage">
         <el-row class="elrow">
-            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addRole">增加
+            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addRole">增加
             </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
-                    <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
+                    <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
                         <el-input v-model="resultData.roleName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否有效" :label-width="formLabelWidth">
+                    <el-form-item label="是否有效" :label-width="formLabelWidth"  class="formitem"  >
                         <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf('rules')">取消</el-button>
+                    <el-form-item class="formitem_btn">
+                        <el-button type="primary" size="mini" @click="onSubmit('resultData')">提交</el-button>
+                        <el-button @click="callOf('rules')"  size="mini">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -29,15 +29,21 @@
 
             <!-- </el-table> -->
 
-            <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%"
-                :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
+            <el-table 
+             v-loading="loading"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+               element-loading-background="rgba(0, 0, 0, 0.8)"
+            :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%"
+                :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}"   
+               >
                 <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="120" height="10">
                 </el-table-column>
                 <el-table-column prop="roleName" label="角色名称"></el-table-column>
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
                 <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
+                        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
@@ -62,13 +68,13 @@
                         <el-transfer v-model="Uservalue" :props="{
                             key: 'id',
                             label: 'userName'
-                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata">
+                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata" >
                         </el-transfer>
 
                     </el-tab-pane>
                 </el-tabs>
                 <div slot="footer" class="dialog-footer">
-                    <el-button size="small" @click="cancelHandel">取 消</el-button>
+                    <el-button size="small" @click="qxtiqx()">取 消</el-button>
                     <el-button size="small" type="primary" @click="submitqx">确 定</el-button>
                 </div>
             </el-dialog>
@@ -247,7 +253,7 @@
                                     message: '操作成功!'
                                 });
                                 this.dialogFormVisible = false;
-
+                                 this.getRoledata()
                             }
                             //alert("成功！")
                         });
@@ -447,6 +453,15 @@
 
         .el-table thead {
             background-color: red;
+        }
+        .el-dialog__body{
+            padding:5px 30px;
+        }
+        .el-transfer-panel{
+            width:39%;
+        }
+         .el-transfer-panel__item.el-checkbox{
+            width:90%;
         }
     }
 </style>

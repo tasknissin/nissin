@@ -25,3 +25,9 @@
     line-height: .03rem;
     margin-left: .1rem;
 }
+
+.addbtn {
+    width: 52px;
+    text-align: center;
+    padding: 6px;
+}

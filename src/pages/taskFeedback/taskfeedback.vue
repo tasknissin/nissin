@@ -14,15 +14,35 @@
         <app-content :selectData=selectData :selectObj=selectObj>
             <el-table :data="tableData" :height="heightItem" ref="multipleTable" border style="width:100%">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
-                <el-table-column prop="feedbackType" label="反馈类型" width="180"></el-table-column>
+                <el-table-column prop="feedbackType" label="反馈类型" width="180">
+                    <template slot-scope="scope">
+                        <span>{{feedbackTypeCl(scope.row.feedbackType)}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="feedbackTime" label="反馈时间" width="180"></el-table-column>
                 <el-table-column prop="completedDesc" label="完成情况" width="180"></el-table-column>
                 <el-table-column prop="gap" label="差因" width="180"></el-table-column>
                 <el-table-column prop="nextPlan" label="下一步计划" width="180"></el-table-column>
-                <el-table-column prop="completedStatus" label="完成状态" width="180"></el-table-column>
-                <el-table-column prop="totalStatus" label="整体任务完成状态" width="180"></el-table-column>
-                <el-table-column prop="selfEvaluate" label="自评" width="180"></el-table-column>
-                <el-table-column prop="finalEvaluate" label="公议" width="180"></el-table-column>
+                <el-table-column prop="completedStatus" label="完成状态" width="180">
+                    <template slot-scope="scope">
+                        <span>{{completedStatusCL(scope.row.completedStatus)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="totalStatus" label="整体任务完成状态" width="180">
+                    <template slot-scope="scope">
+                        <span>{{totalStatusCL(scope.row.totalStatus)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="selfEvaluate" label="自评" width="180">
+                    <template slot-scope="scope">
+                        <span>{{selfEvaluateCl(scope.row.selfEvaluate)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="finalEvaluate" label="公议" width="180">
+                    <template slot-scope="scope">
+                        <span>{{formatterCColumngyCL(scope.row.finalEvaluate)}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
@@ -34,7 +54,7 @@
                 </el-table-column>
             </el-table>
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
+                :current-page="currentPage" :page-sizes="[5,10, 50, 100, 200]" :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </app-content>
@@ -45,15 +65,16 @@
                 </el-form-item>
                 <el-form-item label="反馈类型" :label-width="formLabelWidth" prop="feedbackType">
                     <el-select v-model="formD.feedbackType" placeholder="请选择反馈类型">
-                        <el-option label="周度" value="1"></el-option>
-                        <el-option label="月度" value="2"></el-option>
-                        <el-option label="季度" value="3"></el-option>
-                        <el-option label="年度" value="4"></el-option>
+                        <el-option label="周度" value="W"></el-option>
+                        <el-option label="月度" value="M"></el-option>
+                        <el-option label="季度" value="Q"></el-option>
+                        <el-option label="年度" value="Y"></el-option>
 
                     </el-select>
                 </el-form-item>
-                <el-form-item label="反馈时间" :label-width="formLabelWidth" prop="feedbackTime">
-                    <el-date-picker v-model="formD.feedbackTime" type="date" placeholder="选择日期"></el-date-picker>
+                <el-form-item label="反馈时间" :label-width="formLabelWidth">
+                    <el-date-picker v-model="formD.feedbackTime" type="date" placeholder="选择日期" format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="完成情况" :label-width="formLabelWidth" prop="completedDesc">
                     <el-input v-model="formD.completedDesc"></el-input>
@@ -66,27 +87,31 @@
                 </el-form-item>
                 <el-form-item label="完成状态" :label-width="formLabelWidth" prop="completedStatus">
                     <el-select v-model="formD.completedStatus" placeholder="请选择完成状态">
+                        <el-option label="未完成" value="0"></el-option>
                         <el-option label="完成" value="1"></el-option>
-                        <el-option label="未完成" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="整体任务完成状态" :label-width="formLabelWidth" prop="totalStatus">
                     <el-select v-model="formD.totalStatus" placeholder="请选择整体任务完成状态">
+                        <el-option label="未完成" value="0"></el-option>
                         <el-option label="完成" value="1"></el-option>
-                        <el-option label="未完成" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="自评" :label-width="formLabelWidth" prop="selfEvaluate">
                     <el-select v-model="formD.selfEvaluate" placeholder="请选择自评内容">
-                        <el-option label="完成" value="1"></el-option>
-                        <el-option label="未完成" value="2"></el-option>
+                        <el-option v-for="item in selfEvaluaSelectData" :key="item.key" :label="item.value"
+                            :value="item.key"></el-option>
+                        <!-- <el-option label="完成" value="1"></el-option>
+                        <el-option label="未完成" value="2"></el-option> -->
                     </el-select>
                     <!-- <textarea v-model="form.selfEvaluate" autocomplete="off"></textarea> -->
                 </el-form-item>
                 <el-form-item label="公议" :label-width="formLabelWidth" prop="finalEvaluate">
                     <el-select v-model="formD.finalEvaluate" placeholder="请选择公议状态">
-                        <el-option label="已公议" value="1"></el-option>
-                        <el-option label="未公议" value="2"></el-option>
+                        <el-option v-for="item in finalEvaluateSelectData" :key="item.key" :label="item.value"
+                            :value="item.key"></el-option>
+                        <!-- <el-option label="已公议" value="1"></el-option>
+                        <el-option label="未公议" value="2"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item style="width: 96%;float: none;text-align: right;z-index: 1; ">
@@ -104,6 +129,11 @@
         getAlltaskFeedback,
         deleteTaskFeedback
     } from '../../services/rwfkPage.js'
+    import {
+        searchDictionaryManList
+    } from '../../services/Manage/postManage.js'
+
+
     export default {
         data() {
             return {
@@ -118,6 +148,7 @@
                     totalStatus: '',
                     selfEvaluate: '',
                     finalEvaluate: '',
+                    id:''
                 },
                 rules: {
                     taskId: [{
@@ -175,43 +206,7 @@
                         trigger: 'change'
                     }]
                 },
-                tableData: [{
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    },
-                    {
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    },
-                    {
-                        taskId: '1',
-                        feedbackType: 'sgsg',
-                        feedbackTime: '2019-06-20',
-                        completedDesc: 'fffeewf',
-                        gap: 'bccbvbv',
-                        nextPlan: 'bccc',
-                        completedStatus: 'nngffffvvbbnddddvvb',
-                        totalStatus: 'jghhgnhrrrdgdgff',
-                        selfEvaluate: 'ttyereree',
-                        finalEvaluate: 'rwtretregrgd',
-                    }
-                ],
+                tableData: [],
                 selectData: [{
                         name: "year",
                         options: [{
@@ -289,26 +284,117 @@
                 dialogFormVisible: false,
                 total: 5,
                 currentPage: 1,
-                pageSize: 10,
-                title: '任务新增'
+                pageSize: 5,
+                title: '任务新增',
+                selfEvaluaSelectData: [], //自评
+                finalEvaluateSelectData: [], //公议
+
 
             }
         },
         mounted() {
             this.getAlltaskFdata(1, this.pageSize);
+            this.getselfEvaluateXL('person_assessment');
+            this.getselfEvaluateXL('sys_assessment');
 
         },
         methods: {
+            //获取table数据
             getAlltaskFdata(pageNo, pageSize) {
                 getAlltaskFeedback(pageNo, pageSize).then((data) => {
                     if (data.data.result.length > 0) {
-                        this.tableData = data.data.result;
-                        this.total = data.data.result.length + 1;
-                        this.currentPage = data.data.curr;
+
+                        this.tableData = data.data.result
+                        this.total = data.data.rowCount;
+                        //this.currentPage = data.data.curr;
                     }
                 });
 
             },
+            //获取弹窗下拉列表
+            getselfEvaluateXL(type) {
+                searchDictionaryManList(type).then((result) => {
+                    if (type == "person_assessment") { //自评
+                        this.selfEvaluaSelectData = result.result;
+                    } else if (type == "sys_assessment") { //公议
+                        this.finalEvaluateSelectData = result.result;
+                    }
+                    //
+
+                })
+            },
+            //table数据处理
+            feedbackTypeCl(type) {
+                switch (type) {
+                    case 'W':
+                        return "周度";
+                        break;
+                    case 'M':
+                        return "月度";
+                        break;
+                    case 'Q':
+                        return '季度'
+                        break;
+                    case 'Y':
+                        return '年度';
+                        break;
+                    default:
+                        return '-'
+
+                }
+
+            },
+            //完成状态数据处理
+            totalStatusCL(type) {
+                switch (type) {
+                    case '0':
+                        return '未完成';
+                        break;
+                    case '1':
+                        return '完成';
+                        break;
+
+                    default:
+                        return '-';
+                }
+            },
+            completedStatusCL(type) {
+                switch (type) {
+                    case '0':
+                        return '未完成';
+                        break;
+                    case '1':
+                        return '完成';
+                        break;
+
+                    default:
+                        return '-';
+                }
+            },
+            selfEvaluateCl(type) {
+                //  this.getselfEvaluateXL('person_assessment');
+                var name = '';
+                for (var i = 0; i < this.selfEvaluaSelectData.length; i++) {
+                    if (type == this.selfEvaluaSelectData[i].key) {
+                        name = this.selfEvaluaSelectData[i].value
+                    }
+                }
+                return name
+
+            },
+
+            formatterCColumngyCL(type) {
+                //this.getselfEvaluateXL('sys_assessment');
+                var name = '';
+                for (var i = 0; i < this.finalEvaluateSelectData.length; i++) {
+                    if (type == this.finalEvaluateSelectData[i].key) {
+                        name = this.finalEvaluateSelectData[i].value
+                    }
+                }
+                return name;
+
+            },
+            //新增修改提交
             onSubmit(form) {
                 const formData = this.formD;
                 this.$refs[form].validate((valid) => {
@@ -333,6 +419,7 @@
 
 
             },
+            //分页切换
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
@@ -347,22 +434,26 @@
             //任务修改
             handleEdit(index, row) {
                 this.title = "任务修改"
-                this.formD.taskId = row.taskId;
-                this.formD.feedbackType = row.feedbackType;
-                this.formD.feedbackTime = row.feedbackTime;
-                this.formD.completedDesc = row.completedDesc;
-                this.formD.gap = row.gap;
-                this.formD.nextPlan = row.nextPlan;
-                this.formD.completedStatus = row.completedStatus;
-                this.formD.totalStatus = row.totalStatus;
-                this.formD.selfEvaluate = row.selfEvaluate;
-                this.formD.finalEvaluate = row.finalEvaluate;
+                this.formD.id=this.tableData[index].id;
+                this.formD.taskId = this.tableData[index].taskId;
+                this.formD.feedbackType = this.tableData[index].feedbackType;
+                this.formD.feedbackTime = this.tableData[index].feedbackTime;
+                this.formD.completedDesc = this.tableData[index].completedDesc;
+                this.formD.gap = this.tableData[index].gap;
+                this.formD.nextPlan = this.tableData[index].nextPlan;
+                this.formD.completedStatus = this.tableData[index].completedStatus;
+                this.formD.totalStatus = this.tableData[index].totalStatus;
+                this.formD.selfEvaluate = this.tableData[index].selfEvaluate;
+                this.formD.finalEvaluate = this.tableData[index].finalEvaluate;
                 this.dialogFormVisible = true;
+                this.getselfEvaluateXL('person_assessment');
+                this.getselfEvaluateXL('sys_assessment')
+
             },
             //任务新增添
             addnewTask() {
                 this.title = "任务新增"
-                this.formD.taskId
+                this.formD.taskId = '';
                 this.formD.feedbackType = '';
                 this.formD.feedbackTime = '';
                 this.formD.completedDesc = '';
@@ -373,10 +464,24 @@
                 this.formD.selfEvaluate = '';
                 this.formD.finalEvaluatecompletedStatus = '';
                 this.dialogFormVisible = true;
+                this.getselfEvaluateXL('person_assessment');
+                this.getselfEvaluateXL('sys_assessment')
 
             },
+            //弹窗关闭
             deleteTC() {
                 this.dialogFormVisible = false;
+                this.$refs['formD'].resetFields(); // 清空表单里的验证
+                this.formD.taskId = '';
+                this.formD.feedbackType = '';
+                this.formD.feedbackTime = '';
+                this.formD.completedDesc = '';
+                this.formD.gap = '';
+                this.formD.nextPlan = '';
+                this.formD.completedStatus = '';
+                this.formD.totalStatus = '';
+                this.formD.selfEvaluate = '';
+                this.formD.finalEvaluatecompletedStatus = '';
             },
             //任务删除
             handleDelete(index, row) {
@@ -386,11 +491,13 @@
                             type: 'success',
                             message: '删除成功!'
                         })
+                        location.reload();
                     } else {
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
                         })
+                        location.reload();
                     }
 
                 })

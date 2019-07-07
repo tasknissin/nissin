@@ -1,11 +1,11 @@
 <template>
     <div id="menuPage">
         <el-row class="elrow">
-            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addDepartment">增加
+            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addDepartment">增加
             </el-button>
-            <el-button type="primary" size='small' icon="el-icon-edit" class="elbutton" @click="updataDepartment">修改
+            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">修改
             </el-button>
-            <el-button type="danger" size='small' icon="el-icon-delete" class="elbutton" @click="deleteclick"> 删除
+            <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
@@ -50,8 +50,8 @@
                         <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')" class="elbutton2">提交</el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2" style="margin-right: .1rem;">取消
+                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交</el-button>
+                        <el-button @click="callOf(resultData)" class="elbutton2"  size="mini"  style="margin-right: .1rem;">取消
                         </el-button>
                     </el-form-item>
                 </el-form>

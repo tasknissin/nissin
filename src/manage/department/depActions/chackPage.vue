@@ -1,11 +1,11 @@
 <template>
     <div>
         <el-row class="elrow">
-            <el-button type="primary" size='small' icon="el-icon-circle-plus" class="elbutton" @click="addDepartment">增加
+            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addDepartment">增加
             </el-button>
-            <el-button type="primary" size='small' icon="el-icon-edit" class="elbutton" @click="updataDepartment">修改
+            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">修改
             </el-button>
-            <el-button type="danger" size='small' icon="el-icon-delete" class="elbutton" @click="deleteclick"> 删除
+            <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
