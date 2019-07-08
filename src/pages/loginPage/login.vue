@@ -35,7 +35,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-
+import {searchTypeMenuData} from '../../services/Manage/postManage.js'
 export default {
   name: 'login',
   data() {
@@ -80,7 +80,16 @@ export default {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false;
+            // 获取头部菜单的信息
+            searchTypeMenuData(this.userId,'top').then((result)=>{
+              if(result.success){
+                this.menuData = result.result;
+                sessionStorage.setItem('tMenu',JSON.stringify(this.menuData))
+                this.$center.$emit('headCallBack', this.menuData);
+              }
+            })
             this.$router.push({ path: '/home' })
+            
           }).catch((rej) => {
             this.loading = false;
             this.$message({

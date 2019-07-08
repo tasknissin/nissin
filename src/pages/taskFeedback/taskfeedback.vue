@@ -40,7 +40,7 @@
                     <div class="grid-content bg-purple-light"></div>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" :height="heightItem" ref="multipleTable" border style="width:100%">
+            <el-table :data="tableData" ref="multipleTable" border style="width:100%">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
                 <el-table-column prop="feedbackType" label="反馈类型" width="180">
                     <template slot-scope="scope">
@@ -307,7 +307,7 @@
                     numid: '',
                     ptcode: ''
                 },
-                heightItem: '',
+                // heightItem: '',
                 formLabelWidth: '135px',
                 dialogFormVisible: false,
                 total: 5,
