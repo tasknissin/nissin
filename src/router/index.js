@@ -1,22 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Selfpage from '../pages/selfPage/Root'
-import Homepage from '../pages/homePage/Root'
-import mgtCenterPage from '../pages/mgtPage/Root'
-import mgtFirstPage from '../components/mgtPage/mgtFirst.vue'
-import loginPage from '../pages/loginPage/login.vue'
-import managePage from '../manage/manage.vue'
-import Mune from '../manage/mune.vue'
-import elc from '../manage/elc.vue'
-
-import department from '../manage/department/department.vue'
-import menuManagement from '../manage/menuManagement/menuManagement.vue'
-import roleManagement from '../manage/Rolemanagement/roleManagement.vue'
-import station from '../manage/station/station.vue';
-import systemConfiguration from '../manage/systemConfiguration/systemConfiguration.vue';
-import systemDictionary from '../manage/systemdictionary/systemdictionary.vue';
-import taskPage from '../pages/taskFeedback/taskfeedback.vue';
 Vue.use(Router)
 
 const router = new Router({
@@ -24,12 +8,12 @@ const router = new Router({
     routes: [{
             name: "home", //首页
             path: '/home',
-            component: Homepage
+            component: () => import('../pages/homePage/Root')
         },
         {
             name: "self", // 个人中心
             path: '/self',
-            component: Selfpage
+            component: () => import('../pages/selfPage/Root')
         },
         {
             name: "taskCenter", //任务管理
@@ -40,56 +24,51 @@ const router = new Router({
         {
             name: "mgtCenter",
             path: '/mgtCenter',
-            component: mgtCenterPage,
+            component: () => import('../pages/mgtPage/Root')
         },
         {
             name: "mgtFirst",
             path: '/mgtFirst',
-            component: mgtFirstPage,
+            component: () => import('../components/mgtPage/mgtFirst.vue'),
         },
         {
             name: "login",
             path: '/login',
-            component: loginPage,
+            component: () => import('../pages/loginPage/login.vue'),
         },
         {
             name: 'task',
             path: '/task',
-            component: taskPage
+            component: () => import('../pages/taskFeedback/taskfeedback.vue')
 
         },
 
         {
             name: 'manage',
             path: '/manage',
-            component: managePage,
+            component: () => import('../manage/manage.vue'),
             children: [{
                     name: 'elc',
                     path: 'elc',
                     meta: { title: '权限管理' },
-                    component: elc,
+                    component: () => import('../manage/elc.vue'),
                 },
                 {
                     name: 'menu',
                     path: 'menu',
                     meta: { title: '菜单管理' },
-                    component: Mune,
+                    component: () => import('../manage/mune.vue'),
                 },
                 {
                     name: 'department',
                     path: 'department',
                     meta: { title: '部门管理' },
-                    component: department,
+                    component: () => import('../manage/department/department.vue'),
                     children: [{
                         name: 'test1',
                         path: 'test1',
                         component: () =>
                             import ('../manage/department/depActions/chackPage.vue')
-                    }, {
-                        name: 'test2',
-                        path: 'test2',
-                        component: () =>
-                            import ('../manage/department/depActions/table2')
                     }],
                     // redirect:'department/test1'
                 },
@@ -97,7 +76,7 @@ const router = new Router({
                     name: 'station',
                     path: 'station',
                     meta: { title: '岗位管理' },
-                    component: station,
+                    component: ()=>import ('../manage/station/station.vue'),
                     children:[{
                         name:'postManage',
                         path:'postManage',
@@ -108,13 +87,13 @@ const router = new Router({
                     name: 'roleManagement',
                     path: 'roleManagement',
                     meta: { title: '角色管理' },
-                    component: roleManagement,
+                    component: () => import('../manage/Rolemanagement/roleManagement.vue'),
                 },
                 {
                     name: 'menuManagement',
                     path: 'menuManagement',
                     meta: { title: '菜单管理' },
-                    component: menuManagement,
+                    component: () => import ('../manage/menuManagement/menuManagement.vue'),
                     children: [{
                         name: 'menu1',
                         path: 'menu1',
@@ -126,7 +105,7 @@ const router = new Router({
                     name: 'systemConfiguration',
                     path: 'systemConfiguration',
                     meta: { title: '用户管理' },
-                    component: systemConfiguration,
+                    component: () => import ('../manage/systemConfiguration/systemConfiguration.vue'),
                     children:[{
                         name:'userManage',
                         path:'userManage',
@@ -137,7 +116,7 @@ const router = new Router({
                     name: 'systemDictionary',
                     path: 'systemDictionary',
                     meta: { title: '系统字典' },
-                    component: systemDictionary,
+                    component: () => import('../manage/systemdictionary/systemdictionary.vue'),
                     children:[{
                         name:'dictionary',
                         path:'dictionary',

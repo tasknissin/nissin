@@ -197,7 +197,18 @@ export default {
     var _this = this;
     window.addEventListener('load',function(){
       if(window.location.hash.indexOf('manage')){
-        _this.$router.push({path:'/manage/department/test1'})
+        let obj = {};
+        let _cookie = document.cookie.split('; ');
+        for(var i = 0; i < _cookie.length; i++) {
+            var arr = _cookie[i].split('=');
+            obj[arr[0]] = arr[1];
+        }
+        console.log(obj)
+        if(!obj.AdminToken){
+          _this.$router.push({path:'/login'})
+        }else{
+          _this.$router.push({path:'/manage/department/test1'})
+        }
       }
     })
   }

@@ -28,7 +28,7 @@
         
       </div>
     </div>
-    <router-view></router-view>
+    <router-view ></router-view>
     <!-- <p>hx修改</p> -->
     
 
@@ -47,7 +47,7 @@ export default {
   data(){
     return{
       activeIndex: 'home',
-      menuData: [],
+      menuData:[],
       headerFalg:true,
     }
   },
@@ -74,18 +74,22 @@ export default {
       this.$router.push({ name:'login'})
       removeToken();
       removeUserId();
-    }
+    },
+    // headCall(data){
+    //   console.log(data)
+    //   this.menuData = data;
+    // }
   },
   created() {
-    // 获取头部的信息
-    searchTypeMenuData(this.userId,'top').then((result)=>{
-      if(result.success){
-        this.menuData = result.result
-      }
-    })
+    
     if(window.location.hash.indexOf('login') != -1){   // 当为登录页面时隐藏头部
       this.headerFalg = false;
     }
+    this.$center.$on('headCallBack',(data)=>{
+      console.log(data)
+      this.menuData = data;
+    })
+    this.menuData = JSON.parse(sessionStorage.getItem('tMenu'))
   },
 };
 </script>
