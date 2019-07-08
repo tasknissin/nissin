@@ -9,7 +9,12 @@
                         <el-input v-model="resultData.roleName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth"  class="formitem"  >
-                        <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox>
+                        <el-select  v-model="resultData.enabled" placeholder="请选择">
+                             <el-option value="0" label="无效"></el-option>
+                            <el-option value="1" label="有效"></el-option>
+                        </el-select>
+                        <!-- <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox> -->
+
                     </el-form-item>
                     <el-form-item class="formitem_btn">
                         <el-button type="primary" size="mini" @click="onSubmit('resultData')">提交</el-button>
@@ -237,11 +242,6 @@
             },
             // 提交
             onSubmit(form) {
-                if (this.checked == true) {
-                    this.resultData.enabled = 1;
-                } else {
-                    this.resultData.enabled = 0;
-                }
                 this.resultData.userId = '1';
                 const formData = this.resultData;
                 this.$refs[form].validate((valid) => {
