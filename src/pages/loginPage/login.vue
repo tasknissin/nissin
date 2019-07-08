@@ -84,7 +84,7 @@ export default {
             searchTypeMenuData(this.userId,'top').then((result)=>{
               if(result.success){
                 this.menuData = result.result;
-                sessionStorage.setItem('tMenu',JSON.stringify(this.menuData))
+                localStorage.setItem('tMenu',JSON.stringify(this.menuData))
                 this.$center.$emit('headCallBack', this.menuData);
               }
             })

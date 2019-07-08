@@ -36,7 +36,7 @@
                         <el-input v-model="resultData.icon" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.route" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.url" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem"
                         prop="location">
@@ -122,7 +122,7 @@
                     sortNo: '',
                     enabled: '',
                     icon: '',
-                    route: '',
+                    url: '',
                     location: '',
                 },
                 title: '菜单新增',
@@ -166,7 +166,7 @@
                         message: '请输入按钮图标地址',
                         trigger: 'blur'
                     }],
-                    // route: [{
+                    // url: [{
                     //     required: true,
                     //     message: '请输入路由地址',
                     //     trigger: 'blur'
@@ -233,7 +233,7 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
-                this.resultData.route = '';
+                this.resultData.url = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
                 this.options = [];
@@ -261,7 +261,7 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
-                this.resultData.route = '';
+                this.resultData.url = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
                 this.getUserDataParent();
@@ -276,7 +276,7 @@
                 this.resultData.enabled = this.formData.enabled;
                 this.resultData.sortNo = this.formData.sortNo;
                 this.resultData.icon = this.formData.icon;
-                this.resultData.route = this.formData.route;
+                this.resultData.url = this.formData.url;
                 this.resultData.location = this.formData.location;
                 this.resultData.type = this.formData.type;
                 this.type = this.formData.type;

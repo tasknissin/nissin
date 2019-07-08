@@ -86,10 +86,9 @@ export default {
       this.headerFalg = false;
     }
     this.$center.$on('headCallBack',(data)=>{
-      console.log(data)
       this.menuData = data;
     })
-    this.menuData = JSON.parse(sessionStorage.getItem('tMenu'))
+    this.menuData = JSON.parse(localStorage.getItem('tMenu'))
   },
 };
 </script>
