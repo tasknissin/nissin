@@ -1,17 +1,45 @@
 <template>
     <div class="taskfk" id="taskPage" ref="tackTable">
-        <app-subheader>
+        <app-subheader style="width:100%;">
             <div slot="left">
                 <i class="sub-lefticon el-icon-s-home"></i><span>个人中心首页</span>
             </div>
+            <div slot="right">
+                <el-button type="primary" style="margin-left: .03rem;" @click="export2Excel"><i
+                        class="el-icon-printer"></i>导出</el-button>
+                <el-button type="primary" size='small' icon="el-icon-circle-plus" style="width:80px"
+                    @click="addnewTask">
+                    任务新增</el-button>
+            </div>
         </app-subheader>
-        <div slot="rigth" class="top_btn">
-            <el-button type="primary" style="margin-left: .03rem;" @click="export2Excel"><i
-                    class="el-icon-printer"></i>导出</el-button>
-            <el-button type="primary" size='small' icon="el-icon-circle-plus" style="width:80px" @click="addnewTask">
-                任务新增</el-button>
-        </div>
         <app-content :selectData=selectData :selectObj=selectObj>
+            <el-row style="margin-bottom:10px">
+                <el-col :span="4" id="feedbackType">
+                    <label >反馈类型：</label>
+                    <el-select placeholder="请选择反馈类型" v-model="selected" style="width:70%"
+                        @change="onSelectedDrug($event)">
+                        <el-option label="周度" value="W"></el-option>
+                        <el-option label="月度" value="M"></el-option>
+                        <el-option label="季度" value="Q"></el-option>
+                        <el-option label="年度" value="Y"></el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4">
+                    <!-- <div class="grid-content bg-purple-light">ssss</div> -->
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple"></div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple-light"></div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple"></div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple-light"></div>
+                </el-col>
+            </el-row>
             <el-table :data="tableData" :height="heightItem" ref="multipleTable" border style="width:100%">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
                 <el-table-column prop="feedbackType" label="反馈类型" width="180">
@@ -148,7 +176,7 @@
                     totalStatus: '',
                     selfEvaluate: '',
                     finalEvaluate: '',
-                    id:''
+                    id: ''
                 },
                 rules: {
                     taskId: [{
@@ -288,20 +316,28 @@
                 title: '任务新增',
                 selfEvaluaSelectData: [], //自评
                 finalEvaluateSelectData: [], //公议
+                selected: null
 
 
             }
         },
         mounted() {
-            this.getAlltaskFdata(1, this.pageSize);
+            this.getAlltaskFdata(1, this.pageSize, this.selected);
             this.getselfEvaluateXL('person_assessment');
             this.getselfEvaluateXL('sys_assessment');
 
         },
         methods: {
+            //反馈类型下拉change事件
+            onSelectedDrug(event, item) {
+                //打印出绑定的对象  
+                console.log(item);
+                //     item.drug_id = parseInt(event.target.value)   
+                //   this.calculateMoney(item)  
+            },
             //获取table数据
-            getAlltaskFdata(pageNo, pageSize) {
-                getAlltaskFeedback(pageNo, pageSize).then((data) => {
+            getAlltaskFdata(pageNo, pageSize, feedbackType) {
+                getAlltaskFeedback(pageNo, pageSize, feedbackType).then((data) => {
                     if (data.data.result.length > 0) {
 
                         this.tableData = data.data.result
@@ -423,18 +459,18 @@
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
-                this.getAlltaskFdata(1, val);
+                this.getAlltaskFdata(1, val, this.selected);
                 // console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getAlltaskFdata(val, this.pageSize);
+                this.getAlltaskFdata(val, this.pageSize, this.selected);
                 // console.log(`当前页: ${val}`);
             },
             //任务修改
             handleEdit(index, row) {
                 this.title = "任务修改"
-                this.formD.id=this.tableData[index].id;
+                this.formD.id = this.tableData[index].id;
                 this.formD.taskId = this.tableData[index].taskId;
                 this.formD.feedbackType = this.tableData[index].feedbackType;
                 this.formD.feedbackTime = this.tableData[index].feedbackTime;
@@ -522,6 +558,12 @@
                     export_json_to_excel(tHeader, data, '列表excel');
                 })
             },
+            //下拉框条件筛选
+            onSelectedDrug(event) {
+                this.selected = event;
+                this.getAlltaskFdata(1, this.pageSize, this.selected);
+                //  this.calculateMoney(event)
+            },
             formatJson(filterVal, jsonData) {
                 return jsonData.map(v => filterVal.map(j => v[j]))
             }
@@ -577,5 +619,15 @@
         height: 40px;
         padding-top: 10px;
         width: 100%;
+    }
+
+    #feedbackType .el-input__inner {
+        line-height: 30px;
+        height: 36px;
+
+    }
+
+    #feedbackType {
+        float: right;
     }
 </style>

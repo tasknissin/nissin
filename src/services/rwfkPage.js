@@ -384,14 +384,15 @@ export function sysMenuYZ(id) {
 }
 
 //任务反馈查询接口
-export function getAlltaskFeedback(pageNo, pageSize) {
+export function getAlltaskFeedback(pageNo, pageSize, feedbackType) {
     return new Promise((resolve, reject) => {
         http({
                 url: API_Tack.taskFeedback_api,
                 method: 'POST',
                 data: {
                     pageNo: pageNo,
-                    pageSize: pageSize
+                    pageSize: pageSize,
+                    feedbackType: feedbackType
                 }
             })
             .then((data, status) => {
