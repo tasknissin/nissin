@@ -16,7 +16,7 @@
             <el-row style="margin-bottom:10px">
                 <el-col :span="4" id="feedbackType">
                     <label >反馈类型：</label>
-                    <el-select placeholder="请选择反馈类型" v-model="selected" style="width:70%"
+                    <el-select placeholder="请选择反馈类型" v-model="selected" style="width:72%"
                         @change="onSelectedDrug($event)">
                         <el-option label="周度" value="W"></el-option>
                         <el-option label="月度" value="M"></el-option>
@@ -40,7 +40,9 @@
                     <div class="grid-content bg-purple-light"></div>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" ref="multipleTable" border style="width:100%">
+            <el-table :data="tableData" ref="multipleTable" border style="width: 100%;
+    height: 540px;
+    max-height: 540px;">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
                 <el-table-column prop="feedbackType" label="反馈类型" width="180">
                     <template slot-scope="scope">
@@ -73,9 +75,9 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改
+                        <el-button size="mini"  type="primary" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
                         <!-- <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)"></el-button> -->
                     </template>
@@ -608,6 +610,7 @@
 
     #taskPage .el-input {
         width: 89%;
+        right: -19px;
     }
 
     #taskPage .el-select {
