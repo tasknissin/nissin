@@ -48,11 +48,11 @@
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
                 <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">修改
+                        <el-button size="mini" type="primary" icon="el-icon-edit" style="width:57px; padding: 5px 0px 5px 0px;" @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button size="mini" type="danger"   icon="el-icon-delete" style="width:57px; padding: 5px 0px 5px 0px;" @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
-                        <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)">权限</el-button>
+                        <el-button type="primary" size="mini"  icon="el-icon-edit" style="width:57px; padding: 5px 0px 5px 0px;" @click="addRoleqx(scope.$index, scope.row)">权限</el-button>
                     </template>
                 </el-table-column>
             </el-table>
