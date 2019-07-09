@@ -1,5 +1,6 @@
 <template>
-    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)" id="rolemanegePage">
+    <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 1)" id="rolemanegePage">
         <el-row class="elrow">
             <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addRole">增加
             </el-button>
@@ -8,17 +9,17 @@
                     <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
                         <el-input v-model="resultData.roleName" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否有效" :label-width="formLabelWidth"  class="formitem"  >
-                        <el-select  v-model="resultData.enabled" placeholder="请选择">
-                             <el-option value="0" label="无效"></el-option>
-                            <el-option value="1" label="有效"></el-option>
+                    <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
+                        <el-select v-model="resultData.enabled">
+                            <el-option value="0" label="无效"></el-option>
+                            <el-option value="1" label="有效" checked="checked"></el-option>
                         </el-select>
                         <!-- <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox> -->
 
                     </el-form-item>
                     <el-form-item class="formitem_btn">
                         <el-button type="primary" size="mini" @click="onSubmit('resultData')">提交</el-button>
-                        <el-button @click="callOf('rules')"  size="mini">取消</el-button>
+                        <el-button @click="callOf('rules')" size="mini">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -34,25 +35,27 @@
 
             <!-- </el-table> -->
 
-            <el-table 
-             v-loading="loading"
-                element-loading-text="拼命加载中"
-                element-loading-spinner="el-icon-loading"
-               element-loading-background="rgba(0, 0, 0, 0.8)"
-            :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%"
-                :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}"   
-               >
-                <el-table-column type="index" :index="indexMethod(0)" label="序列号" width="120" height="10">
+            <el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.8)" :data="tableData" :height="heightItem"
+                :max-height="heightItem" border style="width: 100%" :header-cell-style="{padding:'8px 0'}"
+                :cell-style="{padding:'5px 0'}">
+                <el-table-column type="index" :index="indexMethod(1)" label="序列号" width="120" height="10">
                 </el-table-column>
                 <el-table-column prop="roleName" label="角色名称"></el-table-column>
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
                 <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" icon="el-icon-edit" style="width:57px; padding: 5px 0px 5px 0px;" @click="handleEdit(scope.$index, scope.row)">修改
+                        <el-button size="mini" type="primary" icon="el-icon-edit"
+                            style="width:57px; padding: 5px 0px 5px 0px;" @click="handleEdit(scope.$index, scope.row)">
+                            修改
                         </el-button>
-                        <el-button size="mini" type="danger"   icon="el-icon-delete" style="width:57px; padding: 5px 0px 5px 0px;" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button size="mini" type="danger" icon="el-icon-delete"
+                            style="width:57px; padding: 5px 0px 5px 0px;"
+                            @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
-                        <el-button type="primary" size="mini"  icon="el-icon-edit" style="width:57px; padding: 5px 0px 5px 0px;" @click="addRoleqx(scope.$index, scope.row)">权限</el-button>
+                        <el-button type="primary" size="mini" icon="el-icon-edit"
+                            style="width:57px; padding: 5px 0px 5px 0px;" @click="addRoleqx(scope.$index, scope.row)">权限
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -60,20 +63,23 @@
                 background>
             </el-pagination> -->
             <el-dialog title="权限设置" :visible.sync="dialogFormVisibleqx" id="roledialogqxxg">
-                <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tabs v-model="activeName" v-loading="loading" element-loading-text="拼命加载中"
+                    element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
+                    @tab-click="handleClick">
                     <!-- <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
                        
                     </el-tab-pane> -->
                     <el-tab-pane style="min-height:200px;" label="菜单权限" name="first">
                         <el-tree :data="treedata" show-checkbox default-expand-all ref="tree" node-key="id"
-                            highlight-current :props="defaultProps" :default-checked-keys="defaultcheckedkeys">
+                            highlight-current :props="defaultProps" :default-checked-keys="defaultcheckedkeys"
+                            :check-strictly="checkstrictly" @check="eltreeCheckchange">
                         </el-tree>
                     </el-tab-pane>
                     <el-tab-pane style="min-height:200px;" label="分配用户" name="second">
                         <el-transfer v-model="Uservalue" :props="{
                             key: 'id',
                             label: 'userName'
-                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata" >
+                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata">
                         </el-transfer>
 
                     </el-tab-pane>
@@ -98,6 +104,7 @@
         getMenuTree,
         getUserData,
         addAndUpduteData,
+        addAndUpduteUserData,
         qxtreeDatachecked,
         getroleGJjsID
     } from '../../services/rwfkPage.js'
@@ -147,6 +154,7 @@
                 Uservalue: [],
                 defaultcheckedkeys: [],
                 heightItem: window.innerHeight - 160, // 计算表格的高度
+                checkstrictly: true
 
                 // munevalue: []
 
@@ -182,9 +190,11 @@
             //     });
             // },
             //获取用户信息
-            getUserManList() {
+            getUserManList(id) {
                 getUserData().then((data) => {
-                    this.transferUserdata = data.data.result;
+                    this.transferUserdata = data.data.result.filter(item => item.userName != "").filter(item =>
+                        item.userName != null);
+                    this.getRolesGjuserid(id);
 
                 });
             },
@@ -225,11 +235,12 @@
                     type: 'warning'
                 }).then(() => {
                     this.tableData.splice(index, 1)
-                    deleteRoleData(this.resultData.id).then((data) => {
+                    deleteRoleData(row.id).then((data) => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
                         })
+                        this.getRoledata()
 
                     });
 
@@ -253,7 +264,9 @@
                                     message: '操作成功!'
                                 });
                                 this.dialogFormVisible = false;
-                                 this.getRoledata()
+                                this.getRoledata()
+
+
                             }
                             //alert("成功！")
                         });
@@ -273,37 +286,42 @@
                     })
                     .catch(_ => {});
             },
-            //获取所有的菜单
-            getALLmenuData() {
+            //添加权限获取所有的菜单
+            getALLmenuData(id) {
                 getMenuTree().then((data) => {
                     this.treedata = data.data.result;
+                    this.getTreeDatagj_id(id);
                 });
             },
             //权限弹窗
             addRoleqx(index, row) {
                 this.resultData.id = this.tableData[index].id;
                 this.dialogFormVisibleqx = true;
-                this.getALLmenuData();
-                this.getTreeDatagj_id(this.resultData.id);
-
-
+                this.getALLmenuData(this.resultData.id);
             },
-            //根据用户ID 获取用户拥有的菜单(树形结构)
+            //根据角色ID 获取角色拥有的菜单(树形结构)
             getTreeDatagj_id(roleId) {
                 qxtreeDatachecked(roleId).then((data) => {
                     var result = data.data.result;
                     var treedata = [];
-                    for (let i = 0; i < result.length; i++) {
-                        treedata.push(result[i].id);
+                    if (result.length > 0) {
+                        for (let i = 0; i < result.length; i++) {
+                            treedata.push(result[i].id);
+                        }
+                        this.defaultcheckedkeys = treedata;
+                        this.loading = false;
+                    } else {
+                        this.defaultcheckedkeys = [];
+                        this.loading = false;
                     }
-                    this.defaultcheckedkeys = treedata;
+
                 })
 
             },
 
             //根据角色ID查询（全部）
             getRolesGjuserid(roleId) {
-                qxtreeDatachecked(roleId).then((data) => {
+                getroleGJjsID(roleId).then((data) => {
                     var result = data.data.result;
                     var transferData = [];
                     for (let i = 0; i < result.length; i++) {
@@ -317,7 +335,6 @@
             submitqx() {
                 let roleId = this.resultData.id;
                 if (this.activeName == "first") {
-
                     //获取最底层节点的数据
                     let treechildrendata = this.$refs.tree.getCheckedNodes();
                     //获取半选中节点的数据
@@ -337,25 +354,30 @@
                                 type: 'success',
                                 message: '操作成功！'
                             });
-                            this.qxtiqx()
+                            this.getRoledata();
+                            this.qxtiqx();
 
                         }
                     });
                 } else {
                     let userIds = JSON.stringify([...this.Uservalue]);
                     // console.log(userIds);
-                    addAndUpduteData(roleId, userIds).then((data) => {
+                    addAndUpduteUserData(roleId, userIds).then((data) => {
                         if (data.data.success == true) {
                             this.$message({
                                 type: 'success',
                                 message: '操作成功！'
                             })
+                            this.getRoledata();
+
                             this.qxtiqx()
                         }
 
                     });
 
                 }
+                this.activeName = 'first';
+                this.checkstrictly = true;
 
 
 
@@ -363,14 +385,22 @@
             //权限宫格取消
             qxtiqx() {
                 this.dialogFormVisibleqx = false;
+                this.treedata = [];
+                this.defaultcheckedkeys = [];
+                this.transferUserdata = [];
+                this.Uservalue = [];
+                this.activeName = 'first';
+                this.checkstrictly = true;
+
+
             },
             handleClick(tab, event) { //切换新增标签栏的事件
                 if (tab.name == 'second') {
-                    this.getUserManList();
-                    this.getRolesGjuserid(this.resultData.id)
+                    this.getUserManList(this.resultData.id);
+                    // this.getRolesGjuserid(this.resultData.id)
                 } else {
-                    this.getALLmenuData();
-                    this.getTreeDatagj_id(this.resultData.id);
+                    this.getALLmenuData(this.resultData.id);
+                    // this.getTreeDatagj_id(this.resultData.id);
                     this.transferUserdata = [];
                 }
             },
@@ -389,6 +419,10 @@
                 this.treedata = [];
 
 
+            },
+            //权限菜单复选框操作的回掉函数
+            eltreeCheckchange() {
+                this.checkstrictly = false;
             },
             objectSpanMethod({
                 row,
@@ -454,14 +488,17 @@
         .el-table thead {
             background-color: red;
         }
-        .el-dialog__body{
-            padding:5px 30px;
+
+        .el-dialog__body {
+            padding: 5px 30px;
         }
-        .el-transfer-panel{
-            width:39%;
+
+        .el-transfer-panel {
+            width: 39%;
         }
-         .el-transfer-panel__item.el-checkbox{
-            width:90%;
+
+        .el-transfer-panel__item.el-checkbox {
+            width: 90%;
         }
     }
 </style>

@@ -334,6 +334,7 @@ export function getAllmenuinfo(roleId) {
                 method: 'POST',
                 data: {
                     roleId: roleId,
+                    type: 'menu'
                 }
 
             })

@@ -7,7 +7,7 @@
     <div class="manage_bmTable">
       <header>菜单管理</header>
       <div style="border-left:1px solid #EBEEF5;">
-        <router-view></router-view>
+        <router-view @MenuheadCallBack="MuneheadCall"></router-view>
       </div>
       </el-table>
     </div>
@@ -83,7 +83,16 @@
 
         this.editableTabs2 = tabs.filter(tab => tab.name !== targetName);
       },
+      MuneheadCall(data){
+         this.treeData = data;
+          this.$store.dispatch('getmenuid', this.treeData[0].id);
+          if( this.treeData.length>0){
+                  this.currentNodekey =  this.treeData[0].id;
+                  this.expandedkeys.push( this.treeData[0].id);
 
+              }
+
+      }
 
 
     },
@@ -100,6 +109,7 @@
       });
       this.tableData = Array(20).fill(this.item);
     },
+    
     beforeRouteEnter(to, from, next) {
       var self = this;
 

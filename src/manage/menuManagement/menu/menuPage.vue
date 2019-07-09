@@ -1,9 +1,9 @@
 <template>
     <div id="menuPage">
         <el-row class="elrow">
-            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addDepartment">增加
+            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addMenu">增加
             </el-button>
-            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">修改
+            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataMenu">修改
             </el-button>
             <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
@@ -35,23 +35,23 @@
                     <el-form-item v-if="type" label="图标" :label-width="formLabelWidth" class="formitem" prop="icon">
                         <el-input v-model="resultData.icon" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
+                    <el-form-item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
                         <el-input v-model="resultData.url" style="width: 0.43rem;"></el-input>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem"
-                        prop="location">
+                    <el-form-item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem" prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
                             <el-option label="左侧" value="left"></el-option>
                             <el-option label="顶部" value="top"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item item v-if="type" label="菜单排序" :label-width="formLabelWidth" class="formitem"
-                        prop="sortNo">
+                    <el-form-item v-if="type" label="菜单排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
                         <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交</el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2"  size="mini"  style="margin-right: .1rem;">取消
+                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交
+                        </el-button>
+                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini"
+                            style="margin-right: .1rem;">取消
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -78,12 +78,32 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="功能按钮" :label-width="formLabelWidth">
-                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" checked="checked"
-                        :disabled="true">
-                        {{item.menuName}}</el-checkbox>
-
+                <el-form-item label="按钮类型" :label-width="formLabelWidth">
+                    <el-select v-model="formData.type" placeholder="请选择类型" :disabled="true">
+                        <el-option label="菜单" value="menu"></el-option>
+                        <el-option label="按钮" value="button"></el-option>
+                    </el-select>
                 </el-form-item>
+                <el-form-item v-if="t_type" label="图标" :label-width="formLabelWidth">
+                    <el-input v-model="formData.icon" style="width: 0.43rem;" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item v-if="t_type" label="路由" :label-width="formLabelWidth">
+                    <el-input v-model="formData.url" style="width: 0.43rem;" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item v-if="t_type" label="位置" :label-width="formLabelWidth">
+                    <el-select v-model="formData.location" placeholder="请选择位置" :disabled="true">
+                        <el-option label="左侧" value="left"></el-option>
+                        <el-option label="顶部" value="top"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-if="t_type" label="菜单排序" :label-width="formLabelWidth">
+                    <el-input v-model.number="formData.sortNo" style="width: 0.43rem;" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="功能按钮" :label-width="formLabelWidth">
+                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" :disabled="true">
+                        {{item.menuName}}</el-checkbox>
+                </el-form-item>
+
                 <el-form-item label="" :label-width="formLabelWidth">
                     <el-checkbox v-if="formData.enabled=1" checked="checked" v-model="checked" :disabled="true">是否有效
                     </el-checkbox>
@@ -100,7 +120,8 @@
         menuGetData,
         deleteMenu,
         getAllmenuinfo,
-        sysMenuYZ
+        sysMenuYZ,
+        getMenuTree
 
     } from '../../../services/rwfkPage.js'
     import {
@@ -112,6 +133,7 @@
             return {
                 formData: {},
                 type: false,
+                t_type: false,
                 resultData: {
                     id: '',
                     userId: '',
@@ -203,7 +225,12 @@
                     this.formData = {
                         ...data.data.result
                     };
-                    this.l
+                    if (this.formData.type == "menu") {
+                        this.t_type = true
+                    } else {
+                        this.t_type = false
+                    }
+
                 });
                 this.testHeight = document.querySelector('body').offsetHeight - 90;
             },
@@ -223,9 +250,9 @@
             },
             //form 表单关闭
             callOf(formName) {
-                 this.$refs['resultData'].resetFields();
+                this.$refs['resultData'].resetFields();
                 this.dialogFormVisible = false;
-               
+
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';
@@ -245,28 +272,40 @@
             qh(event, item) {
                 console.log(event)
                 if (event == "menu") {
-                    this.type = true
+                    this.type = true;
+                    this.resultData.sortNo = this.formData.sortNo;
+                    this.resultData.icon = this.formData.icon;
+                    this.resultData.url = this.formData.url;
+                    this.resultData.location = this.formData.location;
                 } else {
-                    this.type = false
+                    this.type = false;
+                    this.resultData.sortNo = '';
+                    this.resultData.icon = '';
+                    this.resultData.url = '';
+                    this.resultData.location = '';
+
                 }
 
             },
-            addDepartment() {
+            //新增菜单
+            addMenu() {
                 this.title = "菜单新增"
                 this.dialogFormVisible = true;
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';
-                this.resultData.parentId = '';
+                this.resultData.parentId = this.$store.state.menuManage.treeid;
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
                 this.resultData.url = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
+                this.type=false;
                 this.getUserDataParent();
             },
-            updataDepartment() {
+            //修改菜单
+            updataMenu() {
                 this.title = "菜单修改"
                 this.dialogFormVisible = true;
                 this.resultData.id = this.formData.id;
@@ -279,8 +318,20 @@
                 this.resultData.url = this.formData.url;
                 this.resultData.location = this.formData.location;
                 this.resultData.type = this.formData.type;
-                this.type = this.formData.type;
+                if (this.formData.type == "menu") {
+                    this.type = true;
+                } else {
+                    this.type = false;
+                }
+
                 this.getUserDataParent();
+            },
+            getMenuTreef() {
+                getMenuTree().then((data) => {
+                    this.$emit("MenuheadCallBack", data.data.result)
+
+                });
+
             },
             onSubmit(form) {
                 if (this.checked == true) {
@@ -288,7 +339,7 @@
                 } else {
                     this.resultData.enabled = 0;
                 }
-                this.resultData.userId = '1';
+                this.resultData.userId = this.$store.state.user.userId;
                 const formData = this.resultData;
                 this.$refs[form].validate((valid) => {
                     if (valid) {
@@ -301,6 +352,8 @@
                                 });
                                 this.dialogFormVisible = false;
                             }
+                            this.getMenuTreef();
+                            this.created(this.$store.state.menuManage.treeid);
                             //alert("成功！")
                         });
                         // alert('submit!');
@@ -328,6 +381,8 @@
                                     type: 'success',
                                     message: '删除成功'
                                 })
+                                this.getMenuTreef();
+                                this.created(this.$store.state.menuManage.treeid);
                             });
                         } else {
                             this.$message({
