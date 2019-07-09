@@ -22,12 +22,29 @@
 
 .elbutton2 {
     height: .07rem;
-    line-height: .03rem;
+    line-height: 0rem;
     margin-left: .1rem;
 }
 
 .addbtn {
-    width: 52px;
+    width: 58px;
     text-align: center;
     padding: 6px;
+}
+
+.el-select {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+.el-input {
+    position: relative;
+    font-size: 14px;
+    display: inline-block;
+    width: 50%;
+}
+
+.el-dialog .el-input {
+    width: 100% !important;
 }

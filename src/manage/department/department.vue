@@ -2,12 +2,12 @@
 <template lang="html">
   <div style="width:100%;height:100%;">
     <div class="manageTree">
-      <ManageTree :treeName="manageTreeName" :treeData="treeData"  ></ManageTree>
+      <ManageTree :treeName="manageTreeName" :treeData="treeData" ></ManageTree>
     </div>
     <div class="manage_bmTable">
       <header>部门管理</header>
       <div style="border-left:1px solid #EBEEF5;">
-        <router-view></router-view>
+        <router-view @headCallBack="headCall"></router-view>
       </div>
       </el-table>
     </div>
@@ -28,7 +28,7 @@
 </template>
 <script>
   import {
-        getDepartmentTree
+    getDepartmentTree
   } from '../../services/rwfkPage.js'
   export default {
     data() {
@@ -93,16 +93,23 @@
 
         this.editableTabs2 = tabs.filter(tab => tab.name !== targetName);
       },
+      headCall(treeData) { //回调方法，接收子组件传的参数
+        this.treeData = treeData;
+        this.$store.dispatch('getid', this.treeData[0].id);
+        console.log("aa" + this.treeData)
 
-
-
-    },
-    created() {
-      getDepartmentTree().then((data) => {
+      },
+      //获取部门的树形下拉菜单
+      getbmTree(){
+         getDepartmentTree().then((data) => {
         this.treeData = data.data.result;
-          this.$store.dispatch('getid', this.treeData[0].id);
+        this.$store.dispatch('getid', this.treeData[0].id);
       });
       this.tableData = Array(20).fill(this.item);
+      }
+    },
+    created() {
+     this.getbmTree()
     },
     beforeRouteEnter(to, from, next) {
       var self = this;

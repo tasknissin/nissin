@@ -1,19 +1,21 @@
 <template>
     <div>
         <el-row class="elrow">
-            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addDepartment">增加
+            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn"
+                @click="addDepartment">增加
             </el-button>
-            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">修改
+            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">
+                修改
             </el-button>
             <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="部门编号" :label-width="formLabelWidth" class="formitem" prop="departmant">
-                        <el-input v-model="resultData.departmant" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.departmant" ></el-input>
                     </el-form-item>
                     <el-form-item label="部门名称" :label-width="formLabelWidth" class="formitem" prop="departmantName">
-                        <el-input v-model="resultData.departmantName" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.departmantName"></el-input>
                     </el-form-item>
                     <el-form-item label="父级部门编号" :label-width="formLabelWidth" class="formitem" prop="parentId">
                         <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
@@ -32,10 +34,10 @@
                         <el-input v-model="resultData.departmantType"></el-input>
                     </el-form-item> -->
                     <el-form-item label="部门负责人" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.departmantOwner" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.departmantOwner" ></el-input>
                     </el-form-item>
                     <el-form-item label="部门排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
+                        <el-input v-model.number="resultData.sortNo" ></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
@@ -54,10 +56,10 @@
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="部门编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmant" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.departmant" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="部门名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmantName" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.departmantName" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="父级部门编号" :label-width="formLabelWidth">
                     <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
@@ -75,10 +77,10 @@
                     <el-input v-model="formData.departmantType" :disabled="true"></el-input>
                 </el-form-item> -->
                 <el-form-item label="排序编码" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmantType" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.sortNo" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="部门负责人" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmantOwner" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.departmantOwner" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="是否有效" :label-width="formLabelWidth">
                     <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked" :disabled="true"> 是否有效
@@ -96,7 +98,8 @@
         getDepartment,
         deleteDepartment,
         getAlldepartsinfo,
-        sysDepartmantYZ
+        sysDepartmantYZ,
+        getDepartmentTree
 
     } from '../../../services/rwfkPage.js'
     import {
@@ -175,11 +178,12 @@
         }),
         mounted() {
             let id = this.$store.state.department.treeid;
-            this.created(id);
+            this.getDepartmentData(id);
             this.getUserDataParent();
         },
         methods: {
-            created(id) {
+            getDepartmentData(id) {
+                this.formData = {};
                 getDepartment(id).then((data) => {
                     this.formData = {
                         ...data.data.result
@@ -205,7 +209,14 @@
                 this.title = "部门新增"
                 this.dialogFormVisible = true;
                 this.resultData.id = '';
-                this.options = [];
+                 this.resultData.parentId = this.$store.state.department.treeid;
+                this.options = []; 
+                this.resultData.departmant = '';
+                this.resultData.departmantName ='';
+                this.resultData.departmantType ='';
+                this.resultData.departmantOwner = '';
+                this.resultData.enabled ='';
+                this.resultData.sortNo = '';
                 this.getUserDataParent();
             },
             updataDepartment() {
@@ -217,13 +228,18 @@
                 this.resultData.departmantName = this.formData.departmantName;
                 this.resultData.parentId = this.formData.parentId;
                 // this.resultData.parentName = this.formData.parentName;
-                this.resultData.departmantType = this.formData.departmantType;
+                this.resultData.departmantType = this.formData.sortNo;
                 this.resultData.departmantOwner = this.formData.departmantOwner;
                 this.resultData.enabled = this.formData.enabled;
                 this.resultData.sortNo = this.formData.sortNo;
                 this.getUserDataParent();
             },
-
+            //树形菜单
+            getTreeData() {
+                getDepartmentTree().then((data) => {
+                    this.$emit('headCallBack', data.data.result);
+                });
+            },
             onSubmit(form) {
                 if (this.checked == true) {
                     this.resultData.enabled = 1;
@@ -241,6 +257,9 @@
                                 message: '操作成功!'
                             });
                             this.dialogFormVisible = false;
+                            this.getTreeData();
+                            //this.$parent.getbmTree
+                            this.getDepartmentData(this.$store.state.department.treeid);
                         });
                         // alert('submit!');
                     } else {
@@ -262,12 +281,13 @@
                                     type: 'success',
                                     message: '删除成功'
                                 })
+                                 this.getTreeData()
                             });
-                        }else{
+                        } else {
                             this.$message({
-                                    type: 'success',
-                                    message: data.data.message
-                                })
+                                type: 'success',
+                                message: data.data.message
+                            })
                         }
 
 
@@ -283,10 +303,10 @@
 
             },
             //form 表单关闭
-            callOf(formName) { 
+            callOf(formName) {
                 this.$refs['resultData'].resetFields();
                 this.dialogFormVisible = false;
-               
+
                 this.options = [];
                 this.resultData.id = '';
                 this.resultData.departmant = '';
@@ -298,8 +318,8 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 // location.reload();
-              
-                this.created(this.$store.state.department.treeid)
+
+                this.getDepartmentData(this.$store.state.department.treeid)
             },
             proving1(e) {
                 var boolean = new RegExp("^\+?[1-9][0-9]*$").test(e.target.value);
@@ -314,7 +334,7 @@
         watch: {
             dataId: function (str) {
                 this.id = str;
-                this.created(str)
+                this.getDepartmentData(str)
             },
 
 
