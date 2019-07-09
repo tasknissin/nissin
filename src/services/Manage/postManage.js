@@ -515,3 +515,27 @@ export function searchTypeMenuData(userId,position){
         })
     })
 }
+
+// 查询用户登录信息
+export function searchUserMessageData(userId){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:Login.SearchUserInfo_API,
+            method:'POST',
+            data:{
+                id:userId,
+            }
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}

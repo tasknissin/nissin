@@ -68,7 +68,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button size="mini" @click="cancelHandel">取 消</el-button>
-                    <el-button size="mini" type="primary" @click="updateHandle">确 定</el-button>
+                    <el-button size="mini" type="primary" @click="submitForm('dictionaryFormLog')">确 定</el-button>
                 </div>
             </el-dialog>
         </section>
@@ -232,36 +232,47 @@ export default {
             }
         },
         // 确定新增数据
-        updateHandle(){
-            this.updateIndex = this.updateIndex ? this.updateIndex : ''
-            let obj = {
-                id:this.updateIndex,
-                type:this.form.type,   //类型
-                key:this.form.key,   //编码
-                value:this.form.value,   //名称
-                enabled:this.form.enabled,    //是否有效
-                sortNo:this.form.sortNo,   //排序
-                userId:this.userId     // 登录人（用户ID）
-            }
-            this.dialogFormVisible = false
-            addUpdateDictionaryManList(obj).then((result)=>{
-                if(result.success){
-                    // 加载系统字典数据
-                    searchDictionaryManList('').then((result)=>{
-                        this.tableData = result.result;
-                        console.log(result)
+        submitForm(formName){
+             this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.updateIndex = this.updateIndex ? this.updateIndex : ''
+                    let obj = {
+                        id:this.updateIndex,
+                        type:this.form.type,   //类型
+                        key:this.form.key,   //编码
+                        value:this.form.value,   //名称
+                        enabled:this.form.enabled,    //是否有效
+                        sortNo:this.form.sortNo,   //排序
+                        userId:this.userId     // 登录人（用户ID）
+                    }
+                    this.dialogFormVisible = false
+                    addUpdateDictionaryManList(obj).then((result)=>{
+                        if(result.success){
+                            // 加载系统字典数据
+                            searchDictionaryManList('').then((result)=>{
+                                this.tableData = result.result;
+                                console.log(result)
+                            })
+                            this.$message({
+                                type: 'success',
+                                message: '成功!'
+                            })
+                        }else{
+                            this.$message({
+                                type: 'error',
+                                message: '失败!'
+                            })
+                        }
                     })
-                    this.$message({
-                        type: 'success',
-                        message: '成功!'
-                    })
-                }else{
+                } else {
                     this.$message({
                         type: 'error',
-                        message: '失败!'
+                        message: '验证失败!'
                     })
+                    return false;
                 }
-            })
+            });
+            
         },
         // 表格修改
         handleEdit(index, row) {

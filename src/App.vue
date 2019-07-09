@@ -10,7 +10,7 @@
                 </div>
             </div>
         <ul class="userInfo-box">
-            <li><i class="el-icon-s-custom"></i><span>白瑞红</span></li>
+            <li><i class="el-icon-s-custom"></i><span>{{userName}}</span></li>
             <li @click="loginOutHandle"><i class="el-icon-switch-button"></i><span></span></li>
         </ul>
         <el-menu
@@ -49,12 +49,14 @@ export default {
       activeIndex: 'home',
       menuData:[],
       headerFalg:true,
+      userName:''
     }
   },
   computed: {
     ...mapState({
       userId:state => state.user.userId,
-      token:state => state.user.token
+      token:state => state.user.token,
+      userInfo:state => state.user.userInfo
     })
   },
   watch:{
@@ -81,7 +83,6 @@ export default {
     // }
   },
   created() {
-    
     if(window.location.hash.indexOf('login') != -1){   // 当为登录页面时隐藏头部
       this.headerFalg = false;
     }
@@ -89,6 +90,7 @@ export default {
       this.menuData = data;
     })
     this.menuData = JSON.parse(localStorage.getItem('tMenu'))
+    this.userName = JSON.parse(this.userInfo).userName
   },
 };
 </script>

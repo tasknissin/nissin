@@ -87,7 +87,7 @@
                 </el-tabs>
                 <div slot="footer" class="dialog-footer">
                     <el-button size="small" @click="cancelHandel">取 消</el-button>
-                    <el-button size="small" type="primary" @click="updateHandle">确 定</el-button>
+                    <el-button size="small" type="primary" @click="submitForm('userManageFormLog')">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -231,10 +231,18 @@ export default {
             }
         })
         getRolesUserManList().then((result)=>{  //获取新增角色权限
-                this.transferDataRloe = result.result
+                result.result.map((item,index)=>{
+                    if(item.enabled == '1'){
+                        this.transferDataRloe.push(item)
+                    }
+                })
         })
         getpostManageList('').then((result) => {   // 获取所有岗位权限
-            this.transferDataDep = result.result;
+            result.result.map((item,index)=>{
+                if(item.enabled == '1'){
+                    this.transferDataDep.push(item)
+                }
+            })
         });
        
     },
@@ -263,7 +271,8 @@ export default {
             this.dialogFormVisible = true;
             this.passwordFlag = true;
             this.elTabFour = false;
-            this.activeName = 'first'            
+            this.activeName = 'first'  
+            this.updateIndex = '';          
             console.log(this.form)
         },
         // 取消新增操作
@@ -276,73 +285,104 @@ export default {
             }
         },
         // 确定新增数据
-        updateHandle(){
-            // 重置密码
-            if(this.ruleForm.pass != '' && this.ruleForm.checkPass != ''){
-                resetoneUserPasswordList(this.updateIndex,this.ruleForm.pass).then((result)=>{
-                    console.log(result)
-                })
-            }
-            if(this.Depvalue.length > 0 && this.form.userName != '' && this.form.userName != ''){
-                this.updateIndex = this.updateIndex ? this.updateIndex : ''
-                let obj = {
-                        id:this.updateIndex,
-                        userCode:this.form.userCode,   //用户编号
-                        userName:this.form.userName,   //用户姓名
-                        password:this.form.password,   //用户密码
-                        mail:this.form.mail,        // 邮箱号
-                        mobile:this.form.mobile,    // 手机号
-                        enabled:this.form.enabled,    //是否有效
-                        userId:this.userId   // 登录人（用户ID）
-                }
-                this.dialogFormVisible = false
-                this.form.departmantId = this.departmantId;
-                addUserManList(obj).then((result)=>{    // 用户新增
-                    if(result.success){
-                        this.AdduserId = result.result;
-                        // this.AdduserId = this.updateIndex ?  this.updateIndex : ''
-                        let roleval = JSON.stringify([...this.Rloevalue])
-                        addUser_RolesManList(this.AdduserId,roleval).then((result)=>{    // 用户-角色新增
-                            if(result.success){
-                            }else{
-                                this.$message({
-                                    type: 'error',
-                                    message: '用户角色错误，添加失败!'
+        submitForm(formName){
+            let successFlag = true;
+            this.$refs[formName].validate((valid) => {
+                if(this.elTabFour){
+                    // 重置密码
+                    if(this.ruleForm.pass != '' && this.ruleForm.checkPass != ''){
+                        this.$refs['ruleForm'].validate((valid) => {
+                            if(valid){
+                                resetoneUserPasswordList(this.updateIndex,this.ruleForm.pass).then((result)=>{
+                                    console.log(result)
                                 })
                             }
                         })
-                        let depval = JSON.stringify([...this.Depvalue])
-                        addUser_DepsManList(this.AdduserId,depval).then((result)=>{    // 用户-岗位新增
+                    }else if(this.ruleForm.pass != '' || this.ruleForm.checkPass != ''){
+                        this.$refs['ruleForm'].validate((valid) => {
+                            if(!valid){
+                                successFlag = false;
+                            
+                            }
+                        })
+                    }
+                }
+                if (valid) {
+                    if(this.Depvalue.length > 0 && this.form.userName != '' && this.form.userName != ''){
+                        this.updateIndex = this.updateIndex ? this.updateIndex : ''
+                        let obj = {
+                                id:this.updateIndex,
+                                userCode:this.form.userCode,   //用户编号
+                                userName:this.form.userName,   //用户姓名
+                                password:this.form.password,   //用户密码
+                                mail:this.form.mail,        // 邮箱号
+                                mobile:this.form.mobile,    // 手机号
+                                enabled:this.form.enabled,    //是否有效
+                                userId:this.userId   // 登录人（用户ID）
+                        }
+                        this.dialogFormVisible = false
+                        this.form.departmantId = this.departmantId;
+                        addUserManList(obj).then((result)=>{    // 用户新增
                             if(result.success){
-                                getUserManageList(this.departmantId).then((result) => {
-                                    this.tableData = result.result;
-                                });
-                                this.$message({
-                                    type: 'success',
-                                    message: '成功!'
+                                this.AdduserId = result.result;
+                                // this.AdduserId = this.updateIndex ?  this.updateIndex : ''
+                                let roleval = JSON.stringify([...this.Rloevalue])
+                                addUser_RolesManList(this.AdduserId,roleval).then((result)=>{    // 用户-角色新增
+                                    if(result.success){
+                                    }else{
+                                        this.$message({
+                                            type: 'error',
+                                            message: '用户角色错误，添加失败!'
+                                        })
+                                    }
                                 })
+                                let depval = JSON.stringify([...this.Depvalue])
+                                addUser_DepsManList(this.AdduserId,depval).then((result)=>{    // 用户-岗位新增
+                                    if(result.success){
+                                        getUserManageList(this.departmantId).then((result) => {
+                                            this.tableData = result.result;
+                                        });
+                                        if(successFlag){
+                                            this.$message({
+                                            type: 'success',
+                                            message: '信息修改成功!'
+                                            })
+                                        }else{
+                                             this.$message({
+                                                type: 'error',
+                                                message: '密码重置有误!'
+                                            })
+                                        }
+                                        
+                                    }else{
+                                        this.$message({
+                                            type: 'error',
+                                            message: '信息修改失败!'
+                                        })
+                                    }
+                                }) 
                             }else{
                                 this.$message({
                                     type: 'error',
                                     message: '添加失败!'
                                 })
                             }
-                        }) 
+                        })
                     }else{
                         this.$message({
-                            type: 'error',
-                            message: '添加失败!'
+                            type: 'warning',
+                            message: '用户信息及岗位不能为空！'
                         })
                     }
-                })
-
-                
-            }else{
-                this.$message({
-                    type: 'warning',
-                    message: '用户信息及岗位不能为空！'
-                })
-            }
+                }else {
+                     this.$message({
+                        type: 'error',
+                        message: '验证失败!'
+                    })
+                    return false;
+                }
+            });
+           
             
         },
         // 表格修改
@@ -404,21 +444,6 @@ export default {
                 })
             })
         },
-        // submitForm(formName) {
-        //     console.log(this.ruleForm)
-        //     console.log(formName)
-        //     this.$refs[formName].validate((valid) => {
-        //         if (valid) {
-        //             console.log(valid)
-        //         } else {
-        //             console.log('error submit!!');
-        //             return false;
-        //         }
-        //     });
-        // },
-        // resetForm(formName) {
-        //     this.$refs[formName].resetFields();
-        // }
     },
     mounted() {
         const that = this

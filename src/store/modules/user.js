@@ -1,12 +1,19 @@
-import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId } from '@/utils/auth'
-import { userLoginController } from '../../services/Manage/postManage.js'
+import { getToken, 
+        setToken, 
+        removeToken, 
+        getUserId, 
+        setUserId, 
+        removeUserId,
+        getUserInfo,
+        setUserInfo,
+        removeUserInfo,
+       } from '@/utils/auth'
+import { userLoginController,searchUserMessageData } from '../../services/Manage/postManage.js'
 const user = {
   state: {
     token: getToken(),  //登录的token
     userId:getUserId(),   // 登录的用户id
-    name: '',
-    avatar: '',
-    roles: [],
+    userInfo: getUserInfo(),   //登录人信息
   },
 
   mutations: {
@@ -16,8 +23,8 @@ const user = {
     SET_USERID:(state,userId) =>{
       state.userId = userId
     },
-    SET_NAME: (state, name) => {
-      state.name = name
+    SET_USERINFO: (state, userInfo) => {
+      state.userInfo = {...userInfo}
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -39,6 +46,19 @@ const user = {
             setUserId(data.userId)
             commit('SET_TOKEN', data.token)  // 将touken保存到全局
             commit('SET_USERID',data.userId)  // 将登录的用户id保存到全局
+            // 获取用户信息
+            searchUserMessageData(data.userId).then(result => {
+              const data = JSON.stringify(result.result)
+              if(result.success){
+                setUserInfo(data);
+                commit('SET_USERINFO',result.result)
+              }else {
+                reject('getInfo: roles must be a non-null array !')
+              }
+              resolve(response)
+            }).catch(error => {
+              reject(error)
+            })
             resolve()
           }else{
             reject(response);
@@ -49,25 +69,6 @@ const user = {
         })
       })
     },
-
-    // // 获取用户信息
-    // GetInfo({ commit, state }) {
-    //   return new Promise((resolve, reject) => {
-    //     getInfo(state.token).then(response => {
-    //       const data = response.data
-    //       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-    //         commit('SET_ROLES', data.roles)
-    //       } else {
-    //         reject('getInfo: roles must be a non-null array !')
-    //       }
-    //       commit('SET_NAME', data.name)
-    //       commit('SET_AVATAR', data.avatar)
-    //       resolve(response)
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
 
     // // 登出
     // LogOut({ commit, state }) {

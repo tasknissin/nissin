@@ -36,12 +36,12 @@
                     </el-form-item>
                     <el-form-item label="父级岗位"  prop="parentId">
                         <el-select v-model="form.parentId" placeholder="请选择">
-                            <el-option v-for="item in parentIdSelectArr" :key="item.id" :label="item.value" :value="item.id"></el-option>
+                            <el-option v-for="(item,index) in parentIdSelectArr" :key="index" :label="item.value" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="所属部门"  prop="departmantId">
                         <el-select v-model="form.departmantId" placeholder="请选择">
-                            <el-option v-for="item in departmantIdArr" :key="item.id + item.value"  :label="item.value" :value="item.id"></el-option>
+                            <el-option v-for="item in departmantIdArr"  :key="item.id" :label="item.value" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="是否有效"  prop="enabled">
@@ -56,7 +56,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                 <el-button size="small" @click="cancelHandel">取 消</el-button>
-                <el-button size="small" type="primary" @click="updateHandle">确 定</el-button>
+                <el-button size="small" type="primary" @click="submitForm('postManageFormLog')">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -193,9 +193,17 @@ export default {
                 hierarchy:"", // 岗位级别
                 parentId:'',//父级岗位
                 departmantId: this.departmantId   // 部门id
-
             };
             this.dialogFormVisible = true;
+            this.updateIndex = '';          
+            this.parentIdSelectArr = [{id:'#',value:'根节点'}]
+            getpostManageList(this.departmantId).then((result) => {
+                if(result.success){
+                    result.result.map((item,index)=>{
+                        this.parentIdSelectArr.push({id:item.id,value:item.titleName})
+                    })
+                }
+            });
         },
         // 表格内部处理
         setTableHandle(res){
@@ -208,41 +216,53 @@ export default {
         // 取消新增操作
         cancelHandel(){
             this.dialogFormVisible = false;
-            this.$refs['postManageFormLog'].resetFields(); // 清空表单里的验证
             for(var m in this.form){
                 this.form[m] = this.oldform[m]
             }
+            this.$refs['postManageFormLog'].resetFields(); // 清空表单里的验证
+
         },
         // 确定新增数据
-        updateHandle(){
-            let obj = {
-                titleName : this.form.titleName,
-                titleType : this.form.titleType,
-                enabled : this.form.enabled,
-                sortNo : this.form.sortNo,
-                hierarchy:this.form.hierarchy,
-                parentId:this.form.parentId,
-                departmantId:this.form.departmantId,
-                id:this.updateIndex ? this.updateIndex : ''
-            }
-            this.dialogFormVisible = false
-            this.form.departmantId = this.departmantId;
-            addpostManList(obj).then((result)=>{
-                if(result.success){
-                    getpostManageList(this.departmantId).then((result) => {
-                        this.tableData = result.result;
-                    });
-                    this.$message({
-                        type: 'success',
-                        message: '成功!'
+        submitForm(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let obj = {
+                        titleName : this.form.titleName,
+                        titleType : this.form.titleType,
+                        enabled : this.form.enabled,
+                        sortNo : this.form.sortNo,
+                        hierarchy:this.form.hierarchy,
+                        parentId:this.form.parentId,
+                        departmantId:this.form.departmantId,
+                        id:this.updateIndex ? this.updateIndex : ''
+                    }
+                    this.dialogFormVisible = false
+                    this.form.departmantId = this.departmantId;
+                    addpostManList(obj).then((result)=>{
+                        if(result.success){
+                            getpostManageList(this.departmantId).then((result) => {
+                                this.tableData = result.result;
+                            });
+                            this.$message({
+                                type: 'success',
+                                message: '成功!'
+                            })
+                        }else{
+                            this.$message({
+                                type: 'error',
+                                message: '失败!'
+                            })
+                        }
                     })
-                }else{
+                } else {
                     this.$message({
                         type: 'error',
-                        message: '失败!'
+                        message: '验证失败!'
                     })
+                    return false;
                 }
-            })
+            });
+            
         },
         // 表格修改
         handleEdit(index, row) {
@@ -257,6 +277,13 @@ export default {
             this.oldform = {...this.tableData[index]}
             this.formIndex = index
             this.dialogFormVisible = true
+            getpostManageList(this.departmantId).then((result) => {
+                if(result.success){
+                    result.result.map((item,index)=>{
+                        this.parentIdSelectArr.push({id:item.id,value:item.titleName})
+                    })
+                }
+            });
         },
         // 表格删除数据
         handleDelete(index, row) {
