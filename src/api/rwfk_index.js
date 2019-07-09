@@ -345,6 +345,16 @@ const taskFeedback_api = '/task/feedbackInfoController/searchData'
 
 //任务反馈任务删除接口
 const deleteTask = '/task/feedbackInfoController/deleteById'
+    /*
+    *验证菜单编码是否存在重复	路径	sysMenuController/verificationRepeat	
+    	类型	POST	
+    	参数	id	菜单ID(当修改的时候才传递)
+    		menuCode	菜单编码
+    	返回值	true/false	存在重复项返回false，不存在返回true
+
+     */
+const menuVerificationRepeat = '/task/sysMenuController/verificationRepeat'
+
 export default {
     taskFk_API,
     department_API,
@@ -368,6 +378,7 @@ export default {
     sysDepartmant_yz,
     sysMenu_yz,
     taskFeedback_api,
-    deleteTask
+    deleteTask,
+    menuVerificationRepeat
 
 }

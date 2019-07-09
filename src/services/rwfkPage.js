@@ -423,3 +423,22 @@ export function deleteTaskFeedback(id) {
             })
     })
 }
+//菜单管理编码验证
+export function menuVerificationRepeat(menuCode, id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.menuVerificationRepeat,
+                method: 'POST',
+                data: {
+                    menuCode: menuCode,
+                    id: id
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}

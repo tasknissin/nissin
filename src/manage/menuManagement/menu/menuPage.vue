@@ -10,7 +10,7 @@
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="菜单编号" :label-width="formLabelWidth" class="formitem" prop="menuCode">
-                        <el-input v-model="resultData.menuCode" ></el-input>
+                        <el-input v-model="resultData.menuCode" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="菜单名称" :label-width="formLabelWidth" class="formitem" prop="menuName">
                         <el-input v-model="resultData.menuName"></el-input>
@@ -36,7 +36,7 @@
                         <el-input v-model="resultData.icon"></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.url" ></el-input>
+                        <el-input v-model="resultData.url"></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem" prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
@@ -45,7 +45,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="type" label="菜单排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo" ></el-input>
+                        <el-input v-model.number="resultData.sortNo"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交
@@ -64,10 +64,10 @@
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="菜单编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuCode" :disabled="true" ></el-input>
+                    <el-input v-model="formData.menuCode" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuName" :disabled="true" ></el-input>
+                    <el-input v-model="formData.menuName" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="父级菜单" :label-width="formLabelWidth">
                     <!-- <el-input v-model="formData.parentId" :disabled="true"></el-input> -->
@@ -100,7 +100,7 @@
                     <el-input v-model.number="formData.sortNo" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
-                    <el-checkbox  v-for="item in formData.childrenList" :key="item.id" :disabled="true">
+                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" :disabled="true">
                         {{item.menuName}}</el-checkbox>
                 </el-form-item>
 
@@ -121,7 +121,8 @@
         deleteMenu,
         getAllmenuinfo,
         sysMenuYZ,
-        getMenuTree
+        getMenuTree,
+        menuVerificationRepeat
 
     } from '../../../services/rwfkPage.js'
     import {
@@ -130,6 +131,34 @@
     import ' ../../../public/css/manage.css'
     export default {
         data() {
+            // var validatePass = (rule, value, callback) => {
+            //     if (value === '') {
+            //         callback(new Error('请输入菜单编码'));
+            //     } else {
+            //         if (this.rules.menuCode !== '') {
+            //             console.log("aaa")
+            //             // this.$refs.rules.validateField('menuCode');
+            //         }
+            //         callback();
+            //     }
+            // };
+                var menuKeyFlag = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('编码不能为空！'));
+            }else{
+                if(this.rules.menuCode != value){
+                    menuVerificationRepeat(value,this.resultData.id).then(result=>{
+                        console.log(result)
+                        if(result.data==false){
+                            return callback(new Error('编码已存在！'));
+                        }else{
+                            return callback()
+                        }
+                    })
+                }
+                
+            }   
+      };
             return {
                 formData: {},
                 type: false,
@@ -151,9 +180,8 @@
                 rules: {
 
                     menuCode: [{
-                        required: true,
-                        message: '请输入菜单编码',
-                        trigger: 'blur'
+                        trigger: 'blur',
+                        validator: menuKeyFlag,
                     }],
                     menuName: [{
                         required: true,
@@ -294,14 +322,14 @@
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';
-                this.resultData.parentId =this.formData.parentId;
+                this.resultData.parentId = this.formData.parentId;
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
                 this.resultData.url = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
-                this.type=false;
+                this.type = false;
                 this.getUserDataParent();
             },
             //修改菜单
