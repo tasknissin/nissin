@@ -355,6 +355,32 @@ const deleteTask = '/task/feedbackInfoController/deleteById'
      */
 const menuVerificationRepeat = '/task/sysMenuController/verificationRepeat'
 
+/*
+验证关联关系(是否存在下级部门)	路径	sysDepartmantController/verificationIncidenceRelationByChildren	
+	类型	POST	
+	参数	id	部门ID
+	返回值	{	
+		code:200	
+		success:true	
+		message:"验证通过，无下级部门！"	
+		result:true	
+		}	
+*/
+const verificationIncidenceRelationbm = '/task/sysDepartmantController/verificationIncidenceRelationByChildren'
+    /**
+     * 验证关联关系(是否存在关联岗位)	路径	sysDepartmantController/verificationIncidenceRelationByTitle	
+    	类型	POST	
+    	参数	id	部门ID
+    	返回值	{	
+    		code:200	
+    		success:true	
+    		message:"验证通过，无关联岗位！"	
+    		result:true	
+    		}	
+
+     */
+const verificationIncidenceRelationByTitlebm = '/task/sysDepartmantController/verificationIncidenceRelationByTitle'
+
 export default {
     taskFk_API,
     department_API,
@@ -379,6 +405,8 @@ export default {
     sysMenu_yz,
     taskFeedback_api,
     deleteTask,
-    menuVerificationRepeat
+    menuVerificationRepeat,
+    verificationIncidenceRelationbm,
+    verificationIncidenceRelationByTitlebm
 
 }
