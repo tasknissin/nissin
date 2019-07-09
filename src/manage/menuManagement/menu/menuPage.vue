@@ -19,7 +19,7 @@
                         <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
                             <el-option key="#" label="根节点" value="#">
                             </el-option>
-                            <el-option v-for="item in options" :key="item.id" :label="item.menuName" :value="item.id">
+                            <el-option v-for="option in options" :key="option.id" :label="option.menuName" :value="option.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -27,7 +27,7 @@
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
                     <el-form-item label="类型" :label-width="formLabelWidth" class="formitem" prop="type">
-                        <el-select v-model="resultData.type" @change="qh($event, item)" placeholder="请选择类型">
+                        <el-select v-model="resultData.type" @change="qh($event)" placeholder="请选择类型">
                             <el-option label="菜单" value="menu"></el-option>
                             <el-option label="按钮" value="button"></el-option>
                         </el-select>
@@ -100,7 +100,7 @@
                     <el-input v-model.number="formData.sortNo" style="width: 0.43rem;" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
-                    <el-checkbox v-for="item in formData.childrenList" :key="item.id" :disabled="true">
+                    <el-checkbox  v-for="item in formData.childrenList" :key="item.id" :disabled="true">
                         {{item.menuName}}</el-checkbox>
                 </el-form-item>
 
@@ -269,7 +269,7 @@
                 this.created(this.$store.state.menuManage.treeid)
 
             },
-            qh(event, item) {
+            qh(event) {
                 console.log(event)
                 if (event == "menu") {
                     this.type = true;
