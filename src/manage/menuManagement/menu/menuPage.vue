@@ -10,10 +10,10 @@
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="菜单编号" :label-width="formLabelWidth" class="formitem" prop="menuCode">
-                        <el-input v-model="resultData.menuCode" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.menuCode" ></el-input>
                     </el-form-item>
                     <el-form-item label="菜单名称" :label-width="formLabelWidth" class="formitem" prop="menuName">
-                        <el-input v-model="resultData.menuName" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.menuName"></el-input>
                     </el-form-item>
                     <el-form-item label="父级菜单编号" :label-width="formLabelWidth" class="formitem" prop="parentId">
                         <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
@@ -33,10 +33,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="type" label="图标" :label-width="formLabelWidth" class="formitem" prop="icon">
-                        <el-input v-model="resultData.icon" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.icon"></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.url" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.url" ></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem" prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
@@ -45,7 +45,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="type" label="菜单排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo" style="width: 0.43rem;"></el-input>
+                        <el-input v-model.number="resultData.sortNo" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交
@@ -64,10 +64,10 @@
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="菜单编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuCode" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.menuCode" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="菜单名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.menuName" :disabled="true" style="width: 0.43rem;"></el-input>
+                    <el-input v-model="formData.menuName" :disabled="true" ></el-input>
                 </el-form-item>
                 <el-form-item label="父级菜单编号" :label-width="formLabelWidth">
                     <!-- <el-input v-model="formData.parentId" :disabled="true"></el-input> -->
@@ -85,10 +85,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="图标" :label-width="formLabelWidth">
-                    <el-input v-model="formData.icon" style="width: 0.43rem;" :disabled="true"></el-input>
+                    <el-input v-model="formData.icon" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="路由" :label-width="formLabelWidth">
-                    <el-input v-model="formData.url" style="width: 0.43rem;" :disabled="true"></el-input>
+                    <el-input v-model="formData.url" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="位置" :label-width="formLabelWidth">
                     <el-select v-model="formData.location" placeholder="请选择位置" :disabled="true">
@@ -97,7 +97,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="菜单排序" :label-width="formLabelWidth">
-                    <el-input v-model.number="formData.sortNo" style="width: 0.43rem;" :disabled="true"></el-input>
+                    <el-input v-model.number="formData.sortNo" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="功能按钮" :label-width="formLabelWidth">
                     <el-checkbox  v-for="item in formData.childrenList" :key="item.id" :disabled="true">
@@ -214,11 +214,11 @@
         }),
         mounted() {
             let id = this.$store.state.menuManage.treeid;
-            this.created(id);
+            this.getmenuGetData(id);
             this.getUserDataParent();
         },
         methods: {
-            created(id) {
+            getmenuGetData(id) {
                 //console.log(this.$store.state.id);
                 menuGetData(id).then((data) => {
                     //console.log(data)
@@ -266,7 +266,7 @@
                 this.options = [];
                 //  location.reload();
                 this.type = false;
-                this.created(this.$store.state.menuManage.treeid)
+                this.getmenuGetData(this.$store.state.menuManage.treeid)
 
             },
             qh(event) {
@@ -353,7 +353,7 @@
                                 this.dialogFormVisible = false;
                             }
                             this.getMenuTreef();
-                            this.created(this.$store.state.menuManage.treeid);
+                            this.getmenuGetData(this.$store.state.menuManage.treeid);
                             //alert("成功！")
                         });
                         // alert('submit!');
@@ -382,7 +382,7 @@
                                     message: '删除成功'
                                 })
                                 this.getMenuTreef();
-                                this.created(this.$store.state.menuManage.treeid);
+                                this.getmenuGetData(this.$store.state.menuManage.treeid);
                             });
                         } else {
                             this.$message({
@@ -409,7 +409,7 @@
         watch: {
             menudataId: function (str) {
                 this.id = str;
-                this.created(str)
+                this.getmenuGetData(str)
             }
         }
     }

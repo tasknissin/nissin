@@ -7,7 +7,7 @@
             <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
-                        <el-input v-model="resultData.roleName" style="width: 0.43rem;"></el-input>
+                        <el-input v-model="resultData.roleName" ></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-select v-model="resultData.enabled">
@@ -409,7 +409,7 @@
                 this.resultData.id = '';
                 this.resultData.roleName = '';
                 this.resultData.enabled = '';
-                this.created()
+                this.getRoledata()
             },
             // 取消新增操作
             cancelHandel() {
