@@ -15,11 +15,11 @@
                     <el-form-item label="菜单名称" :label-width="formLabelWidth" class="formitem" prop="menuName">
                         <el-input v-model="resultData.menuName"></el-input>
                     </el-form-item>
-                    <el-form-item label="父级菜单编号" :label-width="formLabelWidth" class="formitem" prop="parentId">
-                        <el-select v-model="resultData.parentId" placeholder="请选择父级部门编号">
+                    <el-form-item label="父级菜单" :label-width="formLabelWidth" class="formitem" prop="parentId">
+                        <el-select v-model="resultData.parentId" placeholder="请选择父级部门">
                             <el-option key="#" label="根节点" value="#">
                             </el-option>
-                            <el-option v-for="option in options" :key="option.id" :label="option.menuName" :value="option.id">
+                            <el-option v-for="item in options" :key="item.id" :label="item.menuName" :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -69,9 +69,9 @@
                 <el-form-item label="菜单名称" :label-width="formLabelWidth">
                     <el-input v-model="formData.menuName" :disabled="true" ></el-input>
                 </el-form-item>
-                <el-form-item label="父级菜单编号" :label-width="formLabelWidth">
+                <el-form-item label="父级菜单" :label-width="formLabelWidth">
                     <!-- <el-input v-model="formData.parentId" :disabled="true"></el-input> -->
-                    <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
+                    <el-select v-model="formData.parentId" placeholder="请选择父级部门" :disabled="true">
                         <el-option key="#" label="根节点" value="#">
                         </el-option>
                         <el-option v-for="item in options" :key="item.id" :label="item.menuName" :value="item.id">
@@ -294,7 +294,7 @@
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';
-                this.resultData.parentId = this.$store.state.menuManage.treeid;
+                this.resultData.parentId =this.formData.parentId;
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
