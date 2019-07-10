@@ -13,7 +13,7 @@
             </div>
         </app-subheader>
         <app-content :selectData=selectData :selectObj=selectObj>
-            <el-row style="margin-bottom:10px">
+            <el-row style="margin-bottom:7px">
                 <el-col :span="4" id="feedbackType">
                     <label >反馈类型：</label>
                     <el-select placeholder="请选择反馈类型" v-model="selected" style="width:72%"
@@ -84,7 +84,7 @@
                 </el-table-column>
             </el-table>
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[5,10, 50, 100, 200]" :page-size="pageSize"
+                :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </app-content>
@@ -314,7 +314,7 @@
                 dialogFormVisible: false,
                 total: 5,
                 currentPage: 1,
-                pageSize: 5,
+                pageSize:8,
                 title: '任务新增',
                 selfEvaluaSelectData: [], //自评
                 finalEvaluateSelectData: [], //公议
