@@ -423,3 +423,63 @@ export function deleteTaskFeedback(id) {
             })
     })
 }
+//菜单管理编码验证
+export function menuVerificationRepeat(menuCode, id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.menuVerificationRepeat,
+                method: 'POST',
+                data: {
+                    menuCode: menuCode,
+                    id: id
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+//部门删除验证
+
+export function depatmentYZ(menuCode, id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.verificationIncidenceRelationbm,
+                method: 'POST',
+                data: {
+
+                    id: id
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+//验证关联关系(是否存在关联岗位)
+
+export function depatmentgqGLGX(menuCode, id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_Tack.verificationIncidenceRelationByTitlebm,
+                method: 'POST',
+                data: {
+
+                    id: id
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}

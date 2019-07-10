@@ -12,7 +12,7 @@
             <el-dialog :title="title" :visible.sync="dialogFormVisible">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="部门编号" :label-width="formLabelWidth" class="formitem" prop="departmant">
-                        <el-input v-model="resultData.departmant" ></el-input>
+                        <el-input v-model="resultData.departmant"></el-input>
                     </el-form-item>
                     <el-form-item label="部门名称" :label-width="formLabelWidth" class="formitem" prop="departmantName">
                         <el-input v-model="resultData.departmantName"></el-input>
@@ -34,10 +34,10 @@
                         <el-input v-model="resultData.departmantType"></el-input>
                     </el-form-item> -->
                     <el-form-item label="部门负责人" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.departmantOwner" ></el-input>
+                        <el-input v-model="resultData.departmantOwner"></el-input>
                     </el-form-item>
                     <el-form-item label="部门排序" :label-width="formLabelWidth" class="formitem" prop="sortNo">
-                        <el-input v-model.number="resultData.sortNo" ></el-input>
+                        <el-input v-model.number="resultData.sortNo"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
@@ -56,10 +56,10 @@
             <!-- //:resultObj=resultObj -->
             <el-form :data="formData" ref="formData">
                 <el-form-item label="部门编号" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmant" :disabled="true" ></el-input>
+                    <el-input v-model="formData.departmant" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="部门名称" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmantName" :disabled="true" ></el-input>
+                    <el-input v-model="formData.departmantName" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="父级部门编号" :label-width="formLabelWidth">
                     <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
@@ -77,10 +77,10 @@
                     <el-input v-model="formData.departmantType" :disabled="true"></el-input>
                 </el-form-item> -->
                 <el-form-item label="排序编码" :label-width="formLabelWidth">
-                    <el-input v-model="formData.sortNo" :disabled="true" ></el-input>
+                    <el-input v-model="formData.sortNo" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="部门负责人" :label-width="formLabelWidth">
-                    <el-input v-model="formData.departmantOwner" :disabled="true" ></el-input>
+                    <el-input v-model="formData.departmantOwner" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="是否有效" :label-width="formLabelWidth">
                     <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked" :disabled="true"> 是否有效
@@ -99,13 +99,15 @@
         deleteDepartment,
         getAlldepartsinfo,
         sysDepartmantYZ,
-        getDepartmentTree
+        getDepartmentTree,
+        depatmentYZ,
+        depatmentgqGLGX
 
     } from '../../../services/rwfkPage.js'
     import {
         mapState
     } from 'vuex'
-    import ' ../../../public/css/manage.css'
+    // import ' ../../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -209,13 +211,13 @@
                 this.title = "部门新增"
                 this.dialogFormVisible = true;
                 this.resultData.id = '';
-                 this.resultData.parentId = this.$store.state.department.treeid;
-                this.options = []; 
+                this.resultData.parentId = this.$store.state.department.treeid;
+                this.options = [];
                 this.resultData.departmant = '';
-                this.resultData.departmantName ='';
-                this.resultData.departmantType ='';
+                this.resultData.departmantName = '';
+                this.resultData.departmantType = '';
                 this.resultData.departmantOwner = '';
-                this.resultData.enabled ='';
+                this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.getUserDataParent();
             },
@@ -274,6 +276,38 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+                    depatmentYZ(this.$store.state.department.treeid).then((data) => {
+                        if (data.data.success == true) {
+                            depatmentgqGLGX(this.$store.state.department.treeid).then((result) => {
+                                if (result.data.success == true) {
+                                    deleteDepartment(this.$store.state.department.treeid).then((
+                                        result1) => {
+                                        if (result1.data.success) {
+                                            this.$message({
+                                                type: 'success',
+                                                message: '删除成功'
+                                            })
+                                            this.getTreeData();
+                                        } 
+                                    });
+                                } else {
+                                    this.$message({
+                                        type: 'success',
+                                        message: result.data.message
+                                    })
+
+                                }
+                            });
+
+                        } else {
+                            this.$message({
+                                type: 'success',
+                                message: data.data.message
+                            })
+                        }
+
+
+                    });
                     sysDepartmantYZ(this.$store.state.department.treeid).then((data) => {
                         if (data.data.success == true) {
                             deleteDepartment(this.$store.state.department.treeid).then((result) => {
@@ -281,7 +315,7 @@
                                     type: 'success',
                                     message: '删除成功'
                                 })
-                                 this.getTreeData()
+                                this.getTreeData()
                             });
                         } else {
                             this.$message({
@@ -341,8 +375,6 @@
         }
     }
 </script>
-
 <style scoped>
-
-
+  @import '../../../../public/css/manage.css';
 </style>

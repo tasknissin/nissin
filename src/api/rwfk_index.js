@@ -345,6 +345,42 @@ const taskFeedback_api = '/task/feedbackInfoController/searchData'
 
 //任务反馈任务删除接口
 const deleteTask = '/task/feedbackInfoController/deleteById'
+    /*
+    *验证菜单编码是否存在重复	路径	sysMenuController/verificationRepeat	
+    	类型	POST	
+    	参数	id	菜单ID(当修改的时候才传递)
+    		menuCode	菜单编码
+    	返回值	true/false	存在重复项返回false，不存在返回true
+
+     */
+const menuVerificationRepeat = '/task/sysMenuController/verificationRepeat'
+
+/*
+验证关联关系(是否存在下级部门)	路径	sysDepartmantController/verificationIncidenceRelationByChildren	
+	类型	POST	
+	参数	id	部门ID
+	返回值	{	
+		code:200	
+		success:true	
+		message:"验证通过，无下级部门！"	
+		result:true	
+		}	
+*/
+const verificationIncidenceRelationbm = '/task/sysDepartmantController/verificationIncidenceRelationByChildren'
+    /**
+     * 验证关联关系(是否存在关联岗位)	路径	sysDepartmantController/verificationIncidenceRelationByTitle	
+    	类型	POST	
+    	参数	id	部门ID
+    	返回值	{	
+    		code:200	
+    		success:true	
+    		message:"验证通过，无关联岗位！"	
+    		result:true	
+    		}	
+
+     */
+const verificationIncidenceRelationByTitlebm = '/task/sysDepartmantController/verificationIncidenceRelationByTitle'
+
 export default {
     taskFk_API,
     department_API,
@@ -368,6 +404,9 @@ export default {
     sysDepartmant_yz,
     sysMenu_yz,
     taskFeedback_api,
-    deleteTask
+    deleteTask,
+    menuVerificationRepeat,
+    verificationIncidenceRelationbm,
+    verificationIncidenceRelationByTitlebm
 
 }
