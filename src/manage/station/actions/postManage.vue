@@ -116,7 +116,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(['city','cityID','btns'])
+        ...mapState({
+            btns:state => state.btns,
+            userId:state => state.user.userId
+        })
     },
     watch: {
         // treeData:{
@@ -234,7 +237,8 @@ export default {
                         hierarchy:this.form.hierarchy,
                         parentId:this.form.parentId,
                         departmantId:this.form.departmantId,
-                        id:this.updateIndex ? this.updateIndex : ''
+                        id:this.updateIndex ? this.updateIndex : '',
+                        userId:this.userId
                     }
                     this.dialogFormVisible = false
                     this.form.departmantId = this.departmantId;
@@ -267,12 +271,6 @@ export default {
         // 表格修改
         handleEdit(index, row) {
             this.updateIndex = this.tableData[index].id;
-            this.parentIdSelectArr.map((item,index)=>{
-                if(item.id == this.updateIndex){
-                    this.parentIdSelectArr.splice(index,1)
-                }
-            })
-            console.log(this.tableData)
             this.form = this.tableData[index];
             this.oldform = {...this.tableData[index]}
             this.formIndex = index
@@ -283,8 +281,14 @@ export default {
                     result.result.map((item,index)=>{
                         this.parentIdSelectArr.push({id:item.id,value:item.titleName})
                     })
+                    this.parentIdSelectArr.map((item,index)=>{
+                        if(item.id == this.updateIndex){
+                            this.parentIdSelectArr.splice(index,1)
+                        }
+                    })
                 }
             });
+
         },
         // 表格删除数据
         handleDelete(index, row) {

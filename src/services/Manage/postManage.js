@@ -562,6 +562,7 @@ export function userLoginController(loginName,loginPassword){
 // 用户登录后获取菜单，渲染菜单
 
 export function searchTypeMenuData(userId,position){
+    console.log(userId)
     return new Promise((resolve,reject)=>{
         http({
             url:API.searchtypeMenuData_API,
@@ -603,6 +604,7 @@ export function searchUserMessageData(userId){
             resolve(data);
         })
         .catch(error=>{
+            reject(error)
             //请求失败
             console.log(error);
         })

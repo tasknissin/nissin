@@ -10,7 +10,21 @@
                 </div>
             </div>
         <ul class="userInfo-box">
-            <li><i class="el-icon-s-custom"></i><span>{{userName}}</span></li>
+            <!-- <li><i class="el-icon-s-custom"></i><span>{{userName}}</span></li> -->
+            <li>
+               <el-popover
+                  placement="bottom"
+                  title=""
+                  trigger="hover"
+                  popper-class="backColorPop">
+                  <div class="userInfoPoP">
+                    <p><span>用户&nbsp;&nbsp;&nbsp;名：</span>{{userName}}</p>
+                    <p><span>用户编码：</span>{{userCode}}</p>
+                    <p><span>用户部门：</span>{{departmantName}}</p>
+                  </div>
+                  <div slot="reference"><i class="el-icon-s-custom"></i><span>{{userName}}</span></div>
+                </el-popover>
+            </li>
             <li @click="loginOutHandle"><i class="el-icon-switch-button"></i><span></span></li>
         </ul>
         <el-menu
@@ -76,6 +90,8 @@ export default {
       this.$router.push({ name:'login'})
       removeToken();
       removeUserId();
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('tMenu')
     },
     // headCall(data){
     //   console.log(data)
@@ -85,16 +101,29 @@ export default {
   created() {
     if(window.location.hash.indexOf('login') != -1){   // 当为登录页面时隐藏头部
       this.headerFalg = false;
+    }else{
+      searchTypeMenuData(this.userId,'top').then((result)=>{
+        if(result.success){
+          this.menuData = result.result;
+          localStorage.setItem('tMenu',JSON.stringify(this.menuData))
+        }
+      })
     }
     this.$center.$on('headCallBack',(data)=>{
       this.menuData = data;
     })
     this.$center.$on('userInfoCallBack',(data)=>{
-      console.log(data)
-      this.userName = JSON.parse(data).userName
+      this.userName = data.userName
+      this.userCode = data.userCode
+      this.departmantName = data.departmantName
     })
     this.menuData = JSON.parse(localStorage.getItem('tMenu'))
-    this.userName = JSON.parse(localStorage.getItem('userInfo')).userName
+    try {
+      this.userName = JSON.parse(localStorage.getItem('userInfo')).userName
+      this.userCode = JSON.parse(localStorage.getItem('userInfo')).userCode
+      this.departmantName = JSON.parse(localStorage.getItem('userInfo')).departmantName
+    } catch (error) {
+    }
   },
 };
 </script>
@@ -168,5 +197,20 @@ export default {
     font-size: 18px;
     vertical-align: middle;
     color: #909399;
+}
+
+.userInfoPoP span{
+  display: inline-block;
+  min-width:80px;
+  text-align: right;
+}
+</style>
+<style>
+.backColorPop{
+  background-color:#394263 !important;
+  color:#fff;
+}
+.backColorPop .popper__arrow::after{
+    border-bottom-color: #394263 !important;
 }
 </style>

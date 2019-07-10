@@ -5,7 +5,7 @@ import { getToken,
         setUserId, 
         removeUserId,
        } from '@/utils/auth'
-import { userLoginController,searchUserMessageData } from '../../services/Manage/postManage.js'
+import { userLoginController } from '../../services/Manage/postManage.js'
 const user = {
   state: {
     token: getToken(),  //登录的token
@@ -43,20 +43,7 @@ const user = {
             setUserId(data.userId)
             commit('SET_TOKEN', data.token)  // 将touken保存到全局
             commit('SET_USERID',data.userId)  // 将登录的用户id保存到全局
-            // 获取用户信息
-            searchUserMessageData(data.userId).then(result => {
-              // const data = JSON.stringify(result.result)
-              console.log(data)
-              if(result.success){
-                // setUserInfo(result.result);
-                localStorage.setItem('userInfo',JSON.stringify(result.result))
-              }else {
-                reject('getInfo: roles must be a non-null array !')
-              }
-              resolve(response)
-            }).catch(error => {
-              reject(error)
-            })
+            
             resolve()
           }else{
             reject(response);

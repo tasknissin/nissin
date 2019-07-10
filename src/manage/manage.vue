@@ -57,12 +57,12 @@ export default {
           title: "部门管理",
           name: "1",
           content: "Tab 1 content",
-          path:'/manage/department/test1'
+          path:'test1'
         }
       ],
       tabIndex: 1,
       loading:true,
-      tabsPath:[{'name':'部门管理','path':'/manage/department/test1'}],
+      tabsPath:[{'name':'部门管理','path':'test1'}],
       isCollapse: false
 
     };
@@ -78,12 +78,12 @@ export default {
     })
   },
   methods: {
-    handleSelect(key, keyPath) {
-      // console.log(key,keyPath)
-      let tabs = this.editableTabs;
-      let activeName = this.editableTabsValue;
+    handleSelect(key, keyPath,{route}) {
+      let tabs = this.editableTabs;    //标签栏数据
+      let activeName = this.editableTabsValue;   //默认进来标签
+      // debugger;
       tabs.forEach((tab, index) => {
-        if (tab.title === key) {
+        if (tab.path === route) {
           let nextTab = tabs[index + 1] || tabs[index - 1];
           if (nextTab) {
             activeName = nextTab.name;
@@ -92,28 +92,24 @@ export default {
           this.editableTabs = tabs.filter(tab => tab.title != key);
         }
       });
+      let newTabName = ++this.tabIndex + "";
+      this.editableTabs.push({
+        title: key,
+        name: newTabName,
+        content: "New Tab content",
+        path:route
 
-     
-      setTimeout(()=>{ //路由切换完在赋值
-        let newTabName = ++this.tabIndex + "";
-        this.editableTabs.push({
-          title: key,
-          name: newTabName,
-          content: "New Tab content",
-          path:window.location.hash.replace('#','')
-
-        });
-        this.editableTabsValue = newTabName;
-        let tabsPath = [...this.tabsPath];
-        for(var i = 0; i < tabsPath.length; i++){
-          if(tabsPath[i].name != key){
-            this.tabsPath.push({name : key,path:window.location.hash.replace('#','')})
-            break;
-          }else if(tabsPath[i].name == key){
-            this.tabsPath = this.tabsPath.filter(tab => tab.name != key);
-          }
-        } 
-      },200)
+      });
+      this.editableTabsValue = newTabName;
+      let tabsPath = [...this.tabsPath];
+      for(var i = 0; i < tabsPath.length; i++){
+        if(tabsPath[i].name != key){
+          this.tabsPath.push({name : key,path:route})
+          break;
+        }else if(tabsPath[i].name == key){
+          this.tabsPath = this.tabsPath.filter(tab => tab.name != key);
+        }
+      } 
 
     },
     handleTabsEdit(targetName, action) {
@@ -136,24 +132,30 @@ export default {
               let nextTab = tabs[index + 1] || tabs[index - 1];
               if (nextTab) {
                 activeName = nextTab.name;
+                this.$router.push({name:nextTab.path})
+              }else{
+                this.$router.push({name:this.editableTabs[this.editableTabs.length - 1].path})
               }
             }
           });
         }
         this.editableTabsValue = activeName;
-        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-        this.$router.push({path:this.editableTabs[this.editableTabs.length - 1].path})
+        if(tabs.length > 1){
+          this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        }
+        // let editTest = 
+        // this.$router.push({name:this.editableTabs[this.editableTabs.length - 1].path})
 
       }
     },
     tabsClick(data){
-      this.tabsPath.map((tab,index)=>{
-        if(tab.name == data.label){
-          this.$router.push({path:tab.path})
+      this.editableTabs.map((tab,index)=>{
+        if(tab.title == data.label){
+          this.$router.push({name:tab.path})
         }
       })
     },
-     handleOpen(key, keyPath) {
+    handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
@@ -162,7 +164,11 @@ export default {
     radioChange(val){
       if(val){  
         setTimeout(()=>{
-          document.querySelector('.navMenu .el-submenu__icon-arrow').style.display = 'none'
+          let navDom = document.querySelector('.navMenu')
+          let arrowArr = navDom.getElementsByClassName('el-submenu__icon-arrow');
+          for(var i = 0; i < arrowArr.length; i++){
+            navDom.getElementsByClassName('el-submenu__icon-arrow')[i].style.display = 'none'
+          }
         },340)
       }
     }
@@ -186,7 +192,7 @@ export default {
   created() {   
     // 获取侧边栏菜单数据
     searchTypeMenuData(this.userId,'left').then(result=>{
-      // console.log(result)
+      console.log(result)
       if(result.success){
         this.totalList = result.result
         this.loading = false;

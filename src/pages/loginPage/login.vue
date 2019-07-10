@@ -35,7 +35,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import {searchTypeMenuData} from '../../services/Manage/postManage.js'
+import {searchTypeMenuData,searchUserMessageData} from '../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
 export default {
   name: 'login',
@@ -69,7 +69,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfo : state => state.user.userInfo
+      userInfo : state => state.user.userInfo,
+      userId : state => state.user.userId
     })
   },
   methods: {
@@ -87,14 +88,23 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false;
             // 获取头部菜单的信息
+            console.log(this.userId)
             searchTypeMenuData(this.userId,'top').then((result)=>{
               if(result.success){
                 this.menuData = result.result;
                 localStorage.setItem('tMenu',JSON.stringify(this.menuData))
                 this.$center.$emit('headCallBack', this.menuData);
-                this.$center.$emit('userInfoCallBack',localStorage.getItem('userInfo'));
 
               }
+            })
+            // 获取用户信息
+            searchUserMessageData(this.userId).then(result => {
+              if(result.success){
+                localStorage.setItem('userInfo',JSON.stringify(result.result))
+                this.$center.$emit('userInfoCallBack', result.result);
+              }
+            }).catch(error => {
+              console.log(error)
             })
             this.$router.push({ path: '/home' })
             
