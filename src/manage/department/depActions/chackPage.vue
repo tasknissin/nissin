@@ -240,6 +240,7 @@
             getTreeData() {
                 getDepartmentTree().then((data) => {
                     this.$emit('headCallBack', data.data.result);
+                    this.getDepartmentData(data.data.result[0].id);
                 });
             },
             onSubmit(form) {
@@ -261,7 +262,7 @@
                             this.dialogFormVisible = false;
                             this.getTreeData();
                             //this.$parent.getbmTree
-                            this.getDepartmentData(this.$store.state.department.treeid);
+                           
                         });
                         // alert('submit!');
                     } else {
@@ -271,28 +272,35 @@
                 })
             },
             deleteclick() {
+                this.id = this.$store.state.department.treeid;
                 this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    depatmentYZ(this.$store.state.department.treeid).then((data) => {
-                        if (data.data.success == true) {
-                            depatmentgqGLGX(this.$store.state.department.treeid).then((result) => {
-                                if (result.data.success == true) {
-                                    deleteDepartment(this.$store.state.department.treeid).then((
-                                        result1) => {
-                                        if (result1.data.success) {
+                }).then((action) => {
+                    depatmentYZ(this.id).then((data) => {
+                        if (data.data.success) {
+                            depatmentgqGLGX(this.id).then((result) => {
+                                if (result.data.success) {
+                                  
+                                    deleteDepartment(this.id).then((res) => {
+                                        if (res.data.success) {
                                             this.$message({
                                                 type: 'success',
                                                 message: '删除成功'
                                             })
                                             this.getTreeData();
-                                        } 
+                                           // this.getDepartmentData(this.$store.state.department.treeid);
+                                        }else{
+                                            this.$message({
+                                                type: 'info',
+                                                message: '删除失败'
+                                            })
+                                        }
                                     });
                                 } else {
                                     this.$message({
-                                        type: 'success',
+                                        type: 'info',
                                         message: result.data.message
                                     })
 
@@ -301,33 +309,13 @@
 
                         } else {
                             this.$message({
-                                type: 'success',
+                                type: 'info',
                                 message: data.data.message
                             })
                         }
 
 
                     });
-                    sysDepartmantYZ(this.$store.state.department.treeid).then((data) => {
-                        if (data.data.success == true) {
-                            deleteDepartment(this.$store.state.department.treeid).then((result) => {
-                                this.$message({
-                                    type: 'success',
-                                    message: '删除成功'
-                                })
-                                this.getTreeData()
-                            });
-                        } else {
-                            this.$message({
-                                type: 'success',
-                                message: data.data.message
-                            })
-                        }
-
-
-                    });
-
-
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -377,6 +365,5 @@
 </script>
 
 <style scoped>
-@import '../../../../public/css/manage.css';
-
+    @import '../../../../public/css/manage.css';
 </style>
