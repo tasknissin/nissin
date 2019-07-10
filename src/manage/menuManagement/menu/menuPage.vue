@@ -49,10 +49,11 @@
                         <el-input v-model.number="resultData.sortNo"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交
+                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2" style="margin-top: 11%;
+    float: right;    margin-left: .01rem;">提交
                         </el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini"
-                            style="margin-right: .1rem;">取消
+                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini" style="    margin-top: 11%;
+    float: right;">取消
                         </el-button>
                     </el-form-item>
                 </el-form>
