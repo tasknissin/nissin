@@ -128,7 +128,7 @@
     import {
         mapState
     } from 'vuex'
-    import ' ../../../public/css/manage.css'
+  
     export default {
         data() {
             // var validatePass = (rule, value, callback) => {
@@ -443,6 +443,6 @@
     }
 </script>
 
-<style>
-
+<style scoped>
+  @import '../../../../public/css/manage.css';
 </style>

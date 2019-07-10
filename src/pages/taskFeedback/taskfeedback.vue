@@ -574,7 +574,7 @@
 
     }
 </script>
-<style>
+<style scoped>
     #taskPage {
         width: cal(100% - 30px);
         min-height: calc(100% - 48px);

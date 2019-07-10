@@ -107,7 +107,7 @@
     import {
         mapState
     } from 'vuex'
-    import ' ../../../public/css/manage.css'
+    // import ' ../../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -375,8 +375,6 @@
         }
     }
 </script>
-
 <style scoped>
-
-
+  @import '../../../../public/css/manage.css';
 </style>

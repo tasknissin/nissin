@@ -111,7 +111,7 @@
     import {
         constants
     } from 'crypto';
-    import ' ./../../public/css/manage.css'
+    // import ' ./../../public/css/manage.css'
     export default {
         data() {
             return {
@@ -471,7 +471,7 @@
 
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     #tableId1 {
         padding: 0px 20px;
 
@@ -501,4 +501,7 @@
             width: 90%;
         }
     }
+</style>
+<style scoped>
+  @import '../../../public/css/manage.css';
 </style>
