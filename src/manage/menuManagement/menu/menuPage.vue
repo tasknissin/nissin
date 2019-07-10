@@ -27,7 +27,8 @@
                         <el-checkbox v-if="resultData.enabled=1" checked="checked" v-model="checked">是否有效</el-checkbox>
                     </el-form-item>
                     <el-form-item label="类型" :label-width="formLabelWidth" class="formitem" prop="type">
-                        <el-select v-model="resultData.type" @change="qh($event)" placeholder="请选择类型">
+                        <el-select v-model="resultData.type" @change="qh($event)" placeholder="请选择类型"
+                            :disabled="disabled">
                             <el-option label="菜单" value="menu"></el-option>
                             <el-option label="按钮" value="button"></el-option>
                         </el-select>
@@ -48,10 +49,11 @@
                         <el-input v-model.number="resultData.sortNo"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2">提交
+                        <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2" style="margin-top: 11%;
+    float: right;    margin-left: .01rem;">提交
                         </el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini"
-                            style="margin-right: .1rem;">取消
+                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini" style="    margin-top: 11%;
+    float: right;">取消
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -128,7 +130,7 @@
     import {
         mapState
     } from 'vuex'
-    
+
     export default {
         data() {
             // var validatePass = (rule, value, callback) => {
@@ -142,23 +144,23 @@
             //         callback();
             //     }
             // };
-                var menuKeyFlag = (rule, value, callback) => {
-            if (!value) {
-                return callback(new Error('编码不能为空！'));
-            }else{
-                if(this.rules.menuCode != value){
-                    menuVerificationRepeat(value,this.resultData.id).then(result=>{
-                        console.log(result)
-                        if(result.data==false){
-                            return callback(new Error('编码已存在！'));
-                        }else{
-                            return callback()
-                        }
-                    })
+            var menuKeyFlag = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('编码不能为空！'));
+                } else {
+                    if (this.rules.menuCode != value) {
+                        menuVerificationRepeat(value, this.resultData.id).then(result => {
+                            console.log(result)
+                            if (result.data == false) {
+                                return callback(new Error('编码已存在！'));
+                            } else {
+                                return callback()
+                            }
+                        })
+                    }
+
                 }
-                
-            }   
-      };
+            };
             return {
                 formData: {},
                 type: false,
@@ -231,7 +233,8 @@
                 checked: false,
                 formLabelWidth: '120px',
                 id: '',
-                options: []
+                options: [],
+                disabled: false
 
             }
         },
@@ -298,26 +301,40 @@
 
             },
             qh(event) {
-                console.log(event)
-                if (event == "menu") {
-                    this.type = true;
-                    this.resultData.sortNo = this.formData.sortNo;
-                    this.resultData.icon = this.formData.icon;
-                    this.resultData.url = this.formData.url;
-                    this.resultData.location = this.formData.location;
-                } else {
-                    this.type = false;
+                if (this.title == "菜单新增") {
+                    if (event == "menu") {
+                        this.type = true;
+                    } else {
+                        this.type = false;
+                    }
+
                     this.resultData.sortNo = '';
                     this.resultData.icon = '';
                     this.resultData.url = '';
                     this.resultData.location = '';
+                } else {
+                    if (event == "menu") {
+                        this.type = true;
+                        this.resultData.sortNo = this.formData.sortNo;
+                        this.resultData.icon = this.formData.icon;
+                        this.resultData.url = this.formData.url;
+                        this.resultData.location = this.formData.location;
+                    } else {
+                        this.type = false;
+                        this.resultData.sortNo = '';
+                        this.resultData.icon = '';
+                        this.resultData.url = '';
+                        this.resultData.location = '';
 
+                    }
                 }
+
 
             },
             //新增菜单
             addMenu() {
                 this.title = "菜单新增"
+                this.disabled = false;
                 this.dialogFormVisible = true;
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
@@ -335,6 +352,7 @@
             //修改菜单
             updataMenu() {
                 this.title = "菜单修改"
+                this.disabled = true;
                 this.dialogFormVisible = true;
                 this.resultData.id = this.formData.id;
                 this.resultData.menuCode = this.formData.menuCode;
@@ -443,8 +461,5 @@
     }
 </script>
 <style scoped>
-@import '../../../../public/css/manage.css';
+    @import '../../../../public/css/manage.css';
 </style>
-
-
-

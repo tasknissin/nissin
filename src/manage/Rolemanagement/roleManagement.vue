@@ -7,7 +7,7 @@
             <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
-                        <el-input v-model="resultData.roleName" ></el-input>
+                        <el-input v-model="resultData.roleName"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
                         <el-select v-model="resultData.enabled">
@@ -66,20 +66,18 @@
                 <el-tabs v-model="activeName" v-loading="loading" element-loading-text="拼命加载中"
                     element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
                     @tab-click="handleClick">
-                    <!-- <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
-                       
-                    </el-tab-pane> -->
                     <el-tab-pane style="min-height:200px;" label="菜单权限" name="first">
                         <el-tree :data="treedata" show-checkbox default-expand-all ref="tree" node-key="id"
                             highlight-current :props="defaultProps" :default-checked-keys="defaultcheckedkeys"
-                            :check-strictly="checkstrictly" @check="eltreeCheckchange">
+                            :check-strictly="checkstrictly" @node-click="eltreeCheckchange"
+                            @check-change="eltreeCheckchange" @check='eltreeCheckchange'>
                         </el-tree>
                     </el-tab-pane>
                     <el-tab-pane style="min-height:200px;" label="分配用户" name="second">
                         <el-transfer v-model="Uservalue" :props="{
                             key: 'id',
                             label: 'userName'
-                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata">
+                        }" :titles="['选择用户', '已选用户']" :data="transferUserdata" id='transfer'>
                         </el-transfer>
 
                     </el-tab-pane>
@@ -106,7 +104,7 @@
         addAndUpduteData,
         addAndUpduteUserData,
         qxtreeDatachecked,
-        getroleGJjsID
+        getroleGJjsID,
     } from '../../services/rwfkPage.js'
     import {
         constants
@@ -234,7 +232,8 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.tableData.splice(index, 1)
+                    //this.tableData.splice(index, 1)
+
                     deleteRoleData(row.id).then((data) => {
                         this.$message({
                             type: 'success',
@@ -253,7 +252,7 @@
             },
             // 提交
             onSubmit(form) {
-                this.resultData.userId = '1';
+                this.resultData.userId = this.$store.state.user.userId;
                 const formData = this.resultData;
                 this.$refs[form].validate((valid) => {
                     if (valid) {
@@ -471,7 +470,8 @@
 
     };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
+
     #tableId1 {
         padding: 0px 20px;
 
@@ -493,15 +493,58 @@
             padding: 5px 30px;
         }
 
+        .el-checkbox {
+            margin-right: 0;
+        }
+
+        .el-tab-paneFour {
+            .el-form {
+                width: 288px !important;
+            }
+        }
+
+        .el-input--suffix .el-input__inner {
+            padding-right: 15px;
+        }
+
+
+
+
+    }
+
+    #roledialogqxxg {
+        .el-dialog__body {
+            padding: 5px 30px;
+        }
+
         .el-transfer-panel {
-            width: 39%;
+            width: 42%;
         }
 
         .el-transfer-panel__item.el-checkbox {
             width: 90%;
         }
+
+        .el-checkbox {
+            margin-right: 0;
+        }
+
+        .el-tab-paneFour {
+            .el-form {
+                width: 288px !important;
+            }
+        }
+
+        .el-input--suffix .el-input__inner {
+            padding-right: 15px;
+        }.el-checkbox:last-child {
+            margin-right: 0;
+            width: 95%;
+        }
+
+        
     }
 </style>
 <style scoped>
-  @import '../../../public/css/manage.css';
+    @import '../../../public/css/manage.css';
 </style>

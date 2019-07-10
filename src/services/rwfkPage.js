@@ -445,7 +445,7 @@ export function menuVerificationRepeat(menuCode, id) {
 
 //部门删除验证
 
-export function depatmentYZ(menuCode, id) {
+export function depatmentYZ(id) {
     return new Promise((resolve, reject) => {
         http({
                 url: API_Tack.verificationIncidenceRelationbm,
@@ -465,7 +465,7 @@ export function depatmentYZ(menuCode, id) {
 }
 //验证关联关系(是否存在关联岗位)
 
-export function depatmentgqGLGX(menuCode, id) {
+export function depatmentgqGLGX(id) {
     return new Promise((resolve, reject) => {
         http({
                 url: API_Tack.verificationIncidenceRelationByTitlebm,
