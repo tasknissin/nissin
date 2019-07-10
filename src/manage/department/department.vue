@@ -128,7 +128,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   .manageTree {
     width: 200px;
     height: 100%;

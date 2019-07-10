@@ -375,6 +375,8 @@
         }
     }
 </script>
+
 <style scoped>
-  @import '../../../../public/css/manage.css';
+@import '../../../../public/css/manage.css';
+
 </style>
