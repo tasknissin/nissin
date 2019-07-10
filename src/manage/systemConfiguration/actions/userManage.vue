@@ -363,7 +363,7 @@ export default {
                                         if(successFlag){
                                             this.$message({
                                             type: 'success',
-                                            message: '信息修改成功!'
+                                            message: '成功!'
                                             })
                                         }else{
                                              this.$message({
@@ -375,7 +375,7 @@ export default {
                                     }else{
                                         this.$message({
                                             type: 'error',
-                                            message: '信息修改失败!'
+                                            message: '失败!'
                                         })
                                     }
                                 }) 
