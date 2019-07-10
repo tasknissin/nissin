@@ -346,7 +346,30 @@ export function resetoneUserPasswordList(userId,password){
     })
 }
 
-
+//用户管理--判断新增时用户输入的编码是否已经存在
+export function judgeUserCode(id,userCode){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.judgeUserCode_API,
+            method:'POST',
+            data:{
+                id:id,
+                userCode:userCode
+            }
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}
 
 // 系统字典-查询系统字典数据
 
@@ -449,6 +472,52 @@ export function judgeDictionaryKey(id,type,key){
                 id:id,
                 type:type,
                 key:key
+            }
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}
+//系统字典-删除系统字典时作验证(验证关联关系(是否存在下级岗位))
+export function deletejudgeDictionaryByChild(id){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.deletejudgeDictionaryByChild_API,
+            method:'POST',
+            data:{
+                id:id,
+            }
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}
+//系统字典-删除系统字典时验证关联关系(是否存在关联用户)
+export function deleterjudgeDictionaryByUser(id){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.deletejudgeDictionaryByUser_API,
+            method:'POST',
+            data:{
+                id:id,
             }
         })
         .then(({data,status})=>{

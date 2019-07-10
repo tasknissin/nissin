@@ -36,6 +36,7 @@
 <script>
 import { isvalidUsername } from '@/utils/validate'
 import {searchTypeMenuData} from '../../services/Manage/postManage.js'
+import {mapState} from 'vuex'
 export default {
   name: 'login',
   data() {
@@ -66,6 +67,11 @@ export default {
       pwdType: 'password'
     }
   },
+  computed: {
+    ...mapState({
+      userInfo : state => state.user.userInfo
+    })
+  },
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {
@@ -86,6 +92,8 @@ export default {
                 this.menuData = result.result;
                 localStorage.setItem('tMenu',JSON.stringify(this.menuData))
                 this.$center.$emit('headCallBack', this.menuData);
+                this.$center.$emit('userInfoCallBack',localStorage.getItem('userInfo'));
+
               }
             })
             this.$router.push({ path: '/home' })

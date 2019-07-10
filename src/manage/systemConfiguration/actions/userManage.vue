@@ -105,7 +105,8 @@ import {
         addUser_DepsManList,
         searchUser_RolesManList,
         searchUser_DepsManList,
-        resetoneUserPasswordList
+        resetoneUserPasswordList,
+        judgeUserCode
     } from '../../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
 export default {
@@ -129,6 +130,23 @@ export default {
                 callback();
             }
         };
+        var KeyFlag = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('编码不能为空！'));
+            }else{
+                if(this.oldKey != value){
+                    judgeUserCode(this.updateIndex,this.form.userCode).then(result=>{
+                        console.log(result)
+                        if(!result){
+                            return callback(new Error('编码已存在！'));
+                        }else{
+                            return callback()
+                        }
+                    })
+                }
+                
+            }   
+      };
         return {
             loading: true,     //页面加载
             minBtns:['Add'],   //本页按钮
@@ -169,7 +187,7 @@ export default {
             },
             rulesForm:{
                 userCode:[
-                    { required: true, message: '请输入用户编码', trigger: 'blur' },
+                    {validator: KeyFlag , trigger: 'blur' },
                 ],
                 userName:[
                     { required: true, message: '请输入用户姓名', trigger: 'blur' },                    

@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import {getpostManageList,addpostManList,deletepostManList,getDepartmentDialogData} from '../../../services/Manage/postManage.js'
+import {getpostManageList,addpostManList,deletepostManList,getDepartmentDialogData,deletejudgeDictionaryByChild,deleterjudgeDictionaryByUser} from '../../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
 export default {
     props:{
@@ -191,7 +191,7 @@ export default {
                 enabled:'1',        // 是否有效
                 sortNo:'',    // 排序字段
                 hierarchy:"", // 岗位级别
-                parentId:'',//父级岗位
+                parentId:'#',//父级岗位
                 departmantId: this.departmantId   // 部门id
             };
             this.dialogFormVisible = true;
@@ -216,10 +216,10 @@ export default {
         // 取消新增操作
         cancelHandel(){
             this.dialogFormVisible = false;
+            this.$refs['postManageFormLog'].resetFields(); // 清空表单里的验证
             for(var m in this.form){
                 this.form[m] = this.oldform[m]
             }
-            this.$refs['postManageFormLog'].resetFields(); // 清空表单里的验证
 
         },
         // 确定新增数据
@@ -277,6 +277,7 @@ export default {
             this.oldform = {...this.tableData[index]}
             this.formIndex = index
             this.dialogFormVisible = true
+            this.parentIdSelectArr = [{id:'#',value:'根节点'}]
             getpostManageList(this.departmantId).then((result) => {
                 if(result.success){
                     result.result.map((item,index)=>{
@@ -293,23 +294,40 @@ export default {
                 type: 'warning'
             }).then(() => {
                 // this.tableData.splice(index, 1)
-                deletepostManList(this.tableData[index].id).then((result)=>{
-                        if(result.success){
-                            getpostManageList(this.departmantId).then((result) => {
-                                this.tableData = result.result;
-                            });
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
+                deletejudgeDictionaryByChild(this.tableData[index].id).then((res)=>{    // 验证
+                    if(res.success){
+                            deleterjudgeDictionaryByUser(this.tableData[index].id).then(data=>{  // 验证
+                                if(data.success){
+                                    deletepostManList(this.tableData[index].id).then((result)=>{
+                                            if(result.success){
+                                                getpostManageList(this.departmantId).then((result) => {
+                                                    this.tableData = result.result;
+                                                });
+                                                this.$message({
+                                                    type: 'success',
+                                                    message: '删除成功!'
+                                                })
+                                            }else{
+                                                this.$message({
+                                                    type: 'error',
+                                                    message: '删除失败!'
+                                                })
+                                            }
+                                    })
+                                }else{
+                                    this.$message({
+                                        type: 'error',
+                                        message: res.message
+                                    })
+                                }
                             })
-                        }else{
-                            this.$message({
-                                type: 'error',
-                                message: '删除失败!'
-                            })
-                        }
+                    }else{
+                        this.$message({
+                            type: 'error',
+                            message: res.message
+                        })
+                    }
                 })
-               
             }).catch(() => {
                 this.$message({
                     type: 'info',

@@ -120,6 +120,11 @@ const searchUser_Depmanage_API = '/task/sysTitleController/searchAllDataByUserId
 */
 const resetoneUserPassword_API = '/task/sysUserController/resetPassword'
 
+/*用户-判断输入得用户code，用户新增时是否已经存在
+**参数
+*/
+const judgeUserCode_API = '/task/sysUserController/verificationRepeat'
+
 /*系统字典-查询系统字典下拉框数据
 **参数
 */
@@ -144,6 +149,15 @@ const deleteDictionary_API = '/task/sysDictionariesController/deleteById'
 **参数
 */
 const judgeDictionaryKey_API = '/task/sysDictionariesController/verificationRepeat'
+/*系统字典-删除系统字典时作验证(验证关联关系(是否存在下级岗位))
+**参数
+*/
+const deletejudgeDictionaryByChild_API = '/task/sysTitleController/verificationIncidenceRelationByChildren'
+
+/*系统字典-验证关联关系(是否存在关联用户)
+**参数
+*/
+const deletejudgeDictionaryByUser_API = '/task/sysTitleController/verificationIncidenceRelationByUser'
 /*菜单权限渲染接口
 **参数
 */
@@ -195,6 +209,7 @@ export default {
     searchUser_Rolemanage_API,
     searchUser_Depmanage_API,
     resetoneUserPassword_API,
+    judgeUserCode_API,
     searchDictionarySelectdata_API,
     searchDictionaryAlldata_API,
     addUpdateDictionary_API,
@@ -205,5 +220,7 @@ export default {
     getallTaskManageData_API,
     updateTaskManageData_API,
     deleteTaskManageData_API,
-    getPaginationTaskManageData_API
+    getPaginationTaskManageData_API,
+    deletejudgeDictionaryByChild_API,
+    deletejudgeDictionaryByUser_API
 }

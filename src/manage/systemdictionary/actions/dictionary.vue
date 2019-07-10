@@ -439,6 +439,9 @@ export default {
         .el-table th.gutter{
             display: table-cell !important;
         }
+        .el-input{
+            width:auto !important;
+        }
     }
    
 </style>

@@ -39,7 +39,7 @@
 import NavMenu from "./common/header/Header.vue";
 import {searchTypeMenuData} from './services/Manage/postManage'
 import {mapState} from 'vuex';
-import {removeToken,removeUserId} from '@/utils/auth.js'
+import {removeToken,removeUserId,getUserInfo} from '@/utils/auth.js'
 export default {
   components: {
     NavMenu: NavMenu
@@ -89,8 +89,12 @@ export default {
     this.$center.$on('headCallBack',(data)=>{
       this.menuData = data;
     })
+    this.$center.$on('userInfoCallBack',(data)=>{
+      console.log(data)
+      this.userName = JSON.parse(data).userName
+    })
     this.menuData = JSON.parse(localStorage.getItem('tMenu'))
-    this.userName = JSON.parse(this.userInfo).userName
+    this.userName = JSON.parse(localStorage.getItem('userInfo')).userName
   },
 };
 </script>

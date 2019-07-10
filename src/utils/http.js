@@ -6,7 +6,7 @@ export default function http({ url, method, data }) {
     let options = {
         url: url,
         method: method,
-        baseURL: API.SAT_HOST,
+        baseURL: process.env.NODE_ENV === 'production'  ? API.PRO_HOST : API.SAT_HOST,
         contentType: "application/json;charset=UTF-8",
         // timeout: 2000,
         withCredentials: false,
