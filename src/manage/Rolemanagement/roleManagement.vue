@@ -25,7 +25,7 @@
             </el-dialog>
 
         </el-row>
-        <div id="tableId1" style="height:60%; margin-top: 0.02rem;">
+        <div id="tableId1" style="height:60%; margin-top: 5px;">
             <!-- <el-table :row-style="{height:'30px'}" :cell-style="{padding:'0'}"
                 :data="tableData" 
                 :default-sort="{prop:'date',order:'descending'}" border style="width: 100%; height:80%;font-size:12px">
