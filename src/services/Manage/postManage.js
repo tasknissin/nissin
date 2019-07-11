@@ -562,7 +562,6 @@ export function userLoginController(loginName,loginPassword){
 // 用户登录后获取菜单，渲染菜单
 
 export function searchTypeMenuData(userId,position){
-    console.log(userId)
     return new Promise((resolve,reject)=>{
         http({
             url:API.searchtypeMenuData_API,
@@ -594,6 +593,33 @@ export function searchUserMessageData(userId){
             method:'POST',
             data:{
                 id:userId,
+            }
+        })
+        .then(({data,status})=>{
+            if(status != 200){
+                //请求失败
+                return;
+            }
+            resolve(data);
+        })
+        .catch(error=>{
+            reject(error)
+            //请求失败
+            console.log(error);
+        })
+    })
+}
+
+
+// 根据用户id,菜单id获取页面的按钮权限
+export function getBtnsPermissionsData(id,userId){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.getBtnsPermissions_API,
+            method:'POST',
+            data:{
+                id:id,
+                userId:userId
             }
         })
         .then(({data,status})=>{

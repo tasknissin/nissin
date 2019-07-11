@@ -45,7 +45,7 @@
 import config from "./config";
 import NavMenu from "./leftSidebar.vue";
 import {mapState} from 'vuex'
-import {searchTypeMenuData } from '../services/Manage/postManage'
+import {searchTypeMenuData,getBtnsPermissionsData } from '../services/Manage/postManage'
 export default {
   data() {
     return {
@@ -78,7 +78,11 @@ export default {
     })
   },
   methods: {
-    handleSelect(key, keyPath,{route}) {
+    handleSelect(id, keyPath,{route,$attrs}) {
+      /**
+       * 头部标签页
+       */
+      let key = $attrs.data.menuName
       let tabs = this.editableTabs;    //标签栏数据
       let activeName = this.editableTabsValue;   //默认进来标签
       // debugger;
@@ -103,13 +107,20 @@ export default {
       this.editableTabsValue = newTabName;
       let tabsPath = [...this.tabsPath];
       for(var i = 0; i < tabsPath.length; i++){
-        if(tabsPath[i].name != key){
+        if(tabsPath[i].path != route){
           this.tabsPath.push({name : key,path:route})
           break;
-        }else if(tabsPath[i].name == key){
+        }else if(tabsPath[i].path == route){
           this.tabsPath = this.tabsPath.filter(tab => tab.name != key);
         }
       } 
+
+      /**
+       * 点击按钮切换路由，获取该菜单下该用户的按钮权限
+       */
+      getBtnsPermissionsData(id,this.userId).then((result)=>{
+        console.log(result)
+      })
 
     },
     handleTabsEdit(targetName, action) {
@@ -143,8 +154,6 @@ export default {
         if(tabs.length > 1){
           this.editableTabs = tabs.filter(tab => tab.name !== targetName);
         }
-        // let editTest = 
-        // this.$router.push({name:this.editableTabs[this.editableTabs.length - 1].path})
 
       }
     },
@@ -192,7 +201,6 @@ export default {
   created() {   
     // 获取侧边栏菜单数据
     searchTypeMenuData(this.userId,'left').then(result=>{
-      console.log(result)
       if(result.success){
         this.totalList = result.result
         this.loading = false;
@@ -209,7 +217,6 @@ export default {
             var arr = _cookie[i].split('=');
             obj[arr[0]] = arr[1];
         }
-        console.log(obj)
         if(!obj.AdminToken){
           _this.$router.push({path:'/login'})
         }else{

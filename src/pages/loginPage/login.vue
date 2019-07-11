@@ -48,8 +48,8 @@ export default {
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能为空'))
+      if (value.length < 1) {
+        callback(new Error('请输入密码'))
       } else {
         callback()
       }
@@ -60,7 +60,7 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur'}],
+        username: [{ required: true,message:'请输入用户名', trigger: 'blur'}],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
@@ -88,7 +88,6 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false;
             // 获取头部菜单的信息
-            console.log(this.userId)
             searchTypeMenuData(this.userId,'top').then((result)=>{
               if(result.success){
                 this.menuData = result.result;

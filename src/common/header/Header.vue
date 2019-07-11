@@ -3,14 +3,14 @@
         <template v-for="navMenu in navMenus">
                     <!-- 最后一级菜单 -->
                 <el-menu-item v-if="!navMenu.childrenList && navMenu"
-                                :key="navMenu.id" :data="navMenu" :index="navMenu.url" 
+                                :key="navMenu.id" :data="navMenu" :index="navMenu.route" 
                             >
                     <i :class="navMenu.icon"></i>
                     <span slot="title">{{navMenu.menuName}}</span>
                 </el-menu-item>
                 <!-- 此菜单下还有子菜单 -->
                 <el-submenu v-if="navMenu.childrenList && navMenu"
-                            :key="navMenu.id" :data="navMenu" :index="navMenu.url">
+                            :key="navMenu.id" :data="navMenu" :index="navMenu.route">
                     <template slot="title">
                     <i :class="navMenu.icon"></i>
                     <span> {{navMenu.menuName}}</span>

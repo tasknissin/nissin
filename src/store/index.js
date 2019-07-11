@@ -7,16 +7,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    city:localStorage.getItem('city')?localStorage.getItem('city'):'深圳',
-    cityID:localStorage.getItem('cityID')?localStorage.getItem('cityID'):30,
-    btns:[{name:'Add',value:'增加'},{name:'Delete',value:'删除'},{name:'Update',value:'修改'},{name:'Reset',value:'密码重置'}],
-    department: {
-        treeid: '',
-    },
-    menuManage: {
-        treeid: '',
-    },
-    // city:'深圳'
+        city:localStorage.getItem('city')?localStorage.getItem('city'):'11',
+        cityID:localStorage.getItem('cityID')?localStorage.getItem('cityID'):30,
+        btns:[{name:'Add',value:'增加'},{name:'Delete',value:'删除'},{name:'Update',value:'修改'},{name:'Reset',value:'密码重置'}],
+        department: {
+            treeid: '',
+        },
+        menuManage: {
+            treeid: '',
+        },
+        perBtns:[],
     },  
     getters: {
         get_id: state => state.department.treeid,
@@ -34,6 +34,9 @@ export default new Vuex.Store({
         },
         menuchange_id(state, str) {
             state.menuManage.treeid = str;
+        },
+        setPerBtns(state,arr){
+            state.perBtns = arr
         }
 
 
@@ -52,6 +55,9 @@ export default new Vuex.Store({
         },
         getmenuid(context, id) {
             context.commit('menuchange_id', id)
+        },
+        selectperBtns(context,arr){
+            context.commit('setPerBtns',arr)
         }
 
     },

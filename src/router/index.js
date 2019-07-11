@@ -32,12 +32,12 @@ const router = new Router({
             component: () => import('../components/mgtPage/mgtFirst.vue'),
         },
         {
-            name: "login",
-            path: '/login',
+            name: "login",    //登录
+            path: '/login', 
             component: () => import('../pages/loginPage/login.vue'),
         },
         {
-            name: 'task',
+            name: 'task',   //任务反馈
             path: '/task',
             component: () => import('../pages/taskFeedback/taskfeedback.vue')
 

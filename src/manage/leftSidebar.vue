@@ -2,7 +2,7 @@
   <div class="navMenu">
     <label v-for="(navMenu,index) in navMenus" :key="index">
       <router-link :to="{ name:navMenu.route, params: {id:navMenu.menuName} }">
-        <el-menu-item  v-if="navMenu.childrenList == null" :key="navMenu.id" :data="navMenu" :index="navMenu.menuName" :route="navMenu.route">
+        <el-menu-item  v-if="navMenu.childrenList == null" :key="navMenu.id" :data="navMenu" :index="navMenu.id" :route="navMenu.route">
           <i :class="navMenu.icon"></i>
           <span slot="title">{{navMenu.menuName}}</span>
         </el-menu-item>

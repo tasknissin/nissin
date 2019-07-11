@@ -1,5 +1,5 @@
 <template>
-  <div class="page" id="taskManagePage" ref="taskconTable" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
+  <div class="page" id="taskManagePage" ref="taskconTable" v-loading="loading" :element-loading-text="loadText" element-loading-background="rgba(255, 255, 255, 1)">
     <app-subheader>
       <div slot="left">
         <i class="sub-lefticon el-icon-s-home"></i>
@@ -154,10 +154,10 @@ import {
   // getMenuList,
   // getSelfCenterList,
   // testList,
-  getAlltaskManageList,
+  getAlltaskManageList,   //获取所有表格数据
   updatetaskManageList,
   deletetaskManageList,
-  getPaginationTaskManageList
+  getPaginationTaskManageList   // 获取分页表格数据
 } from "../../services/selfPage.js";
 import {
   searchDictionaryManList,
@@ -273,6 +273,7 @@ export default {
         }]
       },
       loading:true,
+      loadText:"拼命加载中",
       updateIndex:'',//主键 id
       urgentSelectArr:[],  // 紧急程度类型下拉菜单，新增里面的下拉
       importantSelectArr:[],   // 重要程度下拉菜单，新增里面的下拉  
@@ -324,6 +325,7 @@ export default {
         progress:'',
         taskStatus:''
       };
+      this.updateIndex = '';      
       if(this.urgentSelectArr.findIndex(item => item.label === '全部') != -1){
         this.urgentSelectArr.splice(this.urgentSelectArr.findIndex(item => item.label === '全部'), 1)
       }
@@ -331,12 +333,10 @@ export default {
         this.importantSelectArr.splice(this.urgentSelectArr.findIndex(item => item.label === '全部'), 1)
       }
       this.dialogFormVisible = true;
-      console.log(this.form)
     },
     // 取消新增操作
     cancelHandel(){
       this.dialogFormVisible = false;
-      console.log(this.oldform)
       for(var m in this.form){
         this.form[m] = this.oldform[m]
       }
@@ -379,7 +379,6 @@ export default {
                     message: '失败!'
                 })
             }
-          console.log(result)
         })
         this.dialogFormVisible = false
     },
@@ -399,7 +398,6 @@ export default {
         type: 'warning'
       }).then(() => {
           deletetaskManageList(this.tableData[index].id).then((result)=>{
-            console.log(result)
                 if(result.success){
                     getPaginationTaskManageList(this.currentPage,this.PageSize).then((result) => {
                         this.tableData = result.result;
@@ -440,24 +438,43 @@ export default {
         }
       })
       getPaginationTaskManageList(this.currentPage,this.PageSize,this.selectObj.urgent,this.selectObj.important).then(result=>{
-        console.log(result)
         this.tableData = result.result;  
       })
     },
     // 导出功能 
     taskExportHandle(){
-      this.handlesActive = false;   //隐藏掉操作栏
-      this.$nextTick(function () {
-          let wb = XLSX.utils.table_to_book(document.querySelector('#taskManTable'));
-          /* get binary string as output */
-          let wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'array'});
-          try {
-              FileSaver.saveAs(new Blob([wbout], {type: 'application/octet-stream'}), '任务管理.xlsx')
-          } catch (e) {
-              if (typeof console !== 'undefined') console.log(e, wbout)
-          }         
-          this.handlesActive = true;
-          return wbout
+      /**
+       * 直接导出table表格方法，
+       */
+      this.loading = true;
+      this.loadText = '导出中,请稍后...'
+      getAlltaskManageList().then(result=>{
+        if(result.success){
+          this.tableData = result.result
+          this.PageSize = this.tableData.length;
+          this.currentPage= 1;
+          this.handlesActive = false;   //隐藏掉操作栏
+          this.$nextTick(function () {
+              let wb = XLSX.utils.table_to_book(document.querySelector('#taskManTable'));
+              /* get binary string as output */
+              let wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'array'});
+              try {
+                  FileSaver.saveAs(new Blob([wbout], {type: 'application/octet-stream'}), '任务管理.xlsx')
+              } catch (e) {
+                  if (typeof console !== 'undefined') console.log(e, wbout)
+              }         
+              this.PageSize = 5;//表格还原
+              //再次请求数据
+              getPaginationTaskManageList(this.currentPage,this.PageSize).then(result=>{
+                this.tableData = result.result;  
+              })
+              this.handlesActive = true;
+              this.loading = false
+              return wbout
+          })
+        }else{
+          this.loading = false;
+        }
       })
     },
     // 分页功能
@@ -503,10 +520,12 @@ export default {
   },
   created() {
     // 请求表格数据
-    this.loading = false;
     getPaginationTaskManageList(this.currentPage,this.PageSize).then(result=>{
-      this.tableData = result.result;  
-      this.totalCount = result.rowCount     
+      if(result.result.length > 0){
+        this.tableData = result.result;  
+        this.totalCount = result.rowCount     
+        this.loading = false;
+      }
     })
     searchDictionaryManList('').then((result)=>{
       this.urgentSelectArr.push()
@@ -594,6 +613,9 @@ export default {
 }
 #taskManagePage  .el-table th.gutter{
   display: table-cell !important;
+}
+#taskManagePage .el-input{
+  width:auto !important;
 }
 </style>
 

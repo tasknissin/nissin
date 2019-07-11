@@ -153,7 +153,6 @@ export default {
             if(value != this.departmantId){
                 this.departmantId = value;
                 getpostManageList(this.departmantId).then((result) => {
-                    console.log(result)
                     if(result.success){
                         this.tableData = result.result;
                         result.result.map((item,index)=>{
@@ -321,7 +320,7 @@ export default {
                                 }else{
                                     this.$message({
                                         type: 'error',
-                                        message: res.message
+                                        message: data.message
                                     })
                                 }
                             })

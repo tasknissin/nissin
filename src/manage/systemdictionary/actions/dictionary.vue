@@ -92,7 +92,6 @@ export default {
             }else{
                 if(this.oldKey != value){
                     judgeDictionaryKey(this.updateIndex,this.form.type,value).then(result=>{
-                        console.log(result)
                         if(!result){
                             return callback(new Error('编码已存在！'));
                         }else{
@@ -251,7 +250,6 @@ export default {
                             // 加载系统字典数据
                             searchDictionaryManList('').then((result)=>{
                                 this.tableData = result.result;
-                                console.log(result)
                             })
                             this.$message({
                                 type: 'success',
@@ -292,7 +290,6 @@ export default {
                 type: 'warning'
             }).then(() => {
                 deleteDictionaryManList(this.tableData[index].id).then((result)=>{
-                    console.log(result)
                         if(result.success){
                             searchDictionaryManList('').then((result) => {
                                 this.tableData = result.result;

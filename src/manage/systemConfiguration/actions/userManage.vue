@@ -136,7 +136,6 @@ export default {
             }else{
                 if(this.oldKey != value){
                     judgeUserCode(this.updateIndex,this.form.userCode).then(result=>{
-                        console.log(result)
                         if(!result){
                             return callback(new Error('编码已存在！'));
                         }else{
@@ -221,8 +220,6 @@ export default {
         }
     },
     created(){
-        // console.log(this.btns)
-        // console.log(this.userId)
         this.btns.map((item,index)=>{
             if(this.minBtns.indexOf(item.name) != -1){
                 this.allBtns.push({
@@ -290,8 +287,7 @@ export default {
             this.passwordFlag = true;
             this.elTabFour = false;
             this.activeName = 'first'  
-            this.updateIndex = '';          
-            console.log(this.form)
+            this.updateIndex = '';      
         },
         // 取消新增操作
         cancelHandel(){
@@ -312,7 +308,6 @@ export default {
                         this.$refs['ruleForm'].validate((valid) => {
                             if(valid){
                                 resetoneUserPasswordList(this.updateIndex,this.ruleForm.pass).then((result)=>{
-                                    console.log(result)
                                 })
                             }
                         })

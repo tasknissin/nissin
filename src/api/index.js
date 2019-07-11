@@ -188,6 +188,13 @@ const deleteTaskManageData_API = '/task/taskInfoController/deleteById'
  */
 const getPaginationTaskManageData_API = '/task/taskInfoController/searchData'
 
+/**
+ * 按钮权限 根据用户id,菜单id获取页面的按钮权限
+ */
+
+const getBtnsPermissions_API = '/task/sysMenuController/searchButtonDataByUserId'
+
+
 export default {
     SAT_HOST,
     UAT_HOST,
@@ -222,5 +229,6 @@ export default {
     deleteTaskManageData_API,
     getPaginationTaskManageData_API,
     deletejudgeDictionaryByChild_API,
-    deletejudgeDictionaryByUser_API
+    deletejudgeDictionaryByUser_API,
+    getBtnsPermissions_API
 }
