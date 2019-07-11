@@ -447,6 +447,7 @@
                                     message: '操作成功!'
                                 })
                                 // location.reload();
+                                 this.dialogFormVisible = false;
                                 this.getAlltaskFdata(1, this.pageSize, this.selected);
                             }
 
@@ -533,6 +534,7 @@
                 }).then(() => {
                     deleteTaskFeedback(row.id).then((data) => {
                         if (data.data.success) {
+                              this.dialogFormVisible = false;
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
