@@ -10,7 +10,7 @@
                         <el-input v-model="resultData.roleName"></el-input>
                     </el-form-item>
                     <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
-                        <el-select v-model="resultData.enabled">
+                        <el-select v-model="resultData.enabled" style="width:100%">
                             <el-option value="0" label="无效"></el-option>
                             <el-option value="1" label="有效" checked="checked"></el-option>
                         </el-select>
@@ -470,8 +470,7 @@
 
     };
 </script>
-<style lang="scss" >
-
+<style lang="scss">
     #tableId1 {
         padding: 0px 20px;
 
@@ -537,14 +536,69 @@
 
         .el-input--suffix .el-input__inner {
             padding-right: 15px;
-        }.el-checkbox:last-child {
+        }
+
+        .el-checkbox:last-child {
             margin-right: 0;
             width: 95%;
         }
 
-        
+
     }
 </style>
-<style scoped>
-    @import '../../../public/css/manage.css';
+<style lang="scss" scoped>
+    // @import '../../../public/css/manage.scss';
+    #rolemanegePage {
+        .elrow {
+            padding-left: 4px;
+            border-bottom: 1px solid #ebe9e9;
+            height: 40px;
+            padding-top: 5px;
+        }
+
+        .elbutton {
+            margin-top: 2px;
+        }
+
+        .formitem {
+            width: 50%;
+            position: relative;
+            float: left;
+            z-index: 11;
+        }
+
+        .formitem_btn {
+            width: 100%;
+            text-align: right;
+        }
+
+        .elbutton2 {
+            height: 30px;
+            line-height: 5px;
+            margin-left: 10px;
+        }
+
+        .addbtn {
+            width: 58px;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .el-select {
+            display: inline-block;
+            position: relative;
+            width: 50%;
+        }
+
+        .el-input {
+            position: relative;
+            font-size: 14px;
+            display: inline-block;
+            width: 50%;
+        }
+
+        .el-dialog .el-input {
+            width: 100% !important;
+        }
+    }
 </style>

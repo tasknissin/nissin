@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id='departmentPage'>
         <el-row class="elrow">
             <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn"
                 @click="addDepartment">增加
@@ -9,7 +9,7 @@
             </el-button>
             <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="departmentdialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="部门编号" :label-width="formLabelWidth" class="formitem" prop="departmant">
                         <el-input v-model="resultData.departmant"></el-input>
@@ -62,7 +62,7 @@
                     <el-input v-model="formData.departmantName" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="父级部门编号" :label-width="formLabelWidth">
-                    <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true">
+                    <el-select v-model="formData.parentId" placeholder="请选择父级部门编号" :disabled="true" style="width:50%">
                         <el-option key="#" label="根节点" value="#">
                         </el-option>
                         <el-option v-for="item in options" :key="item.id" :label="item.departmantName" :value="item.id">
@@ -262,7 +262,7 @@
                             this.dialogFormVisible = false;
                             this.getTreeData();
                             //this.$parent.getbmTree
-                           
+
                         });
                         // alert('submit!');
                     } else {
@@ -282,7 +282,7 @@
                         if (data.data.success) {
                             depatmentgqGLGX(this.id).then((result) => {
                                 if (result.data.success) {
-                                  
+
                                     deleteDepartment(this.id).then((res) => {
                                         if (res.data.success) {
                                             this.$message({
@@ -290,8 +290,8 @@
                                                 message: '删除成功'
                                             })
                                             this.getTreeData();
-                                           // this.getDepartmentData(this.$store.state.department.treeid);
-                                        }else{
+                                            // this.getDepartmentData(this.$store.state.department.treeid);
+                                        } else {
                                             this.$message({
                                                 type: 'info',
                                                 message: '删除失败'
@@ -364,6 +364,66 @@
     }
 </script>
 
-<style scoped>
-    @import '../../../../public/css/manage.css';
+<style lang="scss" scoped>
+    // @import '../../../../public/css/manage.scss';
+    #departmentPage {
+        .elrow {
+            padding-left: 4px;
+            border-bottom: 1px solid #ebe9e9;
+            height: 40px;
+            padding-top: 5px;
+        }
+
+        .elbutton {
+            margin-top: 2px;
+        }
+
+        .formitem {
+            width: 50%;
+            position: relative;
+            float: left;
+            z-index: 11;
+        }
+
+        .formitem_btn {
+            width: 100%;
+            text-align: right;
+        }
+
+        .elbutton2 {
+            height: 30px;
+            line-height: 7px;
+            margin-left: 10px;
+        }
+
+        .addbtn {
+            width: 58px;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .el-select {
+            display: inline-block;
+            position: relative;
+            width: 100%;
+        }
+
+        .el-input {
+            position: relative;
+            font-size: 14px;
+            display: inline-block;
+            width: 50%;
+        }
+
+        .el-dialog .el-input {
+            width: 100% !important;
+        }
+
+        #departmentdialog {
+            .el-select {
+
+                width: 100%;
+            }
+        }
+    }
 </style>

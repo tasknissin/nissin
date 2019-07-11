@@ -15,7 +15,7 @@
         <app-content :selectData=selectData :selectObj=selectObj>
             <el-row style="margin-bottom:7px">
                 <el-col :span="4" id="feedbackType">
-                    <label >反馈类型：</label>
+                    <label>反馈类型：</label>
                     <el-select placeholder="请选择反馈类型" v-model="selected" style="width:72%"
                         @change="onSelectedDrug($event)">
                         <el-option label="周度" value="W"></el-option>
@@ -75,9 +75,11 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                        <el-button size="mini"  type="primary" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">修改
+                        <el-button size="mini" type="primary" icon="el-icon-edit"
+                            @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)">删除
+                        <el-button size="mini" type="danger" icon="el-icon-delete"
+                            @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
                         <!-- <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)"></el-button> -->
                     </template>
@@ -314,7 +316,7 @@
                 dialogFormVisible: false,
                 total: 5,
                 currentPage: 1,
-                pageSize:8,
+                pageSize: 8,
                 title: '任务新增',
                 selfEvaluaSelectData: [], //自评
                 finalEvaluateSelectData: [], //公议
@@ -444,7 +446,8 @@
                                     type: 'success',
                                     message: '操作成功!'
                                 })
-                                location.reload();
+                                // location.reload();
+                                this.getAlltaskFdata(1, this.pageSize, this.selected);
                             }
 
                         });
@@ -523,21 +526,35 @@
             },
             //任务删除
             handleDelete(index, row) {
-                deleteTaskFeedback(row.id).then((data) => {
-                    if (data.data.success) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        })
-                        location.reload();
-                    } else {
-                        this.$message({
-                            type: 'success',
-                            message: '删除失败!'
-                        })
-                        location.reload();
-                    }
+                this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteTaskFeedback(row.id).then((data) => {
+                        if (data.data.success) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            })
+                            this.getAlltaskFdata(1, this.pageSize, this.selected);
+                            // location.reload();
+                        } else {
+                            this.$message({
+                                type: 'success',
+                                message: '删除失败!'
+                            })
+                            // location.reload();
+                        }
 
+                    })
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
                 })
             },
             // 导出
@@ -588,6 +605,11 @@
         margin: 0 4px;
     }
 
+    #taskPage .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+        width: 100%;
+    }
+
     #taskPage .el-button {
         width: 62px;
         padding: 0;
@@ -609,8 +631,8 @@
     }
 
     #taskPage .el-input {
-        width: 89%;
-        right: -19px;
+        /* width: 89%;
+        right: -19px; */
     }
 
     #taskPage .el-select {

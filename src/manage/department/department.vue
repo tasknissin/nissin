@@ -1,8 +1,8 @@
 //部门
 <template lang="html">
-  <div style="width:100%;height:100%;">
+  <div style="width:100%;height:100%;" id="department">
     <div class="manageTree">
-      <ManageTree :treeName="manageTreeName" :treeData="treeData" ></ManageTree>
+      <ManageTree :treeName="manageTreeName" :treeData="treeData"></ManageTree>
     </div>
     <div class="manage_bmTable">
       <header>部门管理</header>
@@ -100,16 +100,16 @@
 
       },
       //获取部门的树形下拉菜单
-      getbmTree(){
-         getDepartmentTree().then((data) => {
-        this.treeData = data.data.result;
-        this.$store.dispatch('getid', this.treeData[0].id);
-      });
-      this.tableData = Array(20).fill(this.item);
+      getbmTree() {
+        getDepartmentTree().then((data) => {
+          this.treeData = data.data.result;
+          this.$store.dispatch('getid', this.treeData[0].id);
+        });
+        this.tableData = Array(20).fill(this.item);
       }
     },
     created() {
-     this.getbmTree()
+      this.getbmTree()
     },
     beforeRouteEnter(to, from, next) {
       var self = this;
@@ -128,24 +128,27 @@
   };
 </script>
 
-<style lang="scss" >
-  .manageTree {
-    width: 200px;
-    height: 100%;
-    position: fixed;
-    box-sizing: border-box;
-  }
+<style lang="scss">
 
-  .manage_bmTable {
-    margin-left: 200px;
-    height: 100%;
-
-    header {
-      width: 100%;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      border-bottom: 1px solid #EBEEF5;
+    .manageTree {
+      width: 200px;
+      height: 100%;
+      position: fixed;
+      box-sizing: border-box;
     }
+
+    .manage_bmTable {
+      margin-left: 200px;
+      height: 100%;
+
+      header {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-bottom: 1px solid #EBEEF5;
+      }
+    
+
   }
 </style>
