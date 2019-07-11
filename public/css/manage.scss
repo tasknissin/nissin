@@ -1,0 +1,46 @@
+#rolemanegePage,
+#menuPage,
+#rolemanegePage {
+    .elrow {
+        padding-left: 4px;
+        border-bottom: 1px solid #ebe9e9;
+        height: 10px;
+    }
+    .elbutton {
+        margin-top: 2px;
+    }
+    .formitem {
+        width: 50%;
+        position: relative;
+        float: left;
+        z-index: 11;
+    }
+    .formitem_btn {
+        width: 100%;
+        text-align: right;
+    }
+    .elbutton2 {
+        height: 7px;
+        line-height: 0px;
+        margin-left: 10px;
+    }
+    .addbtn {
+        width: 58px;
+        text-align: center;
+        padding: 6px;
+    }
+    .el-select {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
+    .el-input {
+        position: relative;
+        font-size: 14px;
+        display: inline-block;
+        width: 50%;
+    }
+    .el-dialog .el-input {
+        width: 100% !important;
+    }
+}

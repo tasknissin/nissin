@@ -7,7 +7,7 @@
             </el-button>
             <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="xZxgdialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="菜单编号" :label-width="formLabelWidth" class="formitem" prop="menuCode">
                         <el-input v-model="resultData.menuCode" autocomplete="off"></el-input>
@@ -37,7 +37,7 @@
                         <el-input v-model="resultData.icon"></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="路由" :label-width="formLabelWidth" class="formitem">
-                        <el-input v-model="resultData.url"></el-input>
+                        <el-input v-model="resultData.route"></el-input>
                     </el-form-item>
                     <el-form-item v-if="type" label="位置" :label-width="formLabelWidth" class="formitem" prop="location">
                         <el-select v-model="resultData.location" placeholder="请选择位置">
@@ -52,7 +52,7 @@
                         <el-button type="primary" @click="onSubmit('resultData')" size="mini" class="elbutton2" style="margin-top: 11%;
     float: right;    margin-left: .01rem;">提交
                         </el-button>
-                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini" style="    margin-top: 11%;
+                        <el-button @click="callOf(resultData)" class="elbutton2" size="mini" style=" margin-top: 11%;
     float: right;">取消
                         </el-button>
                     </el-form-item>
@@ -90,7 +90,7 @@
                     <el-input v-model="formData.icon" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="路由" :label-width="formLabelWidth">
-                    <el-input v-model="formData.url" :disabled="true"></el-input>
+                    <el-input v-model="formData.route" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item v-if="t_type" label="位置" :label-width="formLabelWidth">
                     <el-select v-model="formData.location" placeholder="请选择位置" :disabled="true">
@@ -176,6 +176,7 @@
                     enabled: '',
                     icon: '',
                     url: '',
+                    route: '',
                     location: '',
                 },
                 title: '菜单新增',
@@ -291,7 +292,7 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
-                this.resultData.url = '';
+                this.resultData.route = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
                 this.options = [];
@@ -310,20 +311,20 @@
 
                     this.resultData.sortNo = '';
                     this.resultData.icon = '';
-                    this.resultData.url = '';
+                    this.resultData.route = '';
                     this.resultData.location = '';
                 } else {
                     if (event == "menu") {
                         this.type = true;
                         this.resultData.sortNo = this.formData.sortNo;
                         this.resultData.icon = this.formData.icon;
-                        this.resultData.url = this.formData.url;
+                        this.resultData.route = this.formData.route;
                         this.resultData.location = this.formData.location;
                     } else {
                         this.type = false;
                         this.resultData.sortNo = '';
                         this.resultData.icon = '';
-                        this.resultData.url = '';
+                        this.resultData.route = '';
                         this.resultData.location = '';
 
                     }
@@ -343,7 +344,7 @@
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
-                this.resultData.url = '';
+                this.resultData.route = '';
                 this.resultData.location = '';
                 this.resultData.type = '';
                 this.type = false;
@@ -361,7 +362,7 @@
                 this.resultData.enabled = this.formData.enabled;
                 this.resultData.sortNo = this.formData.sortNo;
                 this.resultData.icon = this.formData.icon;
-                this.resultData.url = this.formData.url;
+                this.resultData.route = this.formData.route;
                 this.resultData.location = this.formData.location;
                 this.resultData.type = this.formData.type;
                 if (this.formData.type == "menu") {
@@ -460,6 +461,68 @@
         }
     }
 </script>
-<style scoped>
-    @import '../../../../public/css/manage.css';
+<style lang="scss" scoped>
+    // @import '../../../../public/css/manage.scss';
+    #menuPage {
+        .elrow {
+            padding-left: 4px;
+            border-bottom: 1px solid #ebe9e9;
+            height: 40px;
+            padding-top: 5px;
+        }
+
+        .elbutton {
+            margin-top: 2px;
+        }
+
+        .el-select {
+            display: inline-block;
+            position: relative;
+            width: 50%;
+        }
+
+        .formitem {
+            width: 50%;
+            position: relative;
+            float: left;
+            z-index: 11;
+        }
+
+        .formitem_btn {
+            width: 100%;
+            text-align: right;
+        }
+
+        .elbutton2 {
+            height: 30px;
+            line-height: 5px;
+            margin-left: 10px;
+        }
+
+        .addbtn {
+            width: 58px;
+            text-align: center;
+            padding: 6px;
+        }
+
+        #xZxgdialog {
+            .el-select {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+            }
+        }
+
+
+        .el-input {
+            position: relative;
+            font-size: 14px;
+            display: inline-block;
+            width: 50%;
+        }
+
+        .el-dialog .el-input {
+            width: 100% !important;
+        }
+    }
 </style>
