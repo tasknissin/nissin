@@ -2,9 +2,9 @@
     <div style="width:100%;height:100%;" v-loading="loading" element-loading-text="拼命加载中"
         element-loading-background="rgba(255, 255, 255, 1)" id="rolemanegePage">
         <el-row class="elrow">
-            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addRole">增加
+            <el-button v-if="qxdata.add" type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addRole">增加
             </el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="roledialog">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" :close-on-click-modal="false" id="roledialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
                         <el-input v-model="resultData.roleName"></el-input>
@@ -45,15 +45,15 @@
                 <el-table-column prop="enabled" label="是否有效"></el-table-column>
                 <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" icon="el-icon-edit"
+                        <el-button  v-if="qxdata.updata" size="mini" type="primary" icon="el-icon-edit"
                             style="width:57px; padding: 5px 0px 5px 0px;" @click="handleEdit(scope.$index, scope.row)">
                             修改
                         </el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete"
+                        <el-button v-if="qxdata.delete"  size="mini" type="danger" icon="el-icon-delete"
                             style="width:57px; padding: 5px 0px 5px 0px;"
                             @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
-                        <el-button type="primary" size="mini" icon="el-icon-edit"
+                        <el-button v-if="qxdata.addQX" type="primary" size="mini" icon="el-icon-edit"
                             style="width:57px; padding: 5px 0px 5px 0px;" @click="addRoleqx(scope.$index, scope.row)">权限
                         </el-button>
                     </template>
@@ -62,7 +62,8 @@
             <!-- <el-pagination class="fy" layout="prev, pager, next" @current-change="current_change" :total="total"
                 background>
             </el-pagination> -->
-            <el-dialog title="权限设置" :visible.sync="dialogFormVisibleqx" id="roledialogqxxg">
+            <el-dialog title="权限设置" :visible.sync="dialogFormVisibleqx" :close-on-click-modal="false"
+                id="roledialogqxxg">
                 <el-tabs v-model="activeName" v-loading="loading" element-loading-text="拼命加载中"
                     element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
                     @tab-click="handleClick">
@@ -106,6 +107,9 @@
         qxtreeDatachecked,
         getroleGJjsID,
     } from '../../services/rwfkPage.js'
+    import {
+        getBtnsPermissionsData
+    } from '../../services/Manage/postManage.js'
     import {
         constants
     } from 'crypto';
@@ -152,7 +156,13 @@
                 Uservalue: [],
                 defaultcheckedkeys: [],
                 heightItem: window.innerHeight - 160, // 计算表格的高度
-                checkstrictly: true
+                checkstrictly: true,
+                qxdata: {
+                    'add': false,
+                    'updata': false,
+                    'delete': false,
+                    'addQX': false
+                }
 
                 // munevalue: []
 
@@ -161,9 +171,33 @@
 
         mounted() {
             this.getRoledata();
+            this.getqx();
 
         },
         methods: {
+            getqx() {
+                let userId = this.$store.state.user.userId;
+                let id = this.$store.state.muneId;
+                getBtnsPermissionsData(id, userId).then((data) => {
+                    if (data.result.length > 0) {
+                        console.log(data.result);
+                        let result = data.result;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i] == "system:sysRole:delete") {
+                                this.qxdata.delete = true;
+                            } else if (result[i] == "system:sysRole:add") {
+                                this.qxdata.add = true;
+                            } else if (result[i] == "system:sysRole:update") {
+                                this.qxdata.addQX = true;
+                            } else if (result[i] == "system:sysRole:auth") {
+                                this.qxdata.addQX = true;
+                            }
+                        }
+                    }
+
+                    //console.log(this.formData)
+                });
+            },
             //默认进来获取数据
             getRoledata() {
                 getRoleData('1', this.pagesize).then((data) => {

@@ -6,9 +6,10 @@
             :props="defaultProps" 
             node-key="id"
             :highlight-current="true"
-            :default-expanded-keys="[5,3,2]"
+            :default-expand-all='defaultExpandAll'
             @node-click="handleNodeClick"
         >
+          <!-- :default-expanded-keys="[5,3,2]" -->
         </el-tree>
 
     </div>
@@ -29,6 +30,7 @@ export default {
                 label: 'departmantName'
             },
             hashPath:'',
+            defaultExpandAll:true
             
         }
     },

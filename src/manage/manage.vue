@@ -18,7 +18,8 @@
           active-text-color="#f60"
           @open="handleOpen" 
           @close="handleClose" 
-          :collapse="isCollapse">
+          :collapse="isCollapse"
+          >
           <NavMenu :navMenus="totalList" :collpase="isCollapse"></NavMenu>
         </el-menu>
       </el-aside>
@@ -74,7 +75,7 @@ export default {
   },
   computed: {
     ...mapState({
-      userId:state => state.user.userId
+      userId:state => state.user.userId,
     })
   },
   methods: {
@@ -82,6 +83,8 @@ export default {
       /**
        * 头部标签页
        */
+      // let muneid= $attrs.data.id;
+      this.$store.dispatch('getZmuneID',$attrs.data.id);
       let key = $attrs.data.menuName
       let tabs = this.editableTabs;    //标签栏数据
       let activeName = this.editableTabsValue;   //默认进来标签

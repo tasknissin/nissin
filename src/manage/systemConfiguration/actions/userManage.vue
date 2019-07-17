@@ -24,7 +24,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="增加用户信息" :visible.sync="dialogFormVisible" id="userDialog" @close="cancelHandel">
+            <el-dialog title="增加用户信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false"  id="userDialog" @close="cancelHandel">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane style="min-height:200px;" label="基本信息" name="first">
                         <el-form :label-position="labelPosition"  :inline="true"  :model="form"  size="small" label-width="100px" :rules="rulesForm" ref="userManageFormLog">

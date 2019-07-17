@@ -34,12 +34,10 @@
                 tabIndex: 0,
                 tableData: [],
                 totalList: [],
-
             }
         },
         created() {
             this.tableData = Array(20).fill(this.item);
-
         },
         methods: {
             addTab(targetName) {

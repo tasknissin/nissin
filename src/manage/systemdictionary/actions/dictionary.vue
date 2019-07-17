@@ -41,7 +41,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-             <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" id="dictionaryDialog" @close="cancelHandel">
+             <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false" id="dictionaryDialog" @close="cancelHandel">
                 <el-form ref = "dictionaryFormLog" :label-position="labelPosition"  :inline="true"  :model="form"  size="small" label-width="100px" :rules="rules">
                     <el-form-item label="类型"  prop="type" width="200">
                         <el-select v-model="form.type" placeholder="请选择">
