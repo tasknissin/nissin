@@ -1,13 +1,13 @@
 <template>
     <div id="menuPage">
         <el-row class="elrow">
-            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addMenu">增加
+            <el-button v-if="qxdata.add" type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addMenu">增加
             </el-button>
-            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataMenu">修改
+            <el-button  v-if="qxdata.updata"   type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataMenu">修改
             </el-button>
-            <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
+            <el-button   v-if="qxdata.delete" type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="xZxgdialog">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" :close-on-click-modal="false" id="xZxgdialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="菜单编号" :label-width="formLabelWidth" class="formitem" prop="menuCode">
                         <el-input v-model="resultData.menuCode" autocomplete="off"></el-input>
@@ -124,9 +124,13 @@
         getAllmenuinfo,
         sysMenuYZ,
         getMenuTree,
-        menuVerificationRepeat
+        menuVerificationRepeat,
+        
 
     } from '../../../services/rwfkPage.js'
+    import {
+        getBtnsPermissionsData
+    } from '../../../services/Manage/postManage.js'
     import {
         mapState
     } from 'vuex'
@@ -235,7 +239,13 @@
                 formLabelWidth: '120px',
                 id: '',
                 options: [],
-                disabled: false
+                disabled: false,
+                  qxdata: {
+                    'add': false,
+                    'updata': false,
+                    'delete': false,
+                   
+                }
 
             }
         },
@@ -246,6 +256,25 @@
         }),
         mounted() {
             let id = this.$store.state.menuManage.treeid;
+            let userId = this.$store.state.user.userId;
+            let muneId = this.$store.state.muneId;
+            getBtnsPermissionsData(muneId, userId).then((data) => {
+                if (data.result.length > 0) {
+                    console.log(data.result);
+                        let result = data.result;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i] == "system:sysMenu:delete") {
+                                this.qxdata.delete = true;
+                            } else if (result[i] == "system:sysMenu:add") {
+                                this.qxdata.add = true;
+                            } else if (result[i] == "system:sysMenu:update") {
+                                this.qxdata.addQX = true;
+                            } 
+                        }
+                }
+
+                //console.log(this.formData)
+            });
             this.getmenuGetData(id);
             this.getUserDataParent();
         },
@@ -340,7 +369,7 @@
                 this.resultData.id = '';
                 this.resultData.menuCode = '';
                 this.resultData.menuName = '';
-                this.resultData.parentId = this.formData.parentId;
+                this.resultData.parentId = this.formData.id;
                 this.resultData.enabled = '';
                 this.resultData.sortNo = '';
                 this.resultData.icon = '';
@@ -358,7 +387,7 @@
                 this.resultData.id = this.formData.id;
                 this.resultData.menuCode = this.formData.menuCode;
                 this.resultData.menuName = this.formData.menuName;
-                this.resultData.parentId = this.formData.parentId;
+                this.resultData.parentId = this.formData.id;
                 this.resultData.enabled = this.formData.enabled;
                 this.resultData.sortNo = this.formData.sortNo;
                 this.resultData.icon = this.formData.icon;

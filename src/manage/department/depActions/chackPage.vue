@@ -1,15 +1,16 @@
 <template>
     <div id='departmentPage'>
         <el-row class="elrow">
-            <el-button type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn"
+            <el-button   v-if="qxdata.add" type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn"
                 @click="addDepartment">增加
             </el-button>
-            <el-button type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">
+            <el-button   v-if="qxdata.updata"  type="primary" size='mini' icon="el-icon-edit" class="elbutton addbtn" @click="updataDepartment">
                 修改
             </el-button>
-            <el-button type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
+            <el-button  v-if="qxdata.delete" type="danger" size='mini' icon="el-icon-delete" class="elbutton addbtn" @click="deleteclick"> 删除
             </el-button>
-            <el-dialog :title="title" :visible.sync="dialogFormVisible" id="departmentdialog">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" :close-on-click-modal="false"
+                id="departmentdialog">
                 <el-form :model="resultData" ref="resultData" :rules="rules">
                     <el-form-item label="部门编号" :label-width="formLabelWidth" class="formitem" prop="departmant">
                         <el-input v-model="resultData.departmant"></el-input>
@@ -105,6 +106,9 @@
 
     } from '../../../services/rwfkPage.js'
     import {
+        getBtnsPermissionsData
+    } from '../../../services/Manage/postManage.js'
+    import {
         mapState
     } from 'vuex'
     // import ' ../../../public/css/manage.css'
@@ -169,7 +173,13 @@
                 checked: false,
                 formLabelWidth: '120px',
                 id: '',
-                options: []
+                options: [],
+                qxdata: {
+                    'add': false,
+                    'updata': false,
+                    'delete': false,
+                   
+                }
 
             }
         },
@@ -179,7 +189,27 @@
             }
         }),
         mounted() {
-            let id = this.$store.state.department.treeid;
+            let userId = this.$store.state.user.userId;
+            let muneId = this.$store.state.muneId;
+            getBtnsPermissionsData(muneId, userId).then((data) => {
+                if (data.result.length > 0) {
+                    console.log(data.result);
+                        let result = data.result;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i] == "system:sysDepartment:delete") {
+                                this.qxdata.delete = true;
+                            } else if (result[i] == "system:sysDepartment:add") {
+                                this.qxdata.add = true;
+                            } else if (result[i] == "system:sysDepartment:update") {
+                                this.qxdata.addQX = true;
+                            } 
+                        }
+                }
+
+                //console.log(this.formData)
+            });
+            let id = this.$store.state.departmant.treeid;
+
             this.getDepartmentData(id);
             this.getUserDataParent();
         },

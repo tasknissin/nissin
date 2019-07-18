@@ -40,9 +40,7 @@
                     <div class="grid-content bg-purple-light"></div>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" ref="multipleTable" border style="width: 100%;
-    height: 540px;
-    max-height: 540px;">
+            <el-table :data="tableData" ref="multipleTable" border style="width: 100%;height: 540px; max-height: 540px;">
                 <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
                 <el-table-column prop="feedbackType" label="反馈类型" width="180">
                     <template slot-scope="scope">
@@ -90,7 +88,7 @@
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </app-content>
-        <el-dialog :title='title' :visible.sync="dialogFormVisible" style="hieght:400px">
+        <el-dialog :title='title' :visible.sync="dialogFormVisible" :close-on-click-modal="false" style="hieght:400px">
             <el-form :model="formD" ref="formD" :rules="rules">
                 <el-form-item label="任务编号" :label-width="formLabelWidth" prop="taskId">
                     <el-input v-model="formD.taskId"></el-input>
@@ -447,6 +445,7 @@
                                     message: '操作成功!'
                                 })
                                 // location.reload();
+                                this.dialogFormVisible = false;
                                 this.getAlltaskFdata(1, this.pageSize, this.selected);
                             }
 
@@ -533,6 +532,7 @@
                 }).then(() => {
                     deleteTaskFeedback(row.id).then((data) => {
                         if (data.data.success) {
+                            this.dialogFormVisible = false;
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -591,12 +591,18 @@
 
     }
 </script>
-<style scoped>
+<style >
     #taskPage {
         width: cal(100% - 30px);
         min-height: calc(100% - 48px);
         background-color: #eceff4;
 
+    }
+
+    #taskPage .el-table td,
+    .el-table th.is-leaf {
+        border-bottom: 1px solid #EBEEF5;
+        text-align: center;
     }
 
     #taskPage .sub-lefticon {

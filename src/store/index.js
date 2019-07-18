@@ -1,23 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
-import {login} from '@/api/login'
+import { login } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-        city:localStorage.getItem('city')?localStorage.getItem('city'):'11',
-        cityID:localStorage.getItem('cityID')?localStorage.getItem('cityID'):30,
-        btns:[{name:'Add',value:'增加'},{name:'Delete',value:'删除'},{name:'Update',value:'修改'},{name:'Reset',value:'密码重置'}],
+    state: {
+        city: localStorage.getItem('city') ? localStorage.getItem('city') : '11',
+        cityID: localStorage.getItem('cityID') ? localStorage.getItem('cityID') : 30,
+        btns: [{ name: 'Add', value: '增加' }, { name: 'Delete', value: '删除' }, { name: 'Update', value: '修改' }, { name: 'Reset', value: '密码重置' }],
         department: {
             treeid: '',
         },
         menuManage: {
             treeid: '',
         },
-        perBtns:[],
-    },  
+        perBtns: [],
+        muneId: '',
+    },
     getters: {
         get_id: state => state.department.treeid,
         getmenu_id: state => state.menuManage.treeid
@@ -35,8 +36,11 @@ export default new Vuex.Store({
         menuchange_id(state, str) {
             state.menuManage.treeid = str;
         },
-        setPerBtns(state,arr){
+        setPerBtns(state, arr) {
             state.perBtns = arr
+        },
+        getMuneID(state, str) {
+            state.muneId = str;
         }
 
 
@@ -56,12 +60,15 @@ export default new Vuex.Store({
         getmenuid(context, id) {
             context.commit('menuchange_id', id)
         },
-        selectperBtns(context,arr){
-            context.commit('setPerBtns',arr)
+        getZmuneID(context, id) {
+            context.commit('getMuneID', id)
+        },
+        selectperBtns(context, arr) {
+            context.commit('setPerBtns', arr)
         }
 
     },
-    modules:{
+    modules: {
         user
     }
 })

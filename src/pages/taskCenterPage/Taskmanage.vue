@@ -83,7 +83,7 @@
                     :total="totalCount"
                     style="margin-top:5px;">
       </el-pagination>
-      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @close="cancelHandel" >
+      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="cancelHandel" >
         <el-form  :inline="true"  :model="form"  size="small" label-width="100px">
          
           <el-form-item label="任务排序"  prop="sortNo">
@@ -610,6 +610,10 @@ export default {
 }
 .el-form--inline .el-form-item{
   min-width: 45%;
+}
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #EBEEF5;
+    text-align: center;
 }
 #taskManagePage  .el-table th.gutter{
   display: table-cell !important;

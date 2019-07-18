@@ -18,7 +18,7 @@ let config = {
                         "id": 2,
                         "parentMenuId": 1,
                         "name": "部门管理",
-                        "icon": "el-icon-loading",
+                        "icon": "el-icon-user-solid",
                         "alias": "部门管理",
                         "state": "ENABLE",
                         "sort": 0,
@@ -30,10 +30,10 @@ let config = {
                 },
                 {
                     "entity": {
-                        "id": 3,  //
-                        "parentMenuId": 1,//
-                        "name": "岗位管理",  //
-                        "icon": "el-icon-bell",  //
+                        "id": 3, //
+                        "parentMenuId": 1, //
+                        "name": "岗位管理", //
+                        "icon": "el-icon-bell", //
                         "alias": "岗位管理",
                         "state": "ENABLE",
                         "sort": 1,
@@ -64,7 +64,7 @@ let config = {
                         "id": 5,
                         "parentMenuId": 1,
                         "name": "菜单管理",
-                        "icon": "el-icon-mobile-phone",   // 
+                        "icon": "el-icon-mobile-phone", // 
                         "alias": "菜单管理",
                         "state": "ENABLE",
                         "sort": 3,
@@ -81,9 +81,9 @@ let config = {
                         "name": "用户管理",
                         "icon": "el-icon-mobile-phone",
                         "alias": "用户管理",
-                        "state": "ENABLE",    // 
-                        "sort": 4,  // sortNo
-                        "value": "userManage",  //url
+                        "state": "ENABLE", // 
+                        "sort": 4, // sortNo
+                        "value": "userManage", //url
                         "type": "LINK",
                         "createUserId": 1
                     },
