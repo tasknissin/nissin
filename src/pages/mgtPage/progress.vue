@@ -16,7 +16,8 @@
       </div>
     </app-subheader>
     <app-content >
-      <ul class="selectbox">
+      
+    <ul class="selectbox">
           <li v-for="(item1,index) in selectData" :key="index">
               <label>{{item1.name}}</label>
               <el-select v-model="dataModel[index].value1">
@@ -29,6 +30,7 @@
               </el-select>
           </li>
       </ul>
+      
       <el-table :data="tableData" :height="heightItem" :max-height="heightItem" border style="width: 100%" id="taskManTable" :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
         <el-table-column prop="sortNo" label="任务排序"></el-table-column>
         <el-table-column prop="parentTaskCode" label="父级任务编号"></el-table-column>
@@ -524,15 +526,6 @@ export default {
         }
       })
       return labelVal
-    },
-    getStyle(ele) {
-        var style = null;
-        if(window.getComputedStyle) {
-            style = window.getComputedStyle(ele, null);
-        }else{
-            style = ele.currentStyle;
-        }
-        return style;
     }
   },
   created() {
@@ -542,18 +535,6 @@ export default {
         this.tableData = result.result;  
         this.totalCount = result.rowCount     
         this.loading = false;
-        this.$nextTick(function () {
-              setTimeout(() => {
-                const selectWrap = this.$el.querySelector('.el-table__body-wrapper')
-                const gutterWrap = this.$el.querySelector('.gutter')
-                let style = this.getStyle(selectWrap)
-                if(style.overflowY == 'auto'){
-                    gutterWrap.style.width = '17px'
-                }else{
-                    gutterWrap.style.width = '0px'
-                }
-              }, 100);     
-        })
       }
     })
     searchDictionaryManList('').then((result)=>{
@@ -655,16 +636,14 @@ export default {
 .el-form--inline .el-form-item{
   min-width: 45%;
 }
-.el-table td, .el-table th.is-leaf {
-    border-bottom: 1px solid #EBEEF5;
-    text-align: center;
-}
 #taskManagePage  .el-table th.gutter{
   display: table-cell !important;
 }
 #taskManagePage .el-input{
   width:auto !important;
 }
-
+.el-table{
+    font-size: 13px !important;
+} 
 </style>
 

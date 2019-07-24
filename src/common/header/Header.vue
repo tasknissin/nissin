@@ -25,8 +25,15 @@
 </template>
 
 <script>
+import {
+  Submenu,
+  MenuItem} from "element-ui"
 export default {
     name: 'NavMenu',
+    components: {
+        "el-menu-item":MenuItem,
+        "el-submenu" : Submenu
+    },
     props: {
         title: String,
         navMenus:Array
