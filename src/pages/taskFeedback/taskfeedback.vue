@@ -5,7 +5,7 @@
                 <i class="sub-lefticon el-icon-s-home"></i><span>个人中心首页</span>
             </div>
             <div slot="right">
-                <el-button type="primary" style="margin-left: .03rem;" @click="export2Excel"><i
+                <el-button size="small" type="primary" style="margin-left: .03rem;" @click="export2Excel"><i
                         class="el-icon-printer"></i>导出</el-button>
                 <el-button type="primary" size='small' icon="el-icon-circle-plus" style="width:80px"
                     @click="addnewTask">
@@ -13,8 +13,8 @@
             </div>
         </app-subheader>
         <app-content :selectData=selectData :selectObj=selectObj>
-            <el-row style="margin-bottom:7px">
-                <el-col :span="4" id="feedbackType">
+            <ul class="selectbox">
+                <li :span="4" id="feedbackType">
                     <label>反馈类型：</label>
                     <el-select placeholder="请选择反馈类型" v-model="selected" style="width:72%"
                         @change="onSelectedDrug($event)">
@@ -23,11 +23,11 @@
                         <el-option label="季度" value="Q"></el-option>
                         <el-option label="年度" value="Y"></el-option>
                     </el-select>
-                </el-col>
-                <el-col :span="4">
-                    <!-- <div class="grid-content bg-purple-light">ssss</div> -->
-                </el-col>
-                <el-col :span="4">
+                </li>
+                <!-- <el-col :span="4">
+                    <div class="grid-content bg-purple-light">ssss</div>
+                </el-col> -->
+                <!-- <el-col :span="4">
                     <div class="grid-content bg-purple"></div>
                 </el-col>
                 <el-col :span="4">
@@ -38,47 +38,45 @@
                 </el-col>
                 <el-col :span="4">
                     <div class="grid-content bg-purple-light"></div>
-                </el-col>
-            </el-row>
-            <el-table :data="tableData" ref="multipleTable" border style="width: 100%;
-    height: 540px;
-    max-height: 540px;">
-                <el-table-column prop="taskId" label="任务编号" width="180"></el-table-column>
-                <el-table-column prop="feedbackType" label="反馈类型" width="180">
+                </el-col> -->
+            </ul>
+            <el-table :data="tableData" :height="heightItem" :max-height="heightItem"  ref="multipleTable" border style="width: 100%;" :header-cell-style="{padding:'8px 0'}" :cell-style="{padding:'5px 0'}">
+                <el-table-column prop="taskId" label="任务编号"></el-table-column>
+                <el-table-column prop="feedbackType" label="反馈类型">
                     <template slot-scope="scope">
                         <span>{{feedbackTypeCl(scope.row.feedbackType)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="feedbackTime" label="反馈时间" width="180"></el-table-column>
-                <el-table-column prop="completedDesc" label="完成情况" width="180"></el-table-column>
-                <el-table-column prop="gap" label="差因" width="180"></el-table-column>
-                <el-table-column prop="nextPlan" label="下一步计划" width="180"></el-table-column>
-                <el-table-column prop="completedStatus" label="完成状态" width="180">
+                <el-table-column prop="feedbackTime" label="反馈时间"></el-table-column>
+                <el-table-column prop="completedDesc" label="完成情况"></el-table-column>
+                <el-table-column prop="gap" label="差因"></el-table-column>
+                <el-table-column prop="nextPlan" label="下一步计划"></el-table-column>
+                <el-table-column prop="completedStatus" label="完成状态">
                     <template slot-scope="scope">
                         <span>{{completedStatusCL(scope.row.completedStatus)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="totalStatus" label="整体任务完成状态" width="180">
+                <el-table-column prop="totalStatus" label="整体任务完成状态">
                     <template slot-scope="scope">
                         <span>{{totalStatusCL(scope.row.totalStatus)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="selfEvaluate" label="自评" width="180">
+                <el-table-column prop="selfEvaluate" label="自评">
                     <template slot-scope="scope">
                         <span>{{selfEvaluateCl(scope.row.selfEvaluate)}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="finalEvaluate" label="公议" width="180">
+                <el-table-column prop="finalEvaluate" label="公议">
                     <template slot-scope="scope">
                         <span>{{formatterCColumngyCL(scope.row.finalEvaluate)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" icon="el-icon-edit"
+                        <el-button size="small" type="primary" icon="el-icon-edit"
                             @click="handleEdit(scope.$index, scope.row)">修改
                         </el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete"
+                        <el-button size="small" type="danger" icon="el-icon-delete"
                             @click="handleDelete(scope.$index, scope.row)">删除
                         </el-button>
                         <!-- <el-button type="primary" size="mini" @click="addRoleqx(scope.$index, scope.row)"></el-button> -->
@@ -147,8 +145,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item style="width: 96%;float: none;text-align: right;z-index: 1; ">
-                    <el-button type="primary" @click="onSubmit('formD')">提交</el-button>
-                    <el-button @click="deleteTC">取消</el-button>
+                    <el-button size="small" type="primary" @click="onSubmit('formD')">提交</el-button>
+                    <el-button size="small" @click="deleteTC">取消</el-button>
                 </el-form-item>
 
             </el-form>
@@ -164,9 +162,19 @@
     import {
         searchDictionaryManList
     } from '../../services/Manage/postManage.js'
-
+    import { DatePicker,Table,TableColumn,Select,Option,Pagination,Row,Col } from 'element-ui'
 
     export default {
+        components:{
+            "el-date-picker" : DatePicker,
+            "el-table" : Table,
+            "el-table-column" : TableColumn,
+            "el-pagination" : Pagination,
+            "el-select" : Select,
+            "el-option" : Option,
+            "el-row" : Row,
+            "el-col" : Col
+        },
         data() {
             return {
                 formD: {
@@ -311,7 +319,7 @@
                     numid: '',
                     ptcode: ''
                 },
-                // heightItem: '',
+                heightItem: window.innerHeight - 215, // 计算表格的高度
                 formLabelWidth: '135px',
                 dialogFormVisible: false,
                 total: 5,
@@ -321,7 +329,7 @@
                 selfEvaluaSelectData: [], //自评
                 finalEvaluateSelectData: [], //公议
                 selected: null
-
+    
 
             }
         },
@@ -346,6 +354,18 @@
 
                         this.tableData = data.data.result
                         this.total = data.data.rowCount;
+                        this.$nextTick(function () {
+                            setTimeout(() => {
+                                const selectWrap = this.$el.querySelector('.el-table__body-wrapper')
+                                const gutterWrap = this.$el.querySelector('.gutter')
+                                let style = this.getStyle(selectWrap)
+                                if(style.overflowY == 'auto'){
+                                    gutterWrap.style.width = '17px'
+                                }else{
+                                    gutterWrap.style.width = '0px'
+                                }
+                            }, 100);     
+                        })
                         //this.currentPage = data.data.curr;
                     }
                 });
@@ -585,8 +605,16 @@
             },
             formatJson(filterVal, jsonData) {
                 return jsonData.map(v => filterVal.map(j => v[j]))
+            },
+            getStyle(ele) {
+                var style = null;
+                if(window.getComputedStyle) {
+                    style = window.getComputedStyle(ele, null);
+                }else{
+                    style = ele.currentStyle;
+                }
+                return style;
             }
-
         },
 
     }
@@ -594,7 +622,7 @@
 <style scoped>
     #taskPage {
         width: cal(100% - 30px);
-        min-height: calc(100% - 48px);
+        height: calc(100% - 48px);
         background-color: #eceff4;
 
     }
@@ -645,7 +673,7 @@
         padding-top: 10px;
         width: 100%;
     }
-
+   
     #feedbackType .el-input__inner {
         line-height: 30px;
         height: 36px;
@@ -655,4 +683,10 @@
     #feedbackType {
         float: right;
     }
+</style>
+<style>
+    #taskPage .el-table th.gutter{
+        display: table-cell !important;
+    }
+
 </style>

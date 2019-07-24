@@ -1,20 +1,6 @@
 
 <template>
     <div class="contentPage">
-        <!-- <ul class="selectbox">
-            <li v-for="(item1,index) in selectData" :key="index">
-                <label>完成状态</label>
-                <el-select v-model="dataModel[index].value1">
-                    <el-option
-                        v-for="item1 in item1.options"
-                        :key="item1.value"
-                        :label="item1.label"
-                        :value="item1.value">
-                    </el-option>
-                </el-select>
-            </li>
-            
-        </ul> -->
         <slot/>
         
     </div>
@@ -81,6 +67,7 @@ export default {
     width:100%;
     height: 30px;
     line-height: 30px;
+    margin-bottom: 10px;
     text-align: right;
 }
 .contentPage .selectbox>li{

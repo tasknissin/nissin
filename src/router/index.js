@@ -16,15 +16,27 @@ const router = new Router({
             component: () => import('../pages/selfPage/Root')
         },
         {
-            name: "taskCenter", //任务管理
+            name: "taskCenter", //任务中心
             path: '/taskCenter',
+            component: () =>
+                import ('../pages/taskCenterPage/TaskCenter')
+        },
+        {
+            name: "taskManage", //任务管理
+            path: '/taskManage',
             component: () =>
                 import ('../pages/taskCenterPage/Taskmanage')
         },
         {
+            name: "taskRoot", //任务管理测试
+            path: '/taskRoot',
+            component: () =>
+                import ('../pages/taskCenterPage/Root')
+        },
+        {
             name: "mgtCenter",
             path: '/mgtCenter',
-            component: () => import('../pages/mgtPage/Root')
+            component: () => import('../pages/mgtPage/progress.vue')
         },
         {
             name: "mgtFirst",
@@ -37,8 +49,8 @@ const router = new Router({
             component: () => import('../pages/loginPage/login.vue'),
         },
         {
-            name: 'task',   //任务反馈
-            path: '/task',
+            name: 'taskFeedback',   //任务反馈
+            path: '/taskFeedback',
             component: () => import('../pages/taskFeedback/taskfeedback.vue')
 
         },

@@ -64,14 +64,14 @@
             </template>
         </el-table-column>
 
-        <el-table-column label="操作" v-if="handlesActive"  width="150">
+        <!-- <el-table-column label="操作" v-if="handlesActive"  width="150">
           <template slot-scope="scope">
             <el-button icon="el-icon-edit" size="small" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
             <el-button icon="el-icon-delete" size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-pagination @size-change="handleSizeChange" 
                     @current-change="handleCurrentChange" 
@@ -524,36 +524,16 @@ export default {
         }
       })
       return labelVal
-    },
-    getStyle(ele) {
-        var style = null;
-        if(window.getComputedStyle) {
-            style = window.getComputedStyle(ele, null);
-        }else{
-            style = ele.currentStyle;
-        }
-        return style;
     }
   },
   created() {
     // 请求表格数据
     getPaginationTaskManageList(this.currentPage,this.PageSize).then(result=>{
       if(result.result.length > 0){
+        console.log(result.result)
         this.tableData = result.result;  
         this.totalCount = result.rowCount     
         this.loading = false;
-        this.$nextTick(function () {
-              setTimeout(() => {
-                const selectWrap = this.$el.querySelector('.el-table__body-wrapper')
-                const gutterWrap = this.$el.querySelector('.gutter')
-                let style = this.getStyle(selectWrap)
-                if(style.overflowY == 'auto'){
-                    gutterWrap.style.width = '17px'
-                }else{
-                    gutterWrap.style.width = '0px'
-                }
-              }, 100);     
-        })
       }
     })
     searchDictionaryManList('').then((result)=>{
@@ -661,6 +641,8 @@ export default {
 #taskManagePage .el-input{
   width:auto !important;
 }
-
+.el-table{
+    font-size: 13px !important;
+} 
 </style>
 

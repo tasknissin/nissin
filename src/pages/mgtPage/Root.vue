@@ -86,6 +86,7 @@
 </div>
 </template>
 <script>
+import {Table,TableColumn,Select,Option,Pagination } from 'element-ui'
 import {
     getMessageList,
     getMenuList,
@@ -95,6 +96,13 @@ import {
 var XLSX = require('xlsx')
 var FileSaver = require('file-saver')
 export default {
+    components:{
+        "el-table" : Table,
+        "el-table-column" : TableColumn,
+        "el-pagination" : Pagination,
+        "el-select" : Select,
+        "el-option" : Option,
+    },
    data(){
        return {
             // 总数据

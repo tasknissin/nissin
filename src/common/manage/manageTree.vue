@@ -15,7 +15,12 @@
 </template>
 
 <script>
+import {Tree} from 'element-ui'
+
 export default {
+    components:{
+        'el-tree' : Tree
+    },
     name:'ManageTree',
     props:{
         treeName:String,

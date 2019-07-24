@@ -38,7 +38,7 @@
           </el-table-column>
         </el-table>
     </div>
-     <div style="text-align: center;margin-top: 30px;">
+    <div style="text-align: center;margin-top: 30px;">
         <el-pagination
           background
           layout="prev, pager, next"
@@ -51,9 +51,15 @@
 </template>
 
 <script>
+import {Table,TableColumn,Pagination} from 'element-ui'
 var XLSX = require('xlsx')
 var FileSaver = require('file-saver')
 export default {
+  components:{
+    "el-table" : Table,
+    "el-table-column" : TableColumn,
+    "el-pagination" : Pagination,
+  },
   data() {
     return {
       tableData: [
