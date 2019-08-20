@@ -387,7 +387,7 @@
                 this.resultData.id = this.formData.id;
                 this.resultData.menuCode = this.formData.menuCode;
                 this.resultData.menuName = this.formData.menuName;
-                this.resultData.parentId = this.formData.id;
+                this.resultData.parentId = this.formData.parentId;
                 this.resultData.enabled = this.formData.enabled;
                 this.resultData.sortNo = this.formData.sortNo;
                 this.resultData.icon = this.formData.icon;
