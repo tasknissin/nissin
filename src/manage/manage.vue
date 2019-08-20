@@ -121,7 +121,7 @@ import {
   Loading,
   MessageBox,
   Message,
-  Notification
+  Notification,
 } from 'element-ui';
 
 Vue.use(Pagination);
@@ -148,6 +148,7 @@ Vue.use(Main);
 Vue.use(Footer);
 Vue.use(Col);
 Vue.use(Row);
+Vue.use(Tree);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

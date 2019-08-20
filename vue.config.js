@@ -25,6 +25,10 @@ module.exports = {
                 target: "http://47.92.121.252:8080",
                 changeOrigin: true
             },
+            "/admin":{
+                target: "http://api.hyt.dslyy.com",
+                changeOrigin: true
+            }
             // "/testController": {
             //     target: "http://192.168.11.172:8081",
             //     changeOrigin: true

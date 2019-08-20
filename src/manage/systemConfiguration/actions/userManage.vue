@@ -405,7 +405,9 @@ export default {
             this.form = this.tableData[index];
             this.passwordFlag = false;
             searchUser_RolesManList(this.updateIndex).then((result)=>{
+                console.log(result.result)
                 var _this = this;
+                this.Rloevalue = [];
                 result.result.map((item,index)=>{
                     _this.Rloevalue.push(item.id)
                 })
@@ -413,6 +415,8 @@ export default {
             })
             searchUser_DepsManList(this.updateIndex).then((result) =>{
                 var _this = this;
+                console.log(result.result);
+                this.Depvalue = []
                 result.result.map((item,index)=>{
                     _this.Depvalue.push(item.id)
                 })

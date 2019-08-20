@@ -241,9 +241,9 @@
                 options: [],
                 disabled: false,
                   qxdata: {
-                    'add': false,
-                    'updata': false,
-                    'delete': false,
+                    'add': true,
+                    'updata': true,
+                    'delete': true,
                    
                 }
 
