@@ -175,9 +175,9 @@
                 id: '',
                 options: [],
                 qxdata: {
-                    'add': false,
-                    'updata': false,
-                    'delete': false,
+                    'add': true,
+                    'updata': true,
+                    'delete': true,
                    
                 }
 
@@ -192,8 +192,7 @@
             let userId = this.$store.state.user.userId;
             let muneId = this.$store.state.muneId;
             getBtnsPermissionsData(muneId, userId).then((data) => {
-                if (data.result.length > 0) {
-                    console.log(data.result);
+                if (data.success) {
                         let result = data.result;
                         for (var i = 0; i < result.length; i++) {
                             if (result[i] == "system:sysDepartment:delete") {
@@ -208,7 +207,7 @@
 
                 //console.log(this.formData)
             });
-            let id = this.$store.state.departmant.treeid;
+            let id = this.$store.state.department.treeid;
 
             this.getDepartmentData(id);
             this.getUserDataParent();

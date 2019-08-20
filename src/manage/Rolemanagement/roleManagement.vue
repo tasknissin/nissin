@@ -35,8 +35,7 @@
 
             <!-- </el-table> -->
 
-            <el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
-                element-loading-background="rgba(0, 0, 0, 0.8)" :data="tableData" :height="heightItem"
+            <el-table :data="tableData" :height="heightItem"
                 :max-height="heightItem" border style="width: 100%" :header-cell-style="{padding:'8px 0'}"
                 :cell-style="{padding:'5px 0'}">
                 <el-table-column type="index" :index="indexMethod(1)" label="序列号" width="120" height="10">
@@ -158,10 +157,10 @@
                 heightItem: window.innerHeight - 160, // 计算表格的高度
                 checkstrictly: true,
                 qxdata: {
-                    'add': false,
-                    'updata': false,
-                    'delete': false,
-                    'addQX': false
+                    'add': true,
+                    'updata': true,
+                    'delete': true,
+                    'addQX': true
                 }
 
                 // munevalue: []

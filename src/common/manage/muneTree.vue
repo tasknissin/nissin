@@ -10,8 +10,11 @@
 </template>
 
 <script>
+    import {Tree} from 'element-ui'
     export default {
-
+        components:{
+            'el-tree' : Tree
+        }, 
         name: 'menuTree',
         props: {
             treeName: String,

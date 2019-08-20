@@ -66,9 +66,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { reformat } from './reformartDate'
-
+import { DatePicker,Table,TableColumn,Select,Option,Pagination } from 'element-ui'
+import {} from 'element-ui'
 export default {
+  components:{
+    "el-date-picker" : DatePicker,
+    "el-table" : Table,
+    "el-table-column" : TableColumn,
+    "el-pagination" : Pagination,
+    "el-select" : Select,
+    "el-option" : Option
+  },
   data() {
     return {
       loading: true,

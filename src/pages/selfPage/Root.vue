@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import {Table,TableColumn} from 'element-ui'
 import {
     getMessageList,
     getMenuList,
@@ -44,6 +45,10 @@ import {
     testList
 } from '../../services/selfPage.js'
 export default {
+    components:{
+        "el-table" : Table,
+        "el-table-column" : TableColumn,
+    },
     data(){
         return{
             selectData : [

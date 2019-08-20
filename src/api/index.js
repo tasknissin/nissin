@@ -195,6 +195,8 @@ const getPaginationTaskManageData_API = '/task/taskInfoController/searchData'
 
 const getBtnsPermissions_API = '/task/sysMenuController/searchButtonDataByUserId'
 
+// 测试
+const gettestData_API = '/admin/userStat'
 
 export default {
     SAT_HOST,
@@ -231,5 +233,6 @@ export default {
     getPaginationTaskManageData_API,
     deletejudgeDictionaryByChild_API,
     deletejudgeDictionaryByUser_API,
-    getBtnsPermissions_API
+    getBtnsPermissions_API,
+    gettestData_API
 }

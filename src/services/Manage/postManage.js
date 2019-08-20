@@ -637,3 +637,29 @@ export function getBtnsPermissionsData(id, userId) {
             })
     })
 }
+
+
+// 测试
+export function getTestData(dayType) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API.gettestData_API,
+                method: 'POST',
+                data: {
+                    dayType:dayType
+                }
+            })
+            .then(({ data, status }) => {
+                if (status != 200) {
+                    //请求失败
+                    return;
+                }
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error)
+                    //请求失败
+                console.log(error);
+            })
+    })
+}

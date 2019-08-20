@@ -50,13 +50,16 @@
 
 </template>
 <script>
+import {Popover,Menu} from "element-ui";
 import NavMenu from "./common/header/Header.vue";
-import {searchTypeMenuData} from './services/Manage/postManage'
+import {searchTypeMenuData,getTestData} from './services/Manage/postManage'
 import {mapState} from 'vuex';
 import {removeToken,removeUserId,getUserInfo} from '@/utils/auth.js'
 export default {
   components: {
-    NavMenu: NavMenu
+    NavMenu: NavMenu,
+    "el-popover":Popover,
+    "el-menu" : Menu
   },
   data(){
     return{
@@ -97,6 +100,7 @@ export default {
     //   console.log(data)
     //   this.menuData = data;
     // }
+   
   },
   created() {
     if(window.location.hash.indexOf('login') != -1){   // 当为登录页面时隐藏头部
@@ -124,6 +128,10 @@ export default {
       this.departmantName = JSON.parse(localStorage.getItem('userInfo')).departmantName
     } catch (error) {
     }
+
+    getTestData(1).then((res)=>{
+      console.log(res)
+    })
   },
 };
 </script>
@@ -204,6 +212,7 @@ export default {
   min-width:80px;
   text-align: right;
 }
+
 </style>
 <style>
 .backColorPop{
@@ -212,5 +221,11 @@ export default {
 }
 .backColorPop .popper__arrow::after{
     border-bottom-color: #394263 !important;
+}
+.el-table{
+    font-size: 12px !important;
+} 
+.el-table th{
+  font-weight: bold;
 }
 </style>
