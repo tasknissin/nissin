@@ -1,12 +1,6 @@
 <template>
   <div>
-    <!-- <el-table :data="tableData" :span-method="arraySpanMethod" border style="width: 100%">
-      <el-table-column prop="id" label="ID" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="amount1" sortable label="数值 1"></el-table-column>
-      <el-table-column prop="amount2" sortable label="数值 2"></el-table-column>
-      <el-table-column prop="amount3" sortable label="数值 3"></el-table-column>
-    </el-table>-->
+    <input type="file" @change="importf($event)">
     <button @click="downloadExl">导出</button>
     <div id="tableId1">
         <el-table
@@ -17,24 +11,26 @@
           border
           style="width: 100%；font-size:12px"
         >
-          <el-table-column current-row-key="id" prop="id" label="ID"  width="60" height="10"></el-table-column>
-          <el-table-column prop="name" label="姓名"></el-table-column>
-          <el-table-column prop="amount1" label="数值 1（元）"></el-table-column>
-          <el-table-column prop="amount2" label="数值 2（元）"></el-table-column>
-          <el-table-column prop="amount3" label="数值 3（元）"></el-table-column>
-          <el-table-column prop="amount4" label="数值 4（元）"></el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)">修改
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
-            </template>
+          <el-table-column prop="name" label="全部">
+            <el-table-column current-row-key="id" prop="id" label="ID"  width="60" height="10"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="amount1" label="数值 1（元）"></el-table-column>
+            <el-table-column prop="amount2" label="数值 2（元）"></el-table-column>
+            <el-table-column prop="amount3" label="数值 3（元）"></el-table-column>
+            <el-table-column prop="amount4" label="数值 4（元）"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)">修改
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)">删除
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table-column>
         </el-table>
     </div>
@@ -503,7 +499,7 @@ export default {
 
         FileSaver.saveAs(new Blob([this.s2ab(wbout)], {
             type: "application/octet-stream;charset=utf-8"
-        }), "个人简介表.xlsx");
+        }), "导出测试.xlsx");
     },
     s2ab(s) {
         if (typeof ArrayBuffer !== 'undefind') {
@@ -523,6 +519,58 @@ export default {
     },
     current_change:function(currentPage){
       this.currentPage = currentPage;
+    },
+    importf(event) {
+      var files = event.target.files;
+      console.log(files);
+      //导入
+      if (!files) {
+        return;
+      }
+      var f = files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var data = e.target.result;
+        if (this.rABS) {
+          this.wb = XLSX.read(btoa(this.fixdata(data)), {
+            //手动转化
+            type: "base64"
+          });
+        } else {
+          this.wb = XLSX.read(data, {
+            type: "binary"
+          });
+        }
+        //wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
+        //wb.Sheets[Sheet名]获取第一个Sheet的数据
+        console.log(
+          XLSX.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]], {
+            header: 0
+          })
+        );
+        document.getElementById("demo").innerHTML = JSON.stringify(
+          XLSX.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])
+        );
+      };
+      if (this.rABS) {
+        reader.readAsArrayBuffer(f);
+      } else {
+        reader.readAsBinaryString(f);
+      }
+    },
+
+    fixdata(data) {
+      //文件流转BinaryString
+      var o = "",
+        l = 0,
+        w = 10240;
+      for (; l < data.byteLength / w; ++l)
+        o += String.fromCharCode.apply(
+          null,
+          new Uint8Array(data.slice(l * w, l * w + w))
+        );
+      o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+      return o;
     },
   },
   

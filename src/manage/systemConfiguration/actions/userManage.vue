@@ -66,11 +66,7 @@
                         </el-transfer>
                     </el-tab-pane>
                     <el-tab-pane style="min-height:200px;" label="岗位权限" name="third">
-                        <el-transfer v-model="Depvalue" 
-                        :props="{
-                            key: 'id',
-                            label: 'titleName'
-                        }"
+                        <el-transfer v-model="Depvalue"
                         :titles="['选择岗位', '已选岗位']"                        
                         :data="transferDataDep"></el-transfer>
                     </el-tab-pane>
@@ -253,11 +249,16 @@ export default {
                 })
         })
         getpostManageList('').then((result) => {   // 获取所有岗位权限
+            console.log(result)
             result.result.map((item,index)=>{
                 if(item.enabled == '1'){
-                    this.transferDataDep.push(item)
+                    this.transferDataDep.push({
+                        key: item.id,
+                        label: item.titleName +"(" + item.departmantName + ')'
+                    })
                 }
             })
+            console.log(this.transferDataDep)
         });
        
     },

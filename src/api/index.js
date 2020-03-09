@@ -1,6 +1,6 @@
 //开发环境
-//const SAT_HOST = 'http://localhost:8080';
 const SAT_HOST = 'http://localhost:8080';
+// const SAT_HOST = 'http://localhost:8081';
 //测试
 const UAT_HOST = 'http://10.213.12.98:8080';
 //生产
